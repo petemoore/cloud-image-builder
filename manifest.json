@@ -20,7 +20,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Enterprise_1803_17134_285_en-US_x64_MBR.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/grenade/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -137,7 +137,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Professional_1803_17134_en-US_x64_MBR.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/grenade/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -254,7 +254,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Professional_1703_15063_en-US_x64_MBR.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/grenade/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -371,7 +371,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Enterprise_1703_15063_296_en-US_x64_MBR.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/grenade/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",

@@ -24,7 +24,7 @@ $ec2_instance_type = 'g3.4xlarge'
 $ec2_key_pair = 'mozilla-taskcluster-worker-gecko-t-win10-64'
 $ec2_security_groups = @('ssh-only', 'rdp-only')
 
-$manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/grenade/relops_image_builder/master/manifest.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
+$manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/manifest.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
 $config = @($manifest | Where-Object {
   $_.os -eq 'Windows' -and
   $_.build.major -eq 10 -and
@@ -41,7 +41,7 @@ $image_description = ('{0} {1} ({2}) - edition: {3}, language: {4}, partition: {
 $aws_region = 'us-west-2'
 $aws_availability_zone = ('{0}c' -f $aws_region)
 
-$cwi_url = 'https://raw.githubusercontent.com/grenade/relops_image_builder/master/Convert-WindowsImage.ps1'
+$cwi_url = 'https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/Convert-WindowsImage.ps1'
 $cwi_path = ('.\{0}' -f [System.IO.Path]::GetFileName($cwi_url))
 $ua_path = ('.\{0}' -f [System.IO.Path]::GetFileName($config.unattend))
 $iso_path = ('.\{0}' -f [System.IO.Path]::GetFileName($config.iso.key))
