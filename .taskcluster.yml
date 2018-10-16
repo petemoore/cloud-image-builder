@@ -17,7 +17,7 @@ tasks:
         - >-
           git clone {{event.head.repo.url}} repo && cd repo && git config
           advice.detachedHead false && git checkout {{event.head.sha}} && echo
-          "run iso-to-ami here"
+          "run iso-to-ami here on worker type: {{ taskcluster.docker.workerType }}"
     metadata:
       name: iso-to-ami
       description: build windows ami from iso
