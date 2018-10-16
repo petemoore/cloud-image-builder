@@ -1,7 +1,7 @@
 version: 0
 tasks:
   - provisionerId: '{{ taskcluster.docker.provisionerId }}'
-    workerType: '{{ taskcluster.docker.workerType }}'
+    workerType: 'relops-image-builder'
     extra:
       github:
         events:
@@ -9,15 +9,15 @@ tasks:
           - push
     payload:
       maxRunTime: 3600
-      image: python
       command:
-        - /bin/bash
-        - '--login'
-        - '-c'
-        - >-
-          git clone {{event.head.repo.url}} repo && cd repo && git config
-          advice.detachedHead false && git checkout {{event.head.sha}} && echo
-          "run iso-to-ami here on worker type: {{ taskcluster.docker.workerType }}"
+        - 'echo "run iso-to-ami on worker type: {{ taskcluster.docker.workerType }}"'
+        #- /bin/bash
+        #- '--login'
+        #- '-c'
+        #- >-
+        #  git clone {{event.head.repo.url}} repo && cd repo && git config
+        #  advice.detachedHead false && git checkout {{event.head.sha}} && echo
+        #  "run iso-to-ami here on worker type: {{ taskcluster.docker.workerType }}"
     metadata:
       name: iso-to-ami
       description: build windows ami from iso
