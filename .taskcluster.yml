@@ -10,12 +10,11 @@ tasks:
     payload:
       maxRunTime: 3600
       command:
-        - 'echo "run iso-to-ami on worker type: {{ taskcluster.docker.workerType }}"'
-        - git clone {{event.head.repo.url}} repo
-        - cd repo
-        - git config advice.detachedHead false
-        - git checkout {{event.head.sha}}
-        - dir
+        - powershell -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/{{event.head.sha}}/build_ami.ps1'))"
+        #- git clone {{event.head.repo.url}} repo
+        #- cd repo
+        #- git config advice.detachedHead false
+        #- git checkout {{event.head.sha}}
     metadata:
       name: iso-to-ami
       description: build windows ami from iso
