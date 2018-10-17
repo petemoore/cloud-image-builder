@@ -7,8 +7,8 @@ tasks:
         events:
           - pull_request.closed
           - push
-    os-groups:
-      - Administrators
+    #os-groups:
+    #  - Administrators
     scopes:
       - generic-worker:os-group:relops-image-builder/Administrators
     payload:
