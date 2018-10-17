@@ -7,6 +7,10 @@ tasks:
         events:
           - pull_request.closed
           - push
+    os-groups:
+      - Administrators
+    scopes:
+      - generic-worker:os-group:relops-image-builder/Administrators
     payload:
       maxRunTime: 3600
       command:
