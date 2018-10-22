@@ -7,11 +7,11 @@ tasks:
         events:
           - pull_request.closed
           - push
-    #os-groups:
-    #  - Administrators
     scopes:
       - generic-worker:os-group:relops-image-builder/Administrators
     payload:
+      os-groups:
+        - Administrators
       maxRunTime: 3600
       command:
         - git clone {{event.head.repo.url}} relops-image-builder
