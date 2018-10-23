@@ -10,7 +10,7 @@ tasks:
     scopes:
       - generic-worker:os-group:relops-image-builder/Administrators
     payload:
-      os-groups:
+      osGroups:
         - Administrators
       maxRunTime: 3600
       command:
@@ -18,6 +18,9 @@ tasks:
         - git --git-dir=.\relops-image-builder\.git --work-tree=.\relops-image-builder config advice.detachedHead false
         - git --git-dir=.\relops-image-builder\.git --work-tree=.\relops-image-builder checkout {{event.head.sha}}
         - powershell -NoProfile -InputFormat None -ExecutionPolicy Bypass -File .\relops-image-builder\build_ami.ps1
+      features:
+        runAsAdministrator: true
+        taskclusterProxy: true
     metadata:
       name: iso-to-ami
       description: build windows ami from iso
