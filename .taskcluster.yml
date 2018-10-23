@@ -8,7 +8,8 @@ tasks:
           - pull_request.closed
           - push
     scopes:
-      - generic-worker:os-group:relops-image-builder/Administrators
+      - generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators
+      - generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder
     payload:
       osGroups:
         - Administrators
