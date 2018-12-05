@@ -19,8 +19,27 @@ if (-not (New-Object System.Security.Principal.WindowsPrincipal([System.Security
   }
   exit
 }
+$ec2_settings_map = @{
+  # win 10 x86 64
+  'gecko-t-win10-64'     = @{
+    'instance_type' = 'c5.2xlarge';
+    'ami_description' = 'Amazon Linux 2 AMI * HVM gp2';
+    'architecture' = 'x64'
+  };
+  # win 10 x86 64 with GPU
+  'gecko-t-win10-64-gpu' = @{
+    'instance_type' = 'g3.4xlarge';
+    'ami_description' = 'Amazon Linux 2 AMI * HVM gp2';
+    'architecture' = 'x64'
+  };
+  # win 10 arm 64
+  'gecko-t-win10-a64'    = @{
+    'instance_type' = 'a1.4xlarge';
+    'ami_description' = 'Amazon Linux 2 LTS Arm64 AMI 2.0.20181114.1 arm64 HVM gp2';
+    'architecture' = 'arm64'
+  }
+}
 
-$ec2_instance_type = 'g3.4xlarge'
 $ec2_key_pair = 'mozilla-taskcluster-worker-gecko-t-win10-64'
 $ec2_security_groups = @('ssh-only', 'rdp-only')
 
@@ -28,11 +47,12 @@ $manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-
 $config = @($manifest | Where-Object {
   $_.os -eq 'Windows' -and
   $_.build.major -eq 10 -and
-  $_.build.release -eq 15063 -and
-  $_.build.build -eq 296 -and
-  $_.version -eq 1703 -and
-  $_.edition -eq 'Enterprise' -and
-  $_.language -eq 'en-US'
+  $_.build.release -eq 18290 -and
+  $_.build.build -eq 1000 -and
+  $_.version -eq 1903 -and
+  $_.edition -eq 'Professional' -and
+  $_.language -eq 'en-US' -and
+  $_.architecture -eq $ec2_settings_map['gecko-t-win10-a64']['architecture']
 })[0]
 
 $image_capture_date = ((Get-Date).ToUniversalTime().ToString('yyyyMMddHHmmss'))
@@ -284,8 +304,8 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
   $volume_zero = $volumes[0].VolumeId
 
   # create a new ec2 linux instance instantiated with a pre-existing ami
-  $amazon_linux_ami_id = (Get-EC2Image -Owner 'amazon' -Filter @((New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(('Amazon Linux 2 AMI * HVM gp2'))))))[0].ImageId
-  $instance = (New-EC2Instance -ImageId $amazon_linux_ami_id -AvailabilityZone $aws_availability_zone -MinCount 1 -MaxCount 1 -InstanceType $ec2_instance_type -KeyName $ec2_key_pair -SecurityGroup $ec2_security_groups).Instances[0]
+  $amazon_linux_ami_id = (Get-EC2Image -Owner 'amazon' -Filter @((New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(($ec2_settings_map['gecko-t-win10-a64']['ami_description']))))))[0].ImageId
+  $instance = (New-EC2Instance -ImageId $amazon_linux_ami_id -AvailabilityZone $aws_availability_zone -MinCount 1 -MaxCount 1 -InstanceType $ec2_settings_map['gecko-t-win10-a64']['instance_type'] -KeyName $ec2_key_pair -SecurityGroup $ec2_security_groups).Instances[0]
   $instance_id = $instance.InstanceId
   Write-Host -object ('instance {0} created with ami {1}' -f  $instance_id, $amazon_linux_ami_id) -ForegroundColor White
   while ((Get-EC2Instance -InstanceId $instance_id).Instances[0].State.Name -ne 'running') {
