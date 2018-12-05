@@ -4072,7 +4072,7 @@ namespace WIM2VHD {
 
                 # If there's only one image in the WIM, just selected that.
                 if ($openWim.Images.Count -eq 1) { 
-                    $Edition   = $openWim.Images[0].ImageFlags
+                    $Edition   = $(if ($openWim.Images[0].ImageFlags) { $openWim.Images[0].ImageFlags } else { $openWim.Images[0].ImageName })
                     $openImage = $openWim[$Edition]
                 } else {
 

@@ -61,7 +61,7 @@ $image_description = ('{0} {1} ({2}) - edition: {3}, language: {4}, partition: {
 $aws_region = 'us-west-2'
 $aws_availability_zone = ('{0}c' -f $aws_region)
 
-$cwi_url = 'https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/Convert-WindowsImage.ps1'
+$cwi_url = 'https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/Convert-WindowsImage.ps1'
 $cwi_path = ('.\{0}' -f [System.IO.Path]::GetFileName($cwi_url))
 $ua_path = ('.\{0}' -f [System.IO.Path]::GetFileName($config.unattend))
 $iso_path = ('.\{0}' -f [System.IO.Path]::GetFileName($config.iso.key))
