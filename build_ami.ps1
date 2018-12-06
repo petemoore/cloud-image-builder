@@ -42,6 +42,7 @@ $ec2_settings_map = @{
 
 $ec2_key_pair = 'mozilla-taskcluster-worker-gecko-t-win10-64'
 $ec2_security_groups = @('ssh-only', 'rdp-only')
+$target_worker_type = 'gecko-t-win10-a64'
 
 $manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/manifest.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
 $config = @($manifest | Where-Object {
@@ -52,7 +53,7 @@ $config = @($manifest | Where-Object {
   $_.version -eq 1903 -and
   $_.edition -eq 'Professional' -and
   $_.language -eq 'en-US' -and
-  $_.architecture -eq $ec2_settings_map['gecko-t-win10-a64']['architecture']
+  $_.architecture -eq $ec2_settings_map[$target_worker_type]['architecture']
 })[0]
 
 $image_capture_date = ((Get-Date).ToUniversalTime().ToString('yyyyMMddHHmmss'))
@@ -172,10 +173,20 @@ if (Test-Path -Path $vhd_path -ErrorAction SilentlyContinue) {
 # create the vhd(x) file
 try {
   . .\Convert-WindowsImage.ps1
+
+  BCDBoot
   if ($drivers.length) {
-    Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true
+    if ($ec2_settings_map[$target_worker_type]['architecture'].Contains('arm')) {
+      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
+    } else {
+      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true
+    }
   } else {
-    Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true
+    if ($ec2_settings_map[$target_worker_type]['architecture'].Contains('arm')) {
+      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
+    } else {
+      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true
+    }
   }
   if (Test-Path -Path $vhd_path -ErrorAction SilentlyContinue) {
     Write-Host -object ('created {0} from {1}' -f $vhd_path, $iso_path) -ForegroundColor White
@@ -304,8 +315,8 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
   $volume_zero = $volumes[0].VolumeId
 
   # create a new ec2 linux instance instantiated with a pre-existing ami
-  $amazon_linux_ami_id = (Get-EC2Image -Owner 'amazon' -Filter @((New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(($ec2_settings_map['gecko-t-win10-a64']['ami_description']))))))[0].ImageId
-  $instance = (New-EC2Instance -ImageId $amazon_linux_ami_id -AvailabilityZone $aws_availability_zone -MinCount 1 -MaxCount 1 -InstanceType $ec2_settings_map['gecko-t-win10-a64']['instance_type'] -KeyName $ec2_key_pair -SecurityGroup $ec2_security_groups).Instances[0]
+  $amazon_linux_ami_id = (Get-EC2Image -Owner 'amazon' -Filter @((New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(($ec2_settings_map[$target_worker_type]['ami_description']))))))[0].ImageId
+  $instance = (New-EC2Instance -ImageId $amazon_linux_ami_id -AvailabilityZone $aws_availability_zone -MinCount 1 -MaxCount 1 -InstanceType $ec2_settings_map[$target_worker_type]['instance_type'] -KeyName $ec2_key_pair -SecurityGroup $ec2_security_groups).Instances[0]
   $instance_id = $instance.InstanceId
   Write-Host -object ('instance {0} created with ami {1}' -f  $instance_id, $amazon_linux_ami_id) -ForegroundColor White
   while ((Get-EC2Instance -InstanceId $instance_id).Instances[0].State.Name -ne 'running') {
