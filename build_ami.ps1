@@ -79,8 +79,13 @@ if (-not (Get-Module -ListAvailable -Name AWSPowerShell)) {
   Install-Module -Name AWSPowerShell
 }
 
-$creds_url = 'http://169.254.169.254/latest/user-data'
-$aws_creds=(Invoke-WebRequest -Uri $creds_url -UseBasicParsing | ConvertFrom-Json).credentials.windows_ami_builder
+if (Test-Path -Path ('{0}\.aws\credentials' -f $home) -ErrorAction SilentlyContinue ) {
+  $aws_creds = (@(Get-Content -Path ('{0}\.aws\credentials' -f $home))[1..3] | ConvertFrom-StringData)
+} elseif ((Get-Service 'Ec2Config' -ErrorAction SilentlyContinue) -or (Get-Service 'AmazonSSMAgent' -ErrorAction SilentlyContinue)) {
+  $aws_creds = (Invoke-WebRequest -Uri 'http://169.254.169.254/latest/user-data' -UseBasicParsing | ConvertFrom-Json).credentials.windows_ami_builder
+} else {
+  throw 'failed to obtain aws credentials'
+}
 $env:AWS_ACCESS_KEY_ID = $aws_creds.aws_access_key_id
 $env:AWS_SECRET_ACCESS_KEY = $aws_creds.aws_secret_access_key
 Set-AWSCredential -AccessKey $aws_creds.aws_access_key_id -SecretKey $aws_creds.aws_secret_access_key -StoreAs WindowsAmiBuilder
