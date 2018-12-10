@@ -1,3 +1,44 @@
+
+function Get-Signature {
+  param (
+    [string] $request,
+    [string] $secret
+  )
+  $sha = New-Object -TypeName 'System.Security.Cryptography.HMACSHA1' -Property @{ 'Key' = [System.Text.Encoding]::ASCII.GetBytes($secret) }
+  return [Convert]::ToBase64String($sha.ComputeHash([System.Text.Encoding]::ASCII.GetBytes($request)))
+}
+function Copy-S3Item {
+  param (
+    [string] $region,
+    [string] $bucket,
+    [string] $key,
+    [string] $aws_access_key_id,
+    [string] $aws_secret_access_key,
+    [string] $target,
+    [string] $curl = 'C:\Program Files (x86)\Git\mingw32\bin\curl.exe'
+  )
+  try {
+    $url = ('https://s3-{0}.amazonaws.com/{1}/{2}' -f $region, $bucket, $key)
+    $date = [DateTime]::UtcNow.ToString('ddd, dd MMM yyyy HH:mm:ss +0000')
+    $request = ("GET`n`n`n{0}`n/{1}/{2}" -f $date, $bucket, $key)
+    $signature = Get-Signature -request $request -secret $aws_secret_access_key
+    $authorization = ('AWS {0}:{1}' -f $aws_access_key_id, $signature)
+    Start-Process -NoNewWindow -Wait -FilePath $curl -ArgumentList @('-H', ('"Date: {0}"' -f $date), '-H', ('"Authorization: {0}"' -f $authorization), '-o', $target, $url)
+  }
+  catch {
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor Red
+    } else {
+      Write-Host -object $_.Exception.Message -ForegroundColor Red
+    }
+    Write-Host -object ('url: {0}' -f $url) -ForegroundColor 'Yellow'
+    Write-Host -object ('date: {0}' -f $date) -ForegroundColor 'Yellow'
+    Write-Host -object ('request: {0}' -f $request) -ForegroundColor 'Yellow'
+    Write-Host -object ('signature: {0}' -f $signature) -ForegroundColor 'Yellow'
+    Write-Host -object ('authorization: {0}' -f $authorization) -ForegroundColor 'Yellow'
+  }
+}
+
 if (-not (New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)) {
   $processStartInfo = New-Object System.Diagnostics.ProcessStartInfo
   $processStartInfo.FileName = 'powershell.exe'
@@ -79,32 +120,39 @@ if (-not (Get-Module -ListAvailable -Name AWSPowerShell)) {
   Install-Module -Name AWSPowerShell
 }
 
-if (Test-Path -Path ('{0}\.aws\credentials' -f $home) -ErrorAction SilentlyContinue ) {
+if (Test-Path -Path ('{0}\.aws\credentials' -f $home) -ErrorAction 'SilentlyContinue') {
   $aws_creds = (@(Get-Content -Path ('{0}\.aws\credentials' -f $home))[1..3] | ConvertFrom-StringData)
-} elseif ((Get-Service 'Ec2Config' -ErrorAction SilentlyContinue) -or (Get-Service 'AmazonSSMAgent' -ErrorAction SilentlyContinue)) {
+} elseif ((Get-Service 'Ec2Config' -ErrorAction 'SilentlyContinue') -or (Get-Service 'AmazonSSMAgent' -ErrorAction 'SilentlyContinue')) {
   $aws_creds = (Invoke-WebRequest -Uri 'http://169.254.169.254/latest/user-data' -UseBasicParsing | ConvertFrom-Json).credentials.windows_ami_builder
 } else {
   throw 'failed to obtain aws credentials'
 }
 $env:AWS_ACCESS_KEY_ID = $aws_creds.aws_access_key_id
 $env:AWS_SECRET_ACCESS_KEY = $aws_creds.aws_secret_access_key
-Set-AWSCredential -AccessKey $aws_creds.aws_access_key_id -SecretKey $aws_creds.aws_secret_access_key -StoreAs WindowsAmiBuilder
-Initialize-AWSDefaultConfiguration -ProfileName WindowsAmiBuilder -Region $aws_region
+
+if (Get-Command 'Set-AWSCredential' -ErrorAction 'SilentlyContinue') {
+  Set-AWSCredential -AccessKey $aws_creds.aws_access_key_id -SecretKey $aws_creds.aws_secret_access_key -StoreAs WindowsAmiBuilder
+}
+if (Get-Command 'Initialize-AWSDefaultConfiguration' -ErrorAction 'SilentlyContinue') {
+  Initialize-AWSDefaultConfiguration -ProfileName WindowsAmiBuilder -Region $aws_region
+}
 
 # download the iso file if not on the local filesystem
-if (-not (Test-Path -Path $iso_path -ErrorAction SilentlyContinue)) {
-  try {
+if (-not (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue')) {
+  if (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue') {
     Copy-S3Object -BucketName $config.iso.bucket -Key $config.iso.key -LocalFile $iso_path -Region $aws_region
+  } else {
+    Copy-S3Item -region $aws_region -bucket $config.iso.bucket -key $config.iso.key -aws_access_key_id $aws_creds.aws_access_key_id -aws_secret_access_key $aws_creds.aws_secret_access_key -target $iso_path
+  }
+  if  (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue') {
     Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f $iso_path, $config.iso.bucket, $config.iso.key) -ForegroundColor White
-  } catch {
-    Write-Host -object $_.Exception.Message -ForegroundColor Red
   }
 } else {
   Write-Host -object ('iso detected at: {0}' -f $iso_path) -ForegroundColor DarkGray
 }
 
 # download the vhd conversion script
-if (Test-Path -Path $cwi_path -ErrorAction SilentlyContinue) {
+if (Test-Path -Path $cwi_path -ErrorAction 'SilentlyContinue') {
   Remove-Item -Path $cwi_path -Force
 }
 try {
@@ -135,8 +183,16 @@ foreach ($driver in $config.drivers) {
     Write-Host -object ('deleted: {0}' -f $local_path) -ForegroundColor DarkGray
   }
   try {
-    Copy-S3Object -BucketName $driver.bucket -Key $driver.key -LocalFile $local_path -Region $(if ($driver.region) { $driver.region } else { $aws_region })
-    Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $driver.bucket, $driver.key) -ForegroundColor White
+    if (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue') {
+      Copy-S3Object -BucketName $driver.bucket -Key $driver.key -LocalFile $local_path -Region $(if ($driver.region) { $driver.region } else { $aws_region })
+    } else {
+      Copy-S3Item -region $(if ($driver.region) { $driver.region } else { $aws_region }) -bucket $driver.bucket -key $driver.key -aws_access_key_id $aws_creds.aws_access_key_id -aws_secret_access_key $aws_creds.aws_secret_access_key -target $local_path
+    }
+    if (Test-Path -Path $local_path -ErrorAction SilentlyContinue) {
+      Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $driver.bucket, $driver.key) -ForegroundColor White
+    } else {
+      Write-Host -object ('failed to download {0} from bucket {1} with key {2}' -f $local_path, $driver.bucket, $driver.key) -ForegroundColor Red
+    }
   } catch {
     Write-Host -object $_.Exception.Message -ForegroundColor Red
     throw
@@ -213,8 +269,16 @@ foreach ($package in $config.packages) {
   $local_path = ('.\{0}' -f [System.IO.Path]::GetFileName($package.key))
   if (-not (Test-Path -Path $local_path -ErrorAction SilentlyContinue)) {
     try {
-      Copy-S3Object -BucketName $package.bucket -Key $package.key -LocalFile $local_path -Region $(if ($package.region) { $package.region } else { $aws_region })
-      Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $package.bucket, $package.key) -ForegroundColor White
+      if (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue') {
+        Copy-S3Object -BucketName $package.bucket -Key $package.key -LocalFile $local_path -Region $(if ($package.region) { $package.region } else { $aws_region })
+      } else {
+        Copy-S3Item -region $(if ($package.region) { $package.region } else { $aws_region }) -bucket $package.bucket -key $package.key -aws_access_key_id $aws_creds.aws_access_key_id -aws_secret_access_key $aws_creds.aws_secret_access_key -target $local_path
+      }
+      if (Test-Path -Path $local_path -ErrorAction SilentlyContinue) {
+        Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $package.bucket, $package.key) -ForegroundColor White
+      } else {
+        Write-Host -object ('failed to download {0} from bucket {1} with key {2}' -f $local_path, $package.bucket, $package.key) -ForegroundColor Red
+      }
     } catch {
       Write-Host -object $_.Exception.Message -ForegroundColor Red
       throw
