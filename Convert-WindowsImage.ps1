@@ -1821,7 +1821,8 @@ namespace WIM2VHD {
             x86   = 0x0,
             ARM   = 0x5,
             IA64  = 0x6,
-            AMD64 = 0x9
+            AMD64 = 0x9,
+            ARM64 = 0xC
         }
 
         public void
@@ -4244,7 +4245,11 @@ format fs=fat32 label="System"
                     $flagText | Out-File -FilePath (Join-Path $drive "Convert-WindowsImageInfo.txt") -Encoding Unicode -Force
 
                     Write-W2VInfo "Detected image architecture is: ${openImage.ImageArchitecture}."
-                    if (($openImage.ImageArchitecture -ne "ARM") -and ($openImage.ImageArchitecture -ne "ARM64")) {
+                    If (( $openImage.ImageArchitecture -ne "ARM" ) -and       # No virtualization platform for ARM images
+                        ( $openImage.ImageArchitecture -ne "ARM64" ) -and     # No virtualization platform for ARM64 images
+                        ( $BcdInVhd -ne "NativeBoot" ))                       # User asked for a non-bootable image
+                    {
+
 
                         if ( $BCDinVHD -eq "VirtualMachine" ) {
                         # We only need this if VHD is prepared for a VM.
