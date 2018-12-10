@@ -27,10 +27,9 @@ function Copy-S3Item {
   }
   catch {
     if ($_.Exception.InnerException) {
-      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor Red
-    } else {
-      Write-Host -object $_.Exception.Message -ForegroundColor Red
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
     }
+    Write-Host -object $_.Exception.Message -ForegroundColor Red
     Write-Host -object ('url: {0}' -f $url) -ForegroundColor 'Yellow'
     Write-Host -object ('date: {0}' -f $date) -ForegroundColor 'Yellow'
     Write-Host -object ('request: {0}' -f $request) -ForegroundColor 'Yellow'
@@ -305,6 +304,9 @@ try {
   Write-Host -object ('dismount of {0} from {1} complete' -f $vhd_path, $mount_path) -ForegroundColor White
   Remove-Item -Path $mount_path -Force
 } catch {
+  if ($_.Exception.InnerException) {
+    Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+  }
   Write-Host -object $_.Exception.Message -ForegroundColor Red
   throw
 }
