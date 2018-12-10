@@ -486,10 +486,10 @@
     },
     "vhd": {
       "bucket": "windows-ami-builder",
-      "key": "vhd/Windows_10_Professional_1903_18290_1000_en-US_arm64_MBR.vhd"
+      "key": "vhd/Windows_10_Professional_1903_18290_1000_en-US_arm64_GPT.vhd"
     },
     "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
-    "partition": "MBR",
+    "partition": "GPT",
     "format": "VHD",
     "architecture": "arm64",
     "packages": [
