@@ -4243,7 +4243,8 @@ format fs=fat32 label="System"
                     Write-W2VInfo "Signing disk..."
                     $flagText | Out-File -FilePath (Join-Path $drive "Convert-WindowsImageInfo.txt") -Encoding Unicode -Force
 
-                    if ($openImage.ImageArchitecture -ne "ARM") {
+                    Write-W2VInfo "Detected image architecture is: ${openImage.ImageArchitecture}."
+                    if (($openImage.ImageArchitecture -ne "ARM") -and ($openImage.ImageArchitecture -ne "ARM64")) {
 
                         if ( $BCDinVHD -eq "VirtualMachine" ) {
                         # We only need this if VHD is prepared for a VM.
