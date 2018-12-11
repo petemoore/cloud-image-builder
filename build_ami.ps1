@@ -30,11 +30,11 @@ function Copy-S3Item {
       Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
     }
     Write-Host -object $_.Exception.Message -ForegroundColor Red
-    Write-Host -object ('url: {0}' -f $url) -ForegroundColor 'Yellow'
-    Write-Host -object ('date: {0}' -f $date) -ForegroundColor 'Yellow'
-    Write-Host -object ('request: {0}' -f $request) -ForegroundColor 'Yellow'
-    Write-Host -object ('signature: {0}' -f $signature) -ForegroundColor 'Yellow'
-    Write-Host -object ('authorization: {0}' -f $authorization) -ForegroundColor 'Yellow'
+    Write-Host -object ('url: {0}' -f $url) -ForegroundColor Yellow
+    Write-Host -object ('date: {0}' -f $date) -ForegroundColor Yellow
+    Write-Host -object ('request: {0}' -f $request) -ForegroundColor Yellow
+    Write-Host -object ('signature: {0}' -f $signature) -ForegroundColor Yellow
+    Write-Host -object ('authorization: {0}' -f $authorization) -ForegroundColor Yellow
   }
 }
 
@@ -159,6 +159,9 @@ try {
   (New-Object Net.WebClient).DownloadFile($cwi_url, $cwi_path)
   Write-Host -object ('downloaded {0} to {1}' -f $cwi_url, $cwi_path) -ForegroundColor White
 } catch {
+  if ($_.Exception.InnerException) {
+    Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+  }
   Write-Host -object $_.Exception.Message -ForegroundColor Red
 }
 
@@ -171,6 +174,9 @@ try {
   (New-Object Net.WebClient).DownloadFile($config.unattend, $ua_path)
   Write-Host -object ('downloaded {0} to {1}' -f $config.unattend, $ua_path) -ForegroundColor White
 } catch {
+  if ($_.Exception.InnerException) {
+    Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+  }
   Write-Host -object $_.Exception.Message -ForegroundColor Red
 }
 
@@ -194,6 +200,9 @@ foreach ($driver in $config.drivers) {
       Write-Host -object ('failed to download {0} from bucket {1} with key {2}' -f $local_path, $driver.bucket, $driver.key) -ForegroundColor Red
     }
   } catch {
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
     Write-Host -object $_.Exception.Message -ForegroundColor Red
     throw
   }
@@ -221,6 +230,9 @@ foreach ($driver in $config.drivers) {
       Write-Host -object ('copied {0} to {1}' -f (Resolve-Path -Path $local_path), (Resolve-Path -Path $driver_target)) -ForegroundColor White
     }
   } catch {
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
     Write-Host -object $_.Exception.Message -ForegroundColor Red
     throw
   }
@@ -253,6 +265,9 @@ try {
     Write-Host -object ('failed to create {0} from {1}' -f $vhd_path, $iso_path) -ForegroundColor Red
   }
 } catch {
+  if ($_.Exception.InnerException) {
+    Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+  }
   Write-Host -object $_.Exception.Message -ForegroundColor Red
   throw
 }
@@ -278,6 +293,9 @@ foreach ($package in $config.packages) {
         Write-Host -object ('failed to download {0} from bucket {1} with key {2}' -f $local_path, $package.bucket, $package.key) -ForegroundColor Red
       }
     } catch {
+      if ($_.Exception.InnerException) {
+        Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+      }
       Write-Host -object $_.Exception.Message -ForegroundColor Red
       throw
     }
@@ -294,11 +312,14 @@ foreach ($package in $config.packages) {
       Write-Host -object ('copied {0} to {1}' -f (Resolve-Path -Path $local_path), (Resolve-Path -Path $mount_path_package_target)) -ForegroundColor White
     }
   } catch {
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
     Write-Host -object $_.Exception.Message -ForegroundColor Red
     throw
   }
 }
-# unmount the vhd, save it and remove the mount point
+# dismount the vhd, save it and remove the mount point
 try {
   Dismount-WindowsImage -Path $mount_path -Save
   Write-Host -object ('dismount of {0} from {1} complete' -f $vhd_path, $mount_path) -ForegroundColor White
@@ -317,6 +338,9 @@ if (Get-S3Object -BucketName $config.vhd.bucket -Key $config.vhd.key -Region $aw
     Remove-S3Object -BucketName $config.vhd.bucket -Key $config.vhd.key -Region $aws_region -Force
     Write-Host -object ('removed {0} from bucket {1}' -f $config.vhd.key, $config.vhd.bucket) -ForegroundColor White
   } catch {
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
     Write-Host -object $_.Exception.Message -ForegroundColor Red
   }
 }
@@ -326,6 +350,9 @@ try {
   Write-S3Object -BucketName $config.vhd.bucket -File $vhd_path -Key $config.vhd.key
   Write-Host -object ('uploaded {0} to bucket {1} with key {2}' -f $vhd_path, $config.vhd.bucket, $config.vhd.key) -ForegroundColor White
 } catch {
+  if ($_.Exception.InnerException) {
+    Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+  }
   Write-Host -object $_.Exception.Message -ForegroundColor Red
 }
 
@@ -408,6 +435,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
       Write-Host -object ('detached volume {0} from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor White
     } catch {
       Write-Host -object ('failed to detach volume {0} from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor Red
+      if ($_.Exception.InnerException) {
+        Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+      }
       Write-Host -object $_.Exception.Message -ForegroundColor Red
       exit
     }
@@ -425,6 +455,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
     Write-Host -object ('attached volume {0} to {1}{2}' -f $volume_zero, $instance_id, $device_zero) -ForegroundColor White
   } catch {
     Write-Host -object ('failed to attach volume {0} to {1}{2}' -f  $volume_zero, $instance_id, $device_zero) -ForegroundColor Red
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
     Write-Host -object $_.Exception.Message -ForegroundColor Red
     throw
   }
@@ -439,6 +472,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
     Write-Host -object 'DeleteOnTermination set to true for attached volumes' -ForegroundColor White
   } catch {
     Write-Host -object 'failed to set DeleteOnTermination for attached volumes' -ForegroundColor Red
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
     Write-Host -object $_.Exception.Message -ForegroundColor Red
   }
 
@@ -446,6 +482,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
     Edit-EC2InstanceAttribute -InstanceId $instance_id -EnaSupport $true
     Write-Host -object ('enabled ena support attribute on instance {0}' -f $instance_id) -ForegroundColor DarkGray
   } catch {
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
     Write-Host -object $_.Exception.Message -ForegroundColor Red
   }
 
@@ -473,6 +512,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
       } catch {
         $last_screenshot_time = ((Get-Date).ToUniversalTime())
         $last_screenshot_size = 0
+        if ($_.Exception.InnerException) {
+          Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+        }
         Write-Host -object $_.Exception.Message -ForegroundColor Red
       }
     }
@@ -501,6 +543,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
           Write-Host -object ('detached volume {0} from {1}{2}' -f  $local_block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_block_device_mapping.DeviceName) -ForegroundColor Cyan
         } catch {
           Write-Host -object ('failed to detach volume {0} from {1}{2}' -f  $local_block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_block_device_mapping.DeviceName) -ForegroundColor Red
+          if ($_.Exception.InnerException) {
+            Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+          }
           Write-Host -object $_.Exception.Message -ForegroundColor Red
           exit
         }
@@ -518,6 +563,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
         Write-Host -object ('detached volume {0} from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor Cyan
       } catch {
         Write-Host -object ('failed to detach volume {0} from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor Red
+        if ($_.Exception.InnerException) {
+          Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+        }
         Write-Host -object $_.Exception.Message -ForegroundColor Red
         exit
       }
@@ -532,6 +580,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
         Write-Host -object ('attached volume {0} to {1}{2}' -f $block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_devices[$i]) -ForegroundColor Cyan
       } catch {
         Write-Host -object ('failed to attach volume {0} to {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_devices[$i]) -ForegroundColor Red
+        if ($_.Exception.InnerException) {
+          Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+        }
         Write-Host -object $_.Exception.Message -ForegroundColor Red
         throw
       }
@@ -543,6 +594,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
       Write-Host -object ('ami {0} created from instance {1}' -f $ami_id, $instance_id) -ForegroundColor Green
     } catch {
       Write-Host -object ('failed to create ami from instance {0}' -f  $instance_id) -ForegroundColor Red
+      if ($_.Exception.InnerException) {
+        Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+      }
       Write-Host -object $_.Exception.Message -ForegroundColor Red
       throw
     }
