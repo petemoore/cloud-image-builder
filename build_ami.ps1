@@ -183,7 +183,7 @@ try {
 # download driver files if not on the local filesystem
 $drivers = @()
 foreach ($driver in $config.drivers) {
-  $local_path = ('.\{0}' -f [System.IO.Path]::GetFileName($driver.key))
+  $local_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($driver.key)))
   if (Test-Path -Path $local_path -ErrorAction SilentlyContinue) {
     Remove-Item $local_path -Force -Recurse
     Write-Host -object ('deleted: {0}' -f $local_path) -ForegroundColor DarkGray
@@ -279,7 +279,7 @@ Mount-WindowsImage -ImagePath $vhd_path -Path $mount_path -Index 1
 
 # download package files if not on the local filesystem
 foreach ($package in $config.packages) {
-  $local_path = ('.\{0}' -f [System.IO.Path]::GetFileName($package.key))
+  $local_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($package.key)))
   if (-not (Test-Path -Path $local_path -ErrorAction SilentlyContinue)) {
     try {
       if (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue') {
