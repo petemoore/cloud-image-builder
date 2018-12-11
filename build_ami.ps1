@@ -206,7 +206,7 @@ foreach ($driver in $config.drivers) {
     Write-Host -object $_.Exception.Message -ForegroundColor Red
     throw
   }
-  $driver_target = ('.\{0}' -f $driver.target)
+  $driver_target = (Join-Path -Path $work_dir -ChildPath $driver.target)
   if (Test-Path -Path $driver_target -ErrorAction SilentlyContinue) {
     Remove-Item $driver_target -Force -Recurse
     Write-Host -object ('deleted: {0}' -f $driver_target) -ForegroundColor DarkGray
@@ -236,7 +236,7 @@ foreach ($driver in $config.drivers) {
     Write-Host -object $_.Exception.Message -ForegroundColor Red
     throw
   }
-  $drivers += (Resolve-Path -Path ('.\{0}' -f $driver.inf)).Path
+  $drivers += (Resolve-Path -Path (Join-Path -Path $work_dir -ChildPath $driver.inf)).Path
 }
 
 # delete the vhd(x) file if it exists
@@ -245,7 +245,7 @@ if (Test-Path -Path $vhd_path -ErrorAction SilentlyContinue) {
 }
 # create the vhd(x) file
 try {
-  . .\Convert-WindowsImage.ps1
+  . (Join-Path -Path $work_dir -ChildPath 'Convert-WindowsImage.ps1')
   if ($drivers.length) {
     if ($ec2_settings_map[$target_worker_type]['architecture'].Contains('arm')) {
       Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
@@ -489,7 +489,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
   }
 
   Start-EC2Instance -InstanceId $instance_id
-  $screenshot_folder_path = ('.\{0}' -f $instance_id)
+  $screenshot_folder_path = (Join-Path -Path $work_dir -ChildPath $instance_id)
   New-Item -ItemType Directory -Force -Path $screenshot_folder_path
   $last_screenshot_time = ((Get-Date).AddSeconds(-60).ToUniversalTime())
   $last_screenshot_size = 0
