@@ -532,7 +532,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
       Write-Host -object 'waiting for instance to stop' -ForegroundColor DarkCyan
       Start-Sleep -Seconds 5
     }
-    $local_instance_id = 'i-04332aa3f797e88ed' # todo: pull from local metadata
+    $local_instance_id = ((New-Object Net.WebClient).DownloadString('http://169.254.169.254/latest/meta-data/instance-id'))
     $local_devices = @([char[]]([char]'f'..[char]'z')|%{('xvd{0}' -f $_)})
     # detach previous debug volumes
     foreach ($local_block_device_mapping in (Get-EC2Instance -InstanceId $local_instance_id).Instances[0].BlockDeviceMappings) {
