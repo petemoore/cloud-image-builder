@@ -4244,10 +4244,8 @@ format fs=fat32 label="System"
                     Write-W2VInfo "Signing disk..."
                     $flagText | Out-File -FilePath (Join-Path $drive "Convert-WindowsImageInfo.txt") -Encoding Unicode -Force
 
-                    Write-W2VInfo "Detected image architecture is: ${openImage.ImageArchitecture}."
-                    If (( $openImage.ImageArchitecture -ne "ARM" ) -and       # No virtualization platform for ARM images
-                        ( $openImage.ImageArchitecture -ne "ARM64" ) -and     # No virtualization platform for ARM64 images
-                        ( $BcdInVhd -ne "NativeBoot" ))                       # User asked for a non-bootable image
+                    Write-W2VInfo ("Detected image architecture is: {0}." -f $openImage.ImageArchitecture)
+                    If ( $BcdInVhd -ne "NativeBoot" )                       # User asked for a non-bootable image
                     {
 
 
