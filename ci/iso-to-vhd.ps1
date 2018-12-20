@@ -58,3 +58,5 @@ $iso_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName
 $vhd_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.vhd.key)))
 
 Install-AwsPowershellTools
+
+Get-S3Object -BucketName 'taskcluster-level-1-sccache-us-west-2'
