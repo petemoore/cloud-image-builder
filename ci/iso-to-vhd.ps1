@@ -59,4 +59,4 @@ $vhd_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName
 
 Install-AwsPowershellTools
 
-Get-S3Object -BucketName 'taskcluster-level-1-sccache-us-west-2'
+Get-S3Object -BucketName 'windows-ami-builder'
