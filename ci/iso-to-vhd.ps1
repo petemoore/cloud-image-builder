@@ -73,7 +73,7 @@ try {
 
 foreach ($config in $manifest) {
   if (Get-S3Object -BucketName $config.vhd.bucket -Key $config.vhd.key -Region $aws_region) {
-    Write-Host -object ('Skipping {0} {1} ({2} [{3}.{4}]) {5} {6} {7}. VHD detected ()' -f $config.os, $config.build.major, $config.version, $config.build.release, $config.build.build, $config.edition, $config.language, $config.architecture, $config.vhd.key) -ForegroundColor White
+    Write-Host -object ('Skipping {0} {1} ({2} [{3}.{4}]) {5} {6} {7}. VHD detected ({8})' -f $config.os, $config.build.major, $config.version, $config.build.release, $config.build.build, $config.edition, $config.language, $config.architecture, $config.vhd.key) -ForegroundColor White
   } else {
     Write-Host -object ('Building {0} {1} ({2} [{3}.{4}]) {5} {6} {7}' -f $config.os, $config.build.major, $config.version, $config.build.release, $config.build.build, $config.edition, $config.language, $config.architecture) -ForegroundColor White
 
