@@ -19,7 +19,6 @@ tasks:
         - git --git-dir=.\relops-image-builder\.git --work-tree=.\relops-image-builder config advice.detachedHead false
         - git --git-dir=.\relops-image-builder\.git --work-tree=.\relops-image-builder checkout {{event.head.sha}}
         - powershell -NoProfile -InputFormat None -File .\relops-image-builder\ci\iso-to-vhd.ps1
-        - powershell -NoProfile -InputFormat None -File .\relops-image-builder\build_ami.ps1
       features:
         runAsAdministrator: true
         taskclusterProxy: true
