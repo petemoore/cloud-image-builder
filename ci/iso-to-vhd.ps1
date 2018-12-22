@@ -158,13 +158,13 @@ foreach ($config in $manifest) {
   try {
     . (Join-Path -Path $work_dir -ChildPath 'Convert-WindowsImage.ps1')
     if ($drivers.length) {
-      if ($ec2_settings_map[$target_worker_type]['architecture'].Contains('arm')) {
+      if ($config.architecture.Contains('arm')) {
         Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
       } else {
         Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true
       }
     } else {
-      if ($ec2_settings_map[$target_worker_type]['architecture'].Contains('arm')) {
+      if ($config.architecture.Contains('arm')) {
         Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
       } else {
         Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true
