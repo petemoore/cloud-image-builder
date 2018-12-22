@@ -78,6 +78,18 @@ foreach ($config in $manifest) {
   $iso_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.iso.key)))
   $vhd_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.vhd.key)))
 
+  # download the iso file if not on the local filesystem
+  if (-not (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue')) {
+    if (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue') {
+      Copy-S3Object -BucketName $config.iso.bucket -Key $config.iso.key -LocalFile $iso_path -Region $aws_region
+    }
+    if  (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue') {
+      Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f $iso_path, $config.iso.bucket, $config.iso.key) -ForegroundColor White
+    }
+  } else {
+    Write-Host -object ('iso detected at: {0}' -f $iso_path) -ForegroundColor DarkGray
+  }
+
   # delete the unattend file if it exists
   if (Test-Path -Path $ua_path -ErrorAction SilentlyContinue) {
     Remove-Item -Path $ua_path -Force
