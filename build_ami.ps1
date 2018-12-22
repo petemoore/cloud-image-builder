@@ -274,8 +274,16 @@ try {
 }
 
 # import the vhd as an ec2 snapshot
-$import_task_status = @(Import-EC2Snapshot -DiskContainer_Format $config.format -DiskContainer_S3Bucket $config.vhd.bucket -DiskContainer_S3Key $config.vhd.key -Description $image_description)[0]
-Write-Host -object ('snapshot import task in progress with id: {0}, progress: {1}%, status: {2}; {3}' -f $import_task_status.ImportTaskId, $import_task_status.SnapshotTaskDetail.Progress,  $import_task_status.SnapshotTaskDetail.Status, $import_task_status.SnapshotTaskDetail.StatusMessage) -ForegroundColor White
+try {
+  $import_task_status = @(Import-EC2Snapshot -DiskContainer_Format $config.format -DiskContainer_S3Bucket $config.vhd.bucket -DiskContainer_S3Key $config.vhd.key -Description $image_description)[0]
+  Write-Host -object ('snapshot import task in progress with id: {0}, progress: {1}%, status: {2}; {3}' -f $import_task_status.ImportTaskId, $import_task_status.SnapshotTaskDetail.Progress,  $import_task_status.SnapshotTaskDetail.Status, $import_task_status.SnapshotTaskDetail.StatusMessage) -ForegroundColor White
+} catch {
+  if ($_.Exception.InnerException) {
+    Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+  }
+  Write-Host -object $_.Exception.Message -ForegroundColor Red
+  throw
+}
 
 # wait for snapshot import completion
 while (($import_task_status.SnapshotTaskDetail.Status -ne 'completed') -and ($import_task_status.SnapshotTaskDetail.Status -ne 'deleted') -and (-not $import_task_status.SnapshotTaskDetail.StatusMessage.StartsWith('ServerError')) -and (-not $import_task_status.SnapshotTaskDetail.StatusMessage.StartsWith('ClientError'))) {
