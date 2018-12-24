@@ -89,18 +89,20 @@ for manifest_item in json.loads(urllib.request.urlopen(manifest_url).read().deco
             print('  volume id: {}, state: {}, size: {}gb'.format(aws_volume.id, aws_volume.state, aws_volume.size))
             print('    https://{}.console.aws.amazon.com/ec2/v2/home?region={}#Volumes:volumeId={}'.format(aws_region_name, aws_region_name, aws_volume.id))
 
+            # create and tag instance
             amazon_linux_ami_id = sorted(aws_ec2_resource.images.filter(Owners=['amazon'], Filters=[{'Name': 'description', 'Values': [manifest_item['deployment']['aws']['init_ami_filter']]}]), key=lambda x: x.creation_date)[-1].image_id
-            aws_instance = aws_ec2_resource.create_instances(ImageId=amazon_linux_ami_id, InstanceType=manifest_item['deployment']['aws']['instance_type'], KeyName=manifest_item['deployment']['aws']['key_name'], MaxCount=1, MinCount=1, Placement={'AvailabilityZone': aws_availability_zone}, SecurityGroups=manifest_item['deployment']['aws']['security_groups'])[0]
+            aws_instance = aws_ec2_resource.create_instances(ImageId=amazon_linux_ami_id, InstanceType=manifest_item['deployment']['aws']['instance_type'], KeyName=manifest_item['deployment']['aws']['key_name'], MaxCount=1, MinCount=1, Placement={'AvailabilityZone': aws_availability_zone}, SecurityGroups=manifest_item['deployment']['aws']['security_groups'], TagSpecifications=[{'ResourceType': 'instance', 'Tags': aws_resource_tags}])[0]
+            print('  instance id: {}, type: {}, state: {}'.format(aws_instance.id, aws_instance.instance_type, aws_instance.state['Name']))
+            print('    https://{}.console.aws.amazon.com/ec2/v2/home?region={}#Instances:instanceId={}'.format(aws_region_name, aws_region_name, aws_instance.id))
             aws_instance_id = aws_instance.id
-            while aws_instance.state != 'running':
-                print('  waiting for instance {} to start. current state: {}'.format(aws_instance.id, aws_instance.state))
+            while aws_instance.state['Name'] != 'running':
+                print('  waiting for instance {} to start. current state: {}'.format(aws_instance.id, aws_instance.state['Name']))
                 sleep(1)
                 aws_instance = aws_ec2_resource.Instance(aws_instance_id)
-            print('  instance id: {}, state: {} {} {}'.format(aws_instance.id, aws_instance.state, aws_instance.state_reason, aws_instance.state_transition_reason))
+            print('  instance id: {}, state: {}'.format(aws_instance.id, aws_instance.state['Name']))
             aws_ec2_client.stop_instances(InstanceIds=[aws_instance_id])
-            while aws_instance.state != 'stopped':
-                print('  waiting for instance {} to stop. current state: {}'.format(aws_instance.id, aws_instance.state))
+            while aws_instance.state['Name'] != 'stopped':
+                print('  waiting for instance {} to stop. current state: {}'.format(aws_instance.id, aws_instance.state['Name']))
                 sleep(1)
                 aws_instance = aws_ec2_resource.Instance(aws_instance_id)
-            print('  instance id: {}, state: {} {} {}'.format(aws_instance.id, aws_instance.state, aws_instance.state_reason, aws_instance.state_transition_reason))
-
+            print('  instance id: {}, type: {}, state: {} {} {}'.format(aws_instance.id, aws_instance.instance_type, aws_instance.state['Name'], aws_instance.state_reason['Message'], aws_instance.state_transition_reason))
