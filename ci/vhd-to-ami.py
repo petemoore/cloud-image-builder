@@ -4,7 +4,6 @@ import json
 import os
 import time
 import urllib.request
-#from botocore.exceptions import ClientError
 from colorama import Style
 from dateutil.parser import parse
 from time import sleep
@@ -32,7 +31,8 @@ for manifest_item in json.loads(urllib.request.urlopen(manifest_url).read().deco
     # load each vhd bucket object referred to by the manifest
     aws_bucket_object = aws_s3_resource.Object(manifest_item['vhd']['bucket'], manifest_item['vhd']['key'])
     print('{}/{} ({})'.format(aws_bucket_object.bucket_name, aws_bucket_object.key, aws_bucket_object.last_modified))
-    aws_image_name_filter = '{}-*'.format(os.path.splitext(os.path.basename(aws_bucket_object.key))[0])
+    aws_image_name_prefix = '{}'.format(os.path.splitext(os.path.basename(aws_bucket_object.key))[0])
+    aws_image_name_filter = '{}-*'.format(aws_image_name_prefix)
 
     # load the list of amis associated with each vhd
     aws_image_list = list(sorted(aws_ec2_resource.images.filter(Owners=['self'], Filters=[{'Name': 'name', 'Values': [aws_image_name_filter]}]), key=lambda x: x.creation_date))
@@ -140,11 +140,14 @@ for manifest_item in json.loads(urllib.request.urlopen(manifest_url).read().deco
                     base64_screenshot = aws_ec2_client.get_console_screenshot(InstanceId=aws_instance.id)['ImageData']
                     screenshot_path = os.path.join(screenshot_folder, '{}.jpg'.format(time.strftime('%Y%m%d%H%M%S')))
                     with open(screenshot_path, 'wb') as screenshot:
-                        screenshot.write(base64.decodestring(base64_screenshot));
+                        screenshot.write(base64.b64decode(base64_screenshot));
                     print('  screenshot saved to {}'.format(screenshot_path))
-                #except ClientError as e:
-                #    print('  {}'.format(e['Error']['Message']))
                 except:
                     print('  screenshot unavailable')
                 sleep(10)
                 aws_instance.reload()
+
+            # capture image
+            aws_image = aws_instance.create_image(Description=disk_container['Description'], Name='{}-'.format(aws_image_name_prefix, time.strftime('%Y%m%d%H%M%S')))
+            print('  image id: {}, state: {}, name: {}, description: {}'.format(aws_image.id, aws_image.state, aws_image.name, aws_image.description))
+            print('    https://{}.console.aws.amazon.com/ec2/v2/home?region={}#Images:visibility=owned-by-me;imageId={}'.format(aws_region_name, aws_region_name, aws_image.id))
