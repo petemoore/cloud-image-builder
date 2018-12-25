@@ -1,7 +1,10 @@
+import base64
 import boto3
 import json
 import os
-import urllib.request 
+import time
+import urllib.request
+#from botocore.exceptions import ClientError
 from colorama import Style
 from dateutil.parser import parse
 from time import sleep
@@ -13,7 +16,7 @@ aws_region_name = 'us-west-2'
 aws_availability_zone = '{}c'.format(aws_region_name)
 aws_resource_tags = [
     {
-        'Key': 'owner',
+        'Key': 'Owner',
         'Value': 'relops-ami-builder'
     },
 ]
@@ -85,7 +88,7 @@ for manifest_item in json.loads(urllib.request.urlopen(manifest_url).read().deco
             while aws_volume.state != 'available':
                 print('  waiting for volume {} availability. current state: {}'.format(aws_volume.id, aws_volume.state))
                 sleep(1)
-                aws_volume = aws_ec2_resource.Volume(create_volume_response['VolumeId'])
+                aws_volume.reload()
             print('  volume id: {}, state: {}, size: {}gb'.format(aws_volume.id, aws_volume.state, aws_volume.size))
             print('    https://{}.console.aws.amazon.com/ec2/v2/home?region={}#Volumes:volumeId={}'.format(aws_region_name, aws_region_name, aws_volume.id))
 
@@ -98,11 +101,50 @@ for manifest_item in json.loads(urllib.request.urlopen(manifest_url).read().deco
             while aws_instance.state['Name'] != 'running':
                 print('  waiting for instance {} to start. current state: {}'.format(aws_instance.id, aws_instance.state['Name']))
                 sleep(1)
-                aws_instance = aws_ec2_resource.Instance(aws_instance_id)
+                aws_instance.reload()
             print('  instance id: {}, state: {}'.format(aws_instance.id, aws_instance.state['Name']))
-            aws_ec2_client.stop_instances(InstanceIds=[aws_instance_id])
+            aws_instance.stop()
             while aws_instance.state['Name'] != 'stopped':
                 print('  waiting for instance {} to stop. current state: {}'.format(aws_instance.id, aws_instance.state['Name']))
                 sleep(1)
-                aws_instance = aws_ec2_resource.Instance(aws_instance_id)
+                aws_instance.reload()
             print('  instance id: {}, type: {}, state: {} {} {}'.format(aws_instance.id, aws_instance.instance_type, aws_instance.state['Name'], aws_instance.state_reason['Message'], aws_instance.state_transition_reason))
+
+            # detach and delete amazon linux volume
+            block_device_mapping_zero = aws_instance.block_device_mappings[0]
+            detach_volume_response = aws_ec2_client.detach_volume(Device=block_device_mapping_zero['DeviceName'], Force=True, InstanceId=aws_instance_id, VolumeId=block_device_mapping_zero['Ebs']['VolumeId'])
+            print('  detaching volume {} from {} {}'.format(detach_volume_response['VolumeId'], detach_volume_response['InstanceId'], detach_volume_response['Device']))
+            discard_volume = aws_ec2_resource.Volume(detach_volume_response['VolumeId'])
+            while discard_volume.state != 'available':
+                print('  waiting for volume {} detachment from {}{}. current state: {}'.format(discard_volume.id, detach_volume_response['InstanceId'], detach_volume_response['Device'], discard_volume.state))
+                sleep(1)
+                discard_volume.reload()
+            discard_volume.delete()
+
+            # attach volume from vhd import, set DeleteOnTermination and EnaSupport attributes
+            aws_volume.attach_to_instance(Device=block_device_mapping_zero['DeviceName'], InstanceId=aws_instance_id)
+            aws_instance.reload()
+            block_device_mapping_zero['Ebs']['DeleteOnTermination'] = True
+            aws_instance.modify_attribute(BlockDeviceMappings=[{'DeviceName': block_device_mapping_zero['DeviceName'], 'Ebs': {'DeleteOnTermination': True, 'VolumeId': aws_volume.id}}])
+            aws_instance.modify_attribute(EnaSupport={'Value': True})
+            aws_instance.start()
+            aws_instance.reload()
+
+            # take screenshots until the instance has stopped
+            screenshot_folder = os.path.join(os.getcwd(), aws_instance.id)
+            if not os.path.exists(screenshot_folder):
+                os.makedirs(screenshot_folder)
+            while aws_instance.state['Name'] != 'stopped':
+                print('  waiting for instance {} to stop. current state: {}'.format(aws_instance.id, aws_instance.state['Name']))
+                try:
+                    base64_screenshot = aws_ec2_client.get_console_screenshot(InstanceId=aws_instance.id)['ImageData']
+                    screenshot_path = os.path.join(screenshot_folder, '{}.jpg'.format(time.strftime('%Y%m%d%H%M%S')))
+                    with open(screenshot_path, 'wb') as screenshot:
+                        screenshot.write(base64.decodestring(base64_screenshot));
+                    print('  screenshot saved to {}'.format(screenshot_path))
+                #except ClientError as e:
+                #    print('  {}'.format(e['Error']['Message']))
+                except:
+                    print('  screenshot unavailable')
+                sleep(10)
+                aws_instance.reload()
