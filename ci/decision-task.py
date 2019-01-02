@@ -2,6 +2,7 @@
 import os
 import slugid
 import taskcluster
+from datetime import datetime, timedelta
 #import taskcluster.aio
 
 options = {
@@ -15,6 +16,8 @@ queue = taskcluster.Queue(options)
 for i in range(0, 2):
   taskId=slugid.nice()
   payload = {
+    'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
+    'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
     'provisionerId': 'aws-provisioner-v1',
     'workerType': 'github-worker',
     'schedulerId': 'taskcluster-github',
