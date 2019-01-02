@@ -28,6 +28,9 @@ for i in tasks:
       'maxRunTime': 30,
       'image': 'grenade/opencloudconfig',
       'command': [
+        '/bin/bash',
+        '--login',
+        '-c',
         'echo {}'.format(taskId)
       ],
       'features': {
