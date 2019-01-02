@@ -8,11 +8,8 @@ queue = taskcluster.Queue({
 })
 
 for i in range(0, 2):
-  taskId=slugid.nice()
-  print('creating task {}/{}'.format(os.environ.get('TASK_ID'), taskId))
-  taskCreateResult = queue.createTask(
-    taskId=taskId,
-    payload={
+  taskId = slugid.nice()
+  payload = {
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
     'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
     'provisionerId': 'aws-provisioner-v1',
@@ -43,5 +40,7 @@ for i in range(0, 2):
         'source': 'https://github.com/mozilla-platform-ops/relops-image-builder/commit/{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
       }
     }
-  })
+  }
+  print('creating task {}/{}'.format(os.environ.get('TASK_ID'), taskId))
+  taskCreateResult = queue.createTask(taskId=taskId, payload=payload)
   print(taskCreateResult)
