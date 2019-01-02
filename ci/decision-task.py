@@ -4,7 +4,7 @@ import taskcluster
 #import taskcluster.aio
 import uuid
 
-queue = taskcluster.Queue(options)
+queue = taskcluster.Queue({})
 #loop = asyncio.get_event_loop()
 #session = taskcluster.aio.createSession(loop=loop)
 #asyncQueue = taskcluster.aio.Queue(options, session=session)
