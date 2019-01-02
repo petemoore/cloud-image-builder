@@ -1,5 +1,38 @@
 version: 0
 tasks:
+  - provisionerId: '{{taskcluster.docker.provisionerId}}'
+    routes:
+      - 'index.project.releng.relops-image-builder.v1.revision.{{event.head.sha}}'
+    workerType: '{{taskcluster.docker.workerType}}'
+    extra:
+      github:
+        env: true
+        events:
+          - pull_request.*
+          - push
+      data:
+        base:
+          sha: '{{event.base.sha}}'
+          user:
+            login: '{{event.base.user.login}}'
+        head:
+          sha: '{{event.head.sha}}'
+          user:
+            email: '{{event.head.user.email}}'
+    payload:
+      maxRunTime: 600
+      image: 'grenade/opencloudconfig'
+      command:
+        - '/bin/bash'
+        - '--login'
+        - '-c'
+        - 'git clone {{event.head.repo.url}} && git --git-dir=./relops-image-builder/.git --work-tree=./relops-image-builder fetch && git --git-dir=./relops-image-builder/.git --work-tree=./relops-image-builder checkout {{event.head.repo.branch}} && python ./relops-image-builder/ci/decision-task.py'
+    metadata:
+      name: 'DecisionTask'
+      description: 'Create CI tasks for the current commit'
+      owner: '{{event.head.user.email}}'
+      source: '{{event.head.repo.url}}'
+
   - provisionerId: '{{ taskcluster.docker.provisionerId }}'
     workerType: 'relops-image-builder'
     extra:
