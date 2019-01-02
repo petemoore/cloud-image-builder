@@ -5,7 +5,7 @@ import taskcluster
 import uuid
 
 options = {
-  rootUrl: 'https://taskcluster'
+  'rootUrl': 'https://taskcluster'
 }
 queue = taskcluster.Queue(options)
 #loop = asyncio.get_event_loop()
