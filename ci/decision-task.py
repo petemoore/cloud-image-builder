@@ -23,7 +23,7 @@ for i in range(0, 2):
     #  os.environ.get('TASK_ID')
     #],
     'routes': [
-      'index.project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
+      'project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
     ],
     'scopes': [
       'generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators',
