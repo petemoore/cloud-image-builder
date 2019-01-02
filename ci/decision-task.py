@@ -15,35 +15,35 @@ queue = taskcluster.Queue(options)
 for i in range(0, 2):
   taskId=uuid.uuid4().hex
   payload = {
-    provisionerId: 'aws-provisioner-v1',
-    workerType: 'github-worker',
-    schedulerId: 'taskcluster-github',
-    taskGroupId: os.environ.get('TASK_ID'),
-    dependencies: [
+    'provisionerId': 'aws-provisioner-v1',
+    'workerType': 'github-worker',
+    'schedulerId': 'taskcluster-github',
+    'taskGroupId': os.environ.get('TASK_ID'),
+    'dependencies': [
       os.environ.get('TASK_ID')
     ],
-    routes: [
+    'routes': [
       'index.project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
     ],
-    scopes: [
+    'scopes': [
       'generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators',
       'generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder'
     ],
-    payload: {
-      maxRunTime: 30,
-      image: 'grenade/opencloudconfig',
-      command: [
+    'payload': {
+      'maxRunTime': 30,
+      'image': 'grenade/opencloudconfig',
+      'command': [
         'echo',
         '"i am task {}"'.format(taskId)
       ],
-      features: {
-        taskclusterProxy: True
+      'features': {
+        'taskclusterProxy': True
       },
-      metadata: {
-        name: 'task {} ({})'.format(i, taskId),
-        description: 'description of task {} ({})'.format(i, taskId),
-        owner: os.environ.get('GITHUB_HEAD_USER_EMAIL'),
-        source: 'https://github.com/mozilla-platform-ops/relops-image-builder/commit/{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
+      'metadata': {
+        'name': 'task {} ({})'.format(i, taskId),
+        'description': 'description of task {} ({})'.format(i, taskId),
+        'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
+        'source': 'https://github.com/mozilla-platform-ops/relops-image-builder/commit/{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
       }
     }
   }
