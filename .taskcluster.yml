@@ -22,6 +22,8 @@ tasks:
     payload:
       maxRunTime: 600
       image: 'grenade/opencloudconfig'
+      features:
+        taskclusterProxy: true
       command:
         - '/bin/bash'
         - '--login'
