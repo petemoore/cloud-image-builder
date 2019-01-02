@@ -7,7 +7,8 @@ queue = taskcluster.Queue({
   'rootUrl': 'https://taskcluster'
 })
 
-for i in range(0, 2):
+tasks = range(1, 3)
+for i in tasks:
   taskId = slugid.nice()
   payload = {
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
@@ -41,6 +42,6 @@ for i in range(0, 2):
       }
     }
   }
-  print('creating task {}/{}'.format(os.environ.get('TASK_ID'), taskId))
+  print('creating task {}/{} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(i, tasks[-1], os.environ.get('TASK_ID'), taskId))
   taskStatusResponse = queue.createTask(taskId, payload)
   print(taskStatusResponse)
