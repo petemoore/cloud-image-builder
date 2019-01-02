@@ -1,8 +1,8 @@
 #import asyncio
 import os
+import slugid
 import taskcluster
 #import taskcluster.aio
-import uuid
 
 options = {
   'rootUrl': 'https://taskcluster'
@@ -13,7 +13,7 @@ queue = taskcluster.Queue(options)
 #asyncQueue = taskcluster.aio.Queue(options, session=session)
 
 for i in range(0, 2):
-  taskId=uuid.uuid4().hex
+  taskId=slugid.nice()
   payload = {
     'provisionerId': 'aws-provisioner-v1',
     'workerType': 'github-worker',
