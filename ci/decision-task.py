@@ -19,9 +19,9 @@ for i in range(0, 2):
     'workerType': 'github-worker',
     'schedulerId': 'taskcluster-github',
     'taskGroupId': os.environ.get('TASK_ID'),
-    'dependencies': [
-      os.environ.get('TASK_ID')
-    ],
+    #'dependencies': [
+    #  os.environ.get('TASK_ID')
+    #],
     'routes': [
       'index.project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
     ],
