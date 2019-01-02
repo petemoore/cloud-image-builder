@@ -42,5 +42,5 @@ for i in range(0, 2):
     }
   }
   print('creating task {}/{}'.format(os.environ.get('TASK_ID'), taskId))
-  taskCreateResult = queue.createTask(taskId=taskId, payload=payload)
+  taskCreateResult = queue.createTask(taskId, payload)
   print(taskCreateResult)
