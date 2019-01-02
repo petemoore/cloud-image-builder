@@ -1,30 +1,24 @@
-#import asyncio
 import os
 import slugid
 import taskcluster
 from datetime import datetime, timedelta
-#import taskcluster.aio
 
-options = {
+queue = taskcluster.Queue({
   'rootUrl': 'https://taskcluster'
-}
-queue = taskcluster.Queue(options)
-#loop = asyncio.get_event_loop()
-#session = taskcluster.aio.createSession(loop=loop)
-#asyncQueue = taskcluster.aio.Queue(options, session=session)
+})
 
 for i in range(0, 2):
   taskId=slugid.nice()
-  payload = {
+  print('creating task {}/{}'.format(os.environ.get('TASK_ID'), taskId))
+  taskCreateResult = queue.createTask(
+    taskId=taskId,
+    payload={
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
     'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
     'provisionerId': 'aws-provisioner-v1',
     'workerType': 'github-worker',
     'schedulerId': 'taskcluster-github',
     'taskGroupId': os.environ.get('TASK_ID'),
-    #'dependencies': [
-    #  os.environ.get('TASK_ID')
-    #],
     'routes': [
       'project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
     ],
@@ -49,8 +43,5 @@ for i in range(0, 2):
         'source': 'https://github.com/mozilla-platform-ops/relops-image-builder/commit/{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
       }
     }
-  }
-  taskCreateResult = queue.createTask(taskId, payload)
-  #await asyncQueue.createTask(taskId=taskId, payload=payload)
-
-#await asyncQueue.listTaskGroup(taskGroupId='value') # -> result
+  })
+  print(taskCreateResult)
