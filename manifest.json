@@ -572,39 +572,104 @@
     "drivers": [
       {
         "bucket": "windows-ami-builder",
-        "key": "driver/aws-pv/xenbus.zip",
-        "target": "xenbus",
-        "inf": "xenbus",
+        "key": "driver/AwsEnaNetworkDriver.zip",
+        "target": "AwsEnaNetworkDriver",
+        "inf": "AwsEnaNetworkDriver\\bin.10.0",
         "extract": true
       },
       {
         "bucket": "windows-ami-builder",
-        "key": "driver/aws-pv/xeniface.zip",
-        "target": "xeniface",
-        "inf": "xeniface",
+        "key": "driver/vac413.zip",
+        "target": "vac413",
+        "inf": "vac413",
         "extract": true
       },
       {
         "bucket": "windows-ami-builder",
-        "key": "driver/aws-pv/xennet.zip",
-        "target": "xennet",
-        "inf": "xennet",
+        "key": "driver/WoA64_Drivers_25Sep18.zip",
+        "target": "WoA64_Drivers_25Sep18",
+        "inf": "WoA64_Drivers_25Sep18",
         "extract": true
       },
       {
         "bucket": "windows-ami-builder",
-        "key": "driver/aws-pv/xenvbd.zip",
-        "target": "xenvbd",
-        "inf": "xenvbd",
+        "key": "driver/lan7800-wdf-v18.12.14.0.zip",
+        "target": "lan7800-wdf-v18.12.14.0",
+        "inf": "lan7800-wdf-v18.12.14.0\\ndis650\\arm64",
+        "extract": true
+      }
+    ],
+    "deployment": {
+      "aws": {
+        "instance_type": "a1.4xlarge",
+        "key_name": "mozilla-taskcluster-worker-gecko-t-win10-64",
+        "init_ami_filter": "Amazon Linux 2 LTS Arm64 AMI 2.0.20181114.1 arm64 HVM gp2",
+        "security_groups": [
+          "ssh-only",
+          "rdp-only"
+        ]
+      }
+    }
+  },
+  {
+    "os": "Windows",
+    "version": 1903,
+    "build": {
+      "major": 10,
+      "minor": 0,
+      "release": 18290,
+      "build": 1000
+    },
+    "update": "November 2018",
+    "changelog": "https://changewindows.org/build/redstone6/18290/pc#1000",
+    "edition": "Professional",
+    "language": "en-US",
+    "iso": {
+      "bucket": "windows-ami-builder",
+      "key": "iso/18290.1000.181121-1501.RS_PRERELEASE_CLIENTPRO_OEMRET_A64FRE_EN-US.ISO"
+    },
+    "vhd": {
+      "bucket": "windows-ami-builder",
+      "key": "vhd/Windows_10_Professional_1903_18290_1000_en-US_arm64_GPT.vhd"
+    },
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
+    "partition": "GPT",
+    "format": "VHD",
+    "architecture": "arm64",
+    "packages": [
+      {
+        "bucket": "windows-ami-builder",
+        "key": "package/EC2Install.zip",
+        "target": "Windows\\Temp",
         "extract": true
       },
       {
         "bucket": "windows-ami-builder",
-        "key": "driver/aws-pv/xenvif.zip",
-        "target": "xenvif",
-        "inf": "xenvif",
-        "extract": true
+        "key": "config/Ec2ConfigurationSettings.xml",
+        "target": "Windows\\Temp\\Ec2ConfigurationSettings.xml"
       },
+      {
+        "bucket": "windows-ami-builder",
+        "key": "config/WallpaperSettings.xml",
+        "target": "Windows\\Temp\\WallpaperSettings.xml"
+      },
+      {
+        "bucket": "windows-ami-builder",
+        "key": "package/nxlog-ce-2.10.2102.msi",
+        "target": "Windows\\Temp"
+      },
+      {
+        "bucket": "windows-ami-builder",
+        "key": "config/nxlog-win10.conf",
+        "target": "Windows\\Temp\\nxlog.conf"
+      },
+      {
+        "bucket": "windows-ami-builder",
+        "key": "config/papertrail-bundle.pem",
+        "target": "Windows\\Temp\\papertrail-bundle.pem"
+      }
+    ],
+    "drivers": [
       {
         "bucket": "windows-ami-builder",
         "key": "driver/AwsEnaNetworkDriver.zip",
@@ -621,9 +686,16 @@
       },
       {
         "bucket": "windows-ami-builder",
-        "key": "driver/391.81_grid_win10_server2016_64bit_international.zip",
-        "target": "391.81_grid_win10_server2016_64bit_international",
-        "inf": "391.81_grid_win10_server2016_64bit_international",
+        "key": "driver/WoA64_Drivers_25Sep18.zip",
+        "target": "WoA64_Drivers_25Sep18",
+        "inf": "WoA64_Drivers_25Sep18",
+        "extract": true
+      },
+      {
+        "bucket": "windows-ami-builder",
+        "key": "driver/lan7800-wdf-v18.12.14.0.zip",
+        "target": "lan7800-wdf-v18.12.14.0",
+        "inf": "lan7800-wdf-v18.12.14.0\\ndis650\\arm64",
         "extract": true
       }
     ],

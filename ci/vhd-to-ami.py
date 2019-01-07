@@ -26,7 +26,8 @@ aws_ec2_resource = boto3.resource('ec2', region_name=aws_region_name)
 aws_s3_resource = boto3.resource('s3', region_name=aws_region_name)
 
 # load the relops-image-builder json manifest
-for manifest_item in json.loads(urllib.request.urlopen(manifest_url).read().decode()):
+manifest = sorted(json.loads(urllib.request.urlopen(manifest_url).read().decode()), reverse=True, key=lambda x: x['version'])
+for manifest_item in manifest:
 
     # load each vhd bucket object referred to by the manifest
     aws_bucket_object = aws_s3_resource.Object(manifest_item['vhd']['bucket'], manifest_item['vhd']['key'])
