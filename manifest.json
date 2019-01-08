@@ -726,7 +726,7 @@
     "language": "en-US",
     "iso": {
       "bucket": "windows-ami-builder",
-      "key": "iso/18309.1000.181220-1256.RS_PRERELEASE_CLIENTMULTICOMBINED_UUP_A64FRE_EN-US.ISO"
+      "key": "iso/18309.1000.181220-1256.RS_PRERELEASE_CLIENTCOMBINED_UUP_A64FRE_EN-US.ISO"
     },
     "vhd": {
       "bucket": "windows-ami-builder",
