@@ -58,8 +58,8 @@ tasks:
         runAsAdministrator: true
         taskclusterProxy: true
     metadata:
-      name: iso-to-ami
-      description: build windows ami from iso
+      name: iso-to-vhd
+      description: build windows vhd from iso
       owner: '{{ event.head.user.email }}'
       source: '{{ event.head.repo.url }}'
 allowPullRequests: collaborators
