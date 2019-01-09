@@ -10,7 +10,7 @@ options = {
     'accessToken': os.environ.get('TASKCLUSTER_ACCESS_TOKEN')
   }
 } if 'TASKCLUSTER_CLIENT_ID' in os.environ and 'TASKCLUSTER_ACCESS_TOKEN' in os.environ else {
-  'rootUrl': 'https://taskcluster'
+  'rootUrl': 'http://taskcluster'
 }
 queue = taskcluster.Queue(options)
 
