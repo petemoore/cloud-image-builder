@@ -4107,7 +4107,8 @@ namespace WIM2VHD {
 
                     # Check to make sure that the image we're applying is Windows 7 or greater.
                     if ($openImage.ImageVersion -lt $lowestSupportedVersion) {
-                        throw "Convert-WindowsImage supports image versions greater than or equal to: $lowestSupportedVersion.  The specified image version is: ${openImage.ImageVersion}."
+                        $openImageVersion = $openImage.ImageVersion
+                        throw "Convert-WindowsImage supports image versions greater than or equal to: $lowestSupportedVersion.  The specified image version is: $openImageVersion."
                     }
 
                     <#
