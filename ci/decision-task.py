@@ -10,34 +10,37 @@ for taskId in taskIds:
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
     'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
     'provisionerId': 'aws-provisioner-v1',
-    'workerType': 'github-worker',
+    'workerType': 'relops-image-builder',
     'schedulerId': 'taskcluster-github',
     'taskGroupId': os.getenv('TASK_ID', taskIds[0]),
     'routes': [
       'project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
     ],
-    #'scopes': [
-    #  'generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators',
-    #  'generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder'
-    #],
+    'scopes': [
+      'generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators',
+      'generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder'
+    ],
     'payload': {
-      'maxRunTime': 30,
-      'image': 'grenade/opencloudconfig',
+      'osGroups': [
+        'Administrators'
+      ],
+      'maxRunTime': 3600,
       'command': [
-        '/bin/bash',
-        '--login',
-        '-c',
-        'echo {}'.format(taskId)
+        'git clone {{event.head.repo.url}} relops-image-builder',
+        'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder config advice.detachedHead false',
+        'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder checkout {{event.head.sha}}',
+        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\ci\\iso-to-vhd.ps1'
       ],
       'features': {
+        'runAsAdministrator': True,
         'taskclusterProxy': True
       }
     },
     'metadata': {
-      'name': 'task {}'.format(taskId),
-      'description': 'description of task {}'.format(taskId),
-      'owner': os.getenv('GITHUB_HEAD_USER_EMAIL', 'grenade@mozilla.com'),
-      'source': 'https://github.com/mozilla-platform-ops/relops-image-builder/commit/{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
+      'name': 'iso-to-vhd {}'.format(taskId),
+      'description': 'build windows vhd from iso {}'.format(taskId),
+      'owner': '{{ event.head.user.email }}',
+      'source': '{{ event.head.repo.url }}/commit/{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
     }
   }
   print('creating task {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(taskId, os.getenv('TASK_ID', taskIds[0]), taskId))
