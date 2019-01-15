@@ -1,8 +1,13 @@
 version: 0
 tasks:
   - provisionerId: '{{taskcluster.docker.provisionerId}}'
+    scopes:
+      - generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators
+      - generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder
+      - queue:route:project.releng.relops-image-builder.v1.revision.{{event.head.sha}}
+      - queue:create-task:aws-provisioner-v1/relops-image-builder
     routes:
-      - 'index.project.releng.relops-image-builder.v1.revision.{{event.head.sha}}'
+      - project.releng.relops-image-builder.v1.revision.{{event.head.sha}}
     workerType: '{{taskcluster.docker.workerType}}'
     extra:
       github:
