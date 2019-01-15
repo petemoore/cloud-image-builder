@@ -3,7 +3,7 @@ import slugid
 import taskcluster
 from datetime import datetime, timedelta
 
-queue = taskcluster.Queue({'rootUrl': os.getenv('TASKCLUSTER_ROOT_URL', 'https://taskcluster')})
+queue = taskcluster.Queue({'rootUrl': os.getenv('TASKCLUSTER_PROXY_URL', os.getenv('TASKCLUSTER_ROOT_URL'))})
 taskIds = [slugid.nice().decode('utf-8') for i in range(1, 3)]
 for taskId in taskIds:
   payload = {
