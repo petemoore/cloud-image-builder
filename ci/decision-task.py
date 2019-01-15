@@ -14,7 +14,7 @@ for taskId in taskIds:
     'schedulerId': 'taskcluster-github',
     'taskGroupId': os.getenv('TASK_ID', taskIds[0]),
     'routes': [
-      'project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
+      'index.project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
     ],
     'scopes': [
       'generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators',
