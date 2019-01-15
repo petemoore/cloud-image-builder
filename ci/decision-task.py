@@ -26,9 +26,9 @@ for taskId in taskIds:
       ],
       'maxRunTime': 3600,
       'command': [
-        'git clone {{event.head.repo.url}} relops-image-builder',
+        'git clone {} relops-image-builder'.format(os.environ.get('GITHUB_HEAD_REPO_URL')),
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder config advice.detachedHead false',
-        'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder checkout {{event.head.sha}}',
+        'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder checkout {}'.format(os.environ.get('GITHUB_HEAD_SHA')),
         'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\ci\\iso-to-vhd.ps1'
       ],
       'features': {
@@ -39,8 +39,8 @@ for taskId in taskIds:
     'metadata': {
       'name': 'iso-to-vhd {}'.format(taskId),
       'description': 'build windows vhd from iso {}'.format(taskId),
-      'owner': '{{ event.head.user.email }}',
-      'source': '{{ event.head.repo.url }}/commit/{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
+      'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
+      'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
     }
   }
   print('creating task {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(taskId, os.getenv('TASK_ID', taskIds[0]), taskId))
