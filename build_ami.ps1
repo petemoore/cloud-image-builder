@@ -1,5 +1,5 @@
 param (
-  [string] $target_worker_type = 'gecko-t-win10-a64',
+  [string] $target_worker_type,
   [string] $ec2_key_pair = 'mozilla-taskcluster-worker-gecko-t-win10-64',
   [string[]] $ec2_security_groups = @('ssh-only', 'rdp-only')
 )
