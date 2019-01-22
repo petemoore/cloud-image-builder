@@ -309,7 +309,7 @@ try {
 
 # import the vhd as an ec2 snapshot
 try {
-  $import_task_status = @(Import-EC2Snapshot -RoleName 'windows-ami-builder' -DiskContainer_Format $config.format -DiskContainer_S3Bucket $config.vhd.bucket -DiskContainer_S3Key $config.vhd.key -Description $image_description)[0]
+  $import_task_status = @(Import-EC2Snapshot -DiskContainer_Format $config.format -DiskContainer_S3Bucket $config.vhd.bucket -DiskContainer_S3Key $config.vhd.key -Description $image_description)[0]
   Write-Host -object ('snapshot import task in progress with id: {0}, progress: {1}%, status: {2}; {3}' -f $import_task_status.ImportTaskId, $import_task_status.SnapshotTaskDetail.Progress,  $import_task_status.SnapshotTaskDetail.Status, $import_task_status.SnapshotTaskDetail.StatusMessage) -ForegroundColor White
 } catch {
   Write-Host -object ('failed to create snapshot import task for image {0} in bucket {1}' -f $config.vhd.key, $config.vhd.bucket) -ForegroundColor Red
