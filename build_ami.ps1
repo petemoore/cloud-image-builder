@@ -1,4 +1,11 @@
 
+
+foreach ($env_var in (Get-ChildItem -Path 'Env:')) {
+  Write-Host -object ('{0}: {1}' -f $env_var.Name, $env_var.Value) -ForegroundColor DarkGray
+}
+
+
+
 $ec2_settings_map = @{
   # win 10 x86 64
   'gecko-t-win10-64'     = @{
@@ -48,6 +55,8 @@ $cwi_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName
 $ua_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.unattend)))
 $iso_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.iso.key)))
 $vhd_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.vhd.key)))
+
+Write-Host -object ('work_dir: {0}' -f $work_dir) -ForegroundColor DarkGray
 
 Set-ExecutionPolicy RemoteSigned
 
