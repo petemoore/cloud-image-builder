@@ -15,7 +15,7 @@ $worker_type_map = @{
     'instance_type' = 'c5.2xlarge';
     'ami_description' = 'Amazon Linux 2 AMI * HVM gp2';
     'language' = 'en-US';
-    'edition' = 'Professional';
+    'edition' = 'Enterprise';
     'version' = 1803;
     'build' = @{
       'major' = 10;
@@ -29,7 +29,7 @@ $worker_type_map = @{
     'instance_type' = 'g3.4xlarge';
     'ami_description' = 'Amazon Linux 2 AMI * HVM gp2';
     'language' = 'en-US';
-    'edition' = 'Professional';
+    'edition' = 'Enterprise';
     'version' = 1803;
     'build' = @{
       'major' = 10;
@@ -80,6 +80,7 @@ $iso_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName
 $vhd_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.vhd.key)))
 
 Write-Host -object ('work_dir: {0}' -f $work_dir) -ForegroundColor DarkGray
+Write-Host -object ('iso_path: {0}' -f $iso_path) -ForegroundColor DarkGray
 
 Set-ExecutionPolicy RemoteSigned
 
