@@ -1,0 +1,77 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": "arn:aws:s3:::windows-ami-builder"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::windows-ami-builder/*"
+        },
+        {
+            "Sid": "VisualEditor2",
+            "Effect": "Allow",
+            "Action": "s3:DeleteObject",
+            "Resource": "arn:aws:s3:::windows-ami-builder/*"
+        },
+        {
+            "Sid": "VisualEditor3",
+            "Effect": "Allow",
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::windows-ami-builder/*"
+        },
+        {
+            "Sid": "VisualEditor4",
+            "Effect": "Allow",
+            "Action": "s3:PutObjectAcl",
+            "Resource": "arn:aws:s3:::windows-ami-builder/*"
+        },
+        {
+            "Sid": "VisualEditor5",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AttachVolume",
+                "ec2:CopySnapshot",
+                "ec2:DeregisterImage",
+                "ec2:DeleteSnapshot",
+                "ec2:ModifyVolumeAttribute",
+                "ec2:DeleteTags",
+                "ec2:CreateImage",
+                "ec2:ResetInstanceAttribute",
+                "ec2:CopyImage",
+                "ec2:ModifyImageAttribute",
+                "ec2:GetConsoleScreenshot",
+                "ec2:GetConsoleOutput",
+                "ec2:DeleteVolume",
+                "ec2:ModifySnapshotAttribute",
+                "ec2:StartInstances",
+                "ec2:CreateSnapshot",
+                "ec2:ModifyInstanceAttribute",
+                "ec2:DetachVolume",
+                "ec2:RebootInstances",
+                "ec2:ModifyVolume",
+                "ec2:ResetImageAttribute",
+                "ec2:TerminateInstances",
+                "ec2:CreateTags",
+                "ec2:RegisterImage",
+                "ec2:ResetSnapshotAttribute",
+                "ec2:ImportSnapshot",
+                "ec2:RunInstances",
+                "ec2:StopInstances",
+                "ec2:CreateVolume",
+                "ec2:Describe*",
+                "ec2:GetPasswordData",
+                "ec2:CancelImportTask"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
