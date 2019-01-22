@@ -1,10 +1,9 @@
 
+Get-AWSCredential
 
 foreach ($env_var in (Get-ChildItem -Path 'Env:')) {
   Write-Host -object ('{0}: {1}' -f $env_var.Name, $env_var.Value) -ForegroundColor DarkGray
 }
-
-
 
 $ec2_settings_map = @{
   # win 10 x86 64
@@ -61,12 +60,12 @@ Write-Host -object ('work_dir: {0}' -f $work_dir) -ForegroundColor DarkGray
 Set-ExecutionPolicy RemoteSigned
 
 # install aws powershell module if not installed
-if (-not (Get-Module -ListAvailable -Name AWSPowerShell)) {
-  $nugetPackageProvider = (Get-PackageProvider -Name NuGet)
+if (-not (Get-Module -ListAvailable -Name 'AWSPowerShell')) {
+  $nugetPackageProvider = (Get-PackageProvider -Name 'NuGet')
   if ((-not ($nugetPackageProvider)) -or ($nugetPackageProvider.Version -lt 2.8.5.201)) {
-    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+    Install-PackageProvider -Name 'NuGet' -MinimumVersion 2.8.5.201 -Force
   }
-  Install-Module -Name AWSPowerShell
+  Install-Module -Name 'AWSPowerShell'
 }
 
 # download the iso file if not on the local filesystem
