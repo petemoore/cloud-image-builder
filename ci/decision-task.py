@@ -29,7 +29,7 @@ for workerType in ['gecko-t-win10-64-alpha', 'gecko-t-win10-64-gpu-a']:
         'git clone {} relops-image-builder'.format(os.environ.get('GITHUB_HEAD_REPO_URL')),
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder config advice.detachedHead false',
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder checkout {}'.format(os.environ.get('GITHUB_HEAD_SHA')),
-        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\build_ami.ps1 gecko-t-win10-a64'
+        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\build_ami.ps1 {}'.format(workerType)
       ],
       'features': {
         'runAsAdministrator': True,
