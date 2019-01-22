@@ -60,12 +60,33 @@ Write-Host -object ('work_dir: {0}' -f $work_dir) -ForegroundColor DarkGray
 Set-ExecutionPolicy RemoteSigned
 
 # install aws powershell module if not installed
-if (-not (Get-Module -ListAvailable -Name 'AWSPowerShell')) {
-  $nugetPackageProvider = (Get-PackageProvider -Name 'NuGet')
-  if ((-not ($nugetPackageProvider)) -or ($nugetPackageProvider.Version -lt 2.8.5.201)) {
-    Install-PackageProvider -Name 'NuGet' -MinimumVersion 2.8.5.201 -Force
+if (-not (Get-Module -ListAvailable -Name 'AWSPowerShell' -ErrorAction 'SilentlyContinue')) {
+  try {
+    Install-Module -Name 'AWSPowerShell'
+    Write-Host -object 'installed powershell module: AWSPowerShell' -ForegroundColor White
+  } catch {
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
+    Write-Host -object $_.Exception.Message -ForegroundColor Red
   }
-  Install-Module -Name 'AWSPowerShell'
+} else {
+  Write-Host -object 'detected powershell module: AWSPowerShell' -ForegroundColor DarkGray
+}
+# install nuget package provider if not installed
+$nugetPackageProvider = (Get-PackageProvider -Name 'NuGet' -ErrorAction 'SilentlyContinue')
+if ((-not ($nugetPackageProvider)) -or ($nugetPackageProvider.Version -lt 2.8.5.201)) {
+  try {
+    Install-PackageProvider -Name 'NuGet' -MinimumVersion 2.8.5.201 -Force
+    Write-Host -object 'installed package provider: NuGet' -ForegroundColor White
+  } catch {
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
+    Write-Host -object $_.Exception.Message -ForegroundColor Red
+  }
+} else {
+  Write-Host -object 'detected package provider: NuGet' -ForegroundColor DarkGray
 }
 
 # download the iso file if not on the local filesystem
