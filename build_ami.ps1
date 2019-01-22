@@ -1,3 +1,8 @@
+param (
+  [string] $target_worker_type = 'gecko-t-win10-a64',
+  [string] $ec2_key_pair = 'mozilla-taskcluster-worker-gecko-t-win10-64',
+  [string[]] $ec2_security_groups = @('ssh-only', 'rdp-only')
+)
 
 foreach ($env_var in (Get-ChildItem -Path 'Env:')) {
   Write-Host -object ('{0}: {1}' -f $env_var.Name, $env_var.Value) -ForegroundColor DarkGray
@@ -23,10 +28,6 @@ $ec2_settings_map = @{
     'architecture' = 'arm64'
   }
 }
-
-$ec2_key_pair = 'mozilla-taskcluster-worker-gecko-t-win10-64'
-$ec2_security_groups = @('ssh-only', 'rdp-only')
-$target_worker_type = 'gecko-t-win10-a64'
 
 $manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/manifest.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
 $config = @($manifest | Where-Object {

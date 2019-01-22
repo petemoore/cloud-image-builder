@@ -4,15 +4,16 @@ import taskcluster
 from datetime import datetime, timedelta
 
 queue = taskcluster.Queue({'rootUrl': os.getenv('TASKCLUSTER_PROXY_URL', os.getenv('TASKCLUSTER_ROOT_URL'))})
-taskIds = [slugid.nice().decode('utf-8') for i in range(1, 3)]
-for taskId in taskIds:
+#amiList = ['gecko-t-win10-a64', 'gecko-t-win10-64', 'gecko-t-win10-64-gpu']
+for ami in ['gecko-t-win10-a64']:
+  taskId = slugid.nice().decode('utf-8')
   payload = {
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
     'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
     'provisionerId': 'aws-provisioner-v1',
     'workerType': 'relops-image-builder',
     'schedulerId': 'taskcluster-github',
-    'taskGroupId': os.getenv('TASK_ID', taskIds[0]),
+    'taskGroupId': os.environ.get('TASK_ID'),
     'routes': [
       'index.project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
     ],
@@ -29,7 +30,7 @@ for taskId in taskIds:
         'git clone {} relops-image-builder'.format(os.environ.get('GITHUB_HEAD_REPO_URL')),
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder config advice.detachedHead false',
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder checkout {}'.format(os.environ.get('GITHUB_HEAD_SHA')),
-        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\build_ami.ps1'
+        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\build_ami.ps1 gecko-t-win10-a64'
       ],
       'features': {
         'runAsAdministrator': True,
@@ -37,12 +38,12 @@ for taskId in taskIds:
       }
     },
     'metadata': {
-      'name': 'iso-to-vhd {}'.format(taskId),
-      'description': 'build windows vhd from iso {}'.format(taskId),
+      'name': 'iso-to-ami {}'.format(ami),
+      'description': 'build windows ami from iso for {}'.format(ami),
       'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
       'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
     }
   }
-  print('creating task {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(taskId, os.getenv('TASK_ID', taskIds[0]), taskId))
+  print('creating task {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(taskId, os.environ.get('TASK_ID'), taskId))
   taskStatusResponse = queue.createTask(taskId, payload)
   print(taskStatusResponse)
