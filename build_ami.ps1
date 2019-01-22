@@ -1,6 +1,4 @@
 
-Get-AWSCredential
-
 foreach ($env_var in (Get-ChildItem -Path 'Env:')) {
   Write-Host -object ('{0}: {1}' -f $env_var.Name, $env_var.Value) -ForegroundColor DarkGray
 }
@@ -86,16 +84,21 @@ if ((-not ($nugetPackageProvider)) -or ($nugetPackageProvider.Version -lt 2.8.5.
     Write-Host -object $_.Exception.Message -ForegroundColor Red
   }
 } else {
-  Write-Host -object 'detected package provider: NuGet' -ForegroundColor DarkGray
+  Write-Host -object ('detected package provider: NuGet {0}' -f $nugetPackageProvider.Version) -ForegroundColor DarkGray
+}
+if (-not (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue')) {
+  Write-Host -object ('required powershell function: Copy-S3Object is missing. aborting...') -ForegroundColor Red
+  exit
 }
 
 # download the iso file if not on the local filesystem
 if (-not (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue')) {
-  if (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue') {
-    Copy-S3Object -BucketName $config.iso.bucket -Key $config.iso.key -LocalFile $iso_path -Region $aws_region
-  }
+  Copy-S3Object -BucketName $config.iso.bucket -Key $config.iso.key -LocalFile $iso_path -Region $aws_region
   if  (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue') {
     Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f $iso_path, $config.iso.bucket, $config.iso.key) -ForegroundColor White
+  } else {
+    Write-Host -object ('failed to download {0} from bucket {1} with key {2}. aborting...' -f $iso_path, $config.iso.bucket, $config.iso.key) -ForegroundColor Red
+    exit
   }
 } else {
   Write-Host -object ('iso detected at: {0}' -f $iso_path) -ForegroundColor DarkGray
@@ -139,13 +142,12 @@ foreach ($driver in $config.drivers) {
     Write-Host -object ('deleted: {0}' -f $local_path) -ForegroundColor DarkGray
   }
   try {
-    if (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue') {
-      Copy-S3Object -BucketName $driver.bucket -Key $driver.key -LocalFile $local_path -Region $(if ($driver.region) { $driver.region } else { $aws_region })
-    }
+    Copy-S3Object -BucketName $driver.bucket -Key $driver.key -LocalFile $local_path -Region $(if ($driver.region) { $driver.region } else { $aws_region })
     if (Test-Path -Path $local_path -ErrorAction SilentlyContinue) {
       Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $driver.bucket, $driver.key) -ForegroundColor White
     } else {
       Write-Host -object ('failed to download {0} from bucket {1} with key {2}' -f $local_path, $driver.bucket, $driver.key) -ForegroundColor Red
+      exit
     }
   } catch {
     if ($_.Exception.InnerException) {
