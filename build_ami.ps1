@@ -8,23 +8,48 @@ foreach ($env_var in (Get-ChildItem -Path 'Env:')) {
   Write-Host -object ('{0}: {1}' -f $env_var.Name, $env_var.Value) -ForegroundColor DarkGray
 }
 
-$ec2_settings_map = @{
+# todo: move this map to a json or yaml configuration file.
+$worker_type_map = @{
   # win 10 x86 64
-  'gecko-t-win10-64'     = @{
+  'gecko-t-win10-64-alpha'     = @{
     'instance_type' = 'c5.2xlarge';
     'ami_description' = 'Amazon Linux 2 AMI * HVM gp2';
+    'language' = 'en-US';
+    'edition' = 'Professional';
+    'version' = 1803;
+    'build' = @{
+      'major' = 10;
+      'release' = 17134;
+      'build' = 285
+    };
     'architecture' = 'x64'
   };
   # win 10 x86 64 with GPU
-  'gecko-t-win10-64-gpu' = @{
+  'gecko-t-win10-64-gpu-a' = @{
     'instance_type' = 'g3.4xlarge';
     'ami_description' = 'Amazon Linux 2 AMI * HVM gp2';
+    'language' = 'en-US';
+    'edition' = 'Professional';
+    'version' = 1803;
+    'build' = @{
+      'major' = 10;
+      'release' = 17134;
+      'build' = 285
+    };
     'architecture' = 'x64'
   };
   # win 10 arm 64
   'gecko-t-win10-a64'    = @{
     'instance_type' = 'a1.4xlarge';
     'ami_description' = 'Amazon Linux 2 LTS Arm64 AMI 2.0.20181114.1 arm64 HVM gp2';
+    'language' = 'en-US';
+    'edition' = 'Professional';
+    'version' = 1903;
+    'build' = @{
+      'major' = 10;
+      'release' = 18290;
+      'build' = 1000
+    };
     'architecture' = 'arm64'
   }
 }
@@ -32,13 +57,13 @@ $ec2_settings_map = @{
 $manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/manifest.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
 $config = @($manifest | Where-Object {
   $_.os -eq 'Windows' -and
-  $_.build.major -eq 10 -and
-  $_.build.release -eq 18290 -and
-  $_.build.build -eq 1000 -and
-  $_.version -eq 1903 -and
-  $_.edition -eq 'Professional' -and
-  $_.language -eq 'en-US' -and
-  $_.architecture -eq $ec2_settings_map[$target_worker_type]['architecture']
+  $_.build.major -eq $worker_type_map[$target_worker_type]['build']['major'] -and
+  $_.build.release -eq $worker_type_map[$target_worker_type]['build']['release'] -and
+  $_.build.build -eq $worker_type_map[$target_worker_type]['build']['build'] -and
+  $_.version -eq $worker_type_map[$target_worker_type]['version'] -and
+  $_.edition -eq $worker_type_map[$target_worker_type]['edition'] -and
+  $_.language -eq $worker_type_map[$target_worker_type]['language'] -and
+  $_.architecture -eq $worker_type_map[$target_worker_type]['architecture']
 })[0]
 
 $image_capture_date = ((Get-Date).ToUniversalTime().ToString('yyyyMMddHHmmss'))
@@ -372,8 +397,8 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
   $volume_zero = $volumes[0].VolumeId
 
   # create a new ec2 linux instance instantiated with a pre-existing ami
-  $amazon_linux_ami_id = (Get-EC2Image -Owner 'amazon' -Filter @((New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(($ec2_settings_map[$target_worker_type]['ami_description']))))))[0].ImageId
-  $instance = (New-EC2Instance -ImageId $amazon_linux_ami_id -AvailabilityZone $aws_availability_zone -MinCount 1 -MaxCount 1 -InstanceType $ec2_settings_map[$target_worker_type]['instance_type'] -KeyName $ec2_key_pair -SecurityGroup $ec2_security_groups).Instances[0]
+  $amazon_linux_ami_id = (Get-EC2Image -Owner 'amazon' -Filter @((New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(($worker_type_map[$target_worker_type]['ami_description']))))))[0].ImageId
+  $instance = (New-EC2Instance -ImageId $amazon_linux_ami_id -AvailabilityZone $aws_availability_zone -MinCount 1 -MaxCount 1 -InstanceType $worker_type_map[$target_worker_type]['instance_type'] -KeyName $ec2_key_pair -SecurityGroup $ec2_security_groups).Instances[0]
   $instance_id = $instance.InstanceId
   Write-Host -object ('instance {0} created with ami {1}' -f  $instance_id, $amazon_linux_ami_id) -ForegroundColor White
   while ((Get-EC2Instance -InstanceId $instance_id).Instances[0].State.Name -ne 'running') {

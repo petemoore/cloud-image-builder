@@ -4,8 +4,7 @@ import taskcluster
 from datetime import datetime, timedelta
 
 queue = taskcluster.Queue({'rootUrl': os.getenv('TASKCLUSTER_PROXY_URL', os.getenv('TASKCLUSTER_ROOT_URL'))})
-#amiList = ['gecko-t-win10-a64', 'gecko-t-win10-64', 'gecko-t-win10-64-gpu']
-for ami in ['gecko-t-win10-a64']:
+for workerType in ['gecko-t-win10-64-alpha', 'gecko-t-win10-64-gpu-a']:
   taskId = slugid.nice().decode('utf-8')
   payload = {
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
@@ -38,8 +37,8 @@ for ami in ['gecko-t-win10-a64']:
       }
     },
     'metadata': {
-      'name': 'iso-to-ami {}'.format(ami),
-      'description': 'build windows ami from iso for {}'.format(ami),
+      'name': 'iso-to-ami {}'.format(workerType),
+      'description': 'build windows ami from iso for {}'.format(workerType),
       'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
       'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
     }
