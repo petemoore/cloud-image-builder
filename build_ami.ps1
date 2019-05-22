@@ -17,7 +17,7 @@ $config = @($manifest | Where-Object {
   $_.build.build -eq $worker_type_map."$target_worker_type".build.build -and
   $_.version -eq $worker_type_map."$target_worker_type".version -and
   $_.edition -eq $worker_type_map."$target_worker_type".edition -and
-  $_.language -eq $worker_type_map."$target_worker_type".language. -and
+  $_.language -eq $worker_type_map."$target_worker_type".language -and
   $_.architecture -eq $worker_type_map."$target_worker_type".architecture
 })[0]
 
