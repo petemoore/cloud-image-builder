@@ -1,0 +1,41 @@
+{
+  "gecko-t-win10-64-alpha": {
+    "instance_type": "c5.2xlarge",
+    "ami_description": "Amazon Linux 2 AMI * HVM gp2",
+    "language": "en-US",
+    "edition": "Enterprise",
+    "version": 1903,
+    "build": {
+      "major": 10,
+      "release": 18351,
+      "build": 1
+    },
+    "architecture": "x64"
+  },
+  "gecko-t-win10-64-gpu-a": {
+    "instance_type": "g3.4xlarge",
+    "ami_description": "Amazon Linux 2 AMI * HVM gp2",
+    "language": "en-US",
+    "edition": "Enterprise",
+    "version": 1903,
+    "build": {
+      "major": 10,
+      "release": 18351,
+      "build": 1
+    },
+    "architecture": "x64"
+  },
+  "gecko-t-win10-a64": {
+    "instance_type": "a1.4xlarge",
+    "ami_description": "Amazon Linux 2 LTS Arm64 AMI 2.0.20181114.1 arm64 HVM gp2",
+    "language": "en-US",
+    "edition": "Professional",
+    "version": 1903,
+    "build": {
+      "major": 10,
+      "release": 18290,
+      "build": 1000
+    },
+    "architecture": "arm64"
+  }
+}

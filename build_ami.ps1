@@ -8,52 +8,7 @@ foreach ($env_var in (Get-ChildItem -Path 'Env:')) {
   Write-Host -object ('{0}: {1}' -f $env_var.Name, $env_var.Value) -ForegroundColor DarkGray
 }
 
-# todo: move this map to a json or yaml configuration file.
-$worker_type_map = @{
-  # win 10 x86 64
-  'gecko-t-win10-64-alpha'     = @{
-    'instance_type' = 'c5.2xlarge';
-    'ami_description' = 'Amazon Linux 2 AMI * HVM gp2';
-    'language' = 'en-US';
-    'edition' = 'Enterprise';
-    'version' = 1803;
-    'build' = @{
-      'major' = 10;
-      'release' = 17134;
-      'build' = 285
-    };
-    'architecture' = 'x64'
-  };
-  # win 10 x86 64 with GPU
-  'gecko-t-win10-64-gpu-a' = @{
-    'instance_type' = 'g3.4xlarge';
-    'ami_description' = 'Amazon Linux 2 AMI * HVM gp2';
-    'language' = 'en-US';
-    'edition' = 'Enterprise';
-    'version' = 1803;
-    'build' = @{
-      'major' = 10;
-      'release' = 17134;
-      'build' = 285
-    };
-    'architecture' = 'x64'
-  };
-  # win 10 arm 64
-  'gecko-t-win10-a64'    = @{
-    'instance_type' = 'a1.4xlarge';
-    'ami_description' = 'Amazon Linux 2 LTS Arm64 AMI 2.0.20181114.1 arm64 HVM gp2';
-    'language' = 'en-US';
-    'edition' = 'Professional';
-    'version' = 1903;
-    'build' = @{
-      'major' = 10;
-      'release' = 18290;
-      'build' = 1000
-    };
-    'architecture' = 'arm64'
-  }
-}
-
+$worker_type_map = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/worker-type-map.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
 $manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/manifest.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
 $config = @($manifest | Where-Object {
   $_.os -eq 'Windows' -and
