@@ -12,13 +12,13 @@ $worker_type_map = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/m
 $manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/manifest.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
 $config = @($manifest | Where-Object {
   $_.os -eq 'Windows' -and
-  $_.build.major -eq $worker_type_map[$target_worker_type]['build']['major'] -and
-  $_.build.release -eq $worker_type_map[$target_worker_type]['build']['release'] -and
-  $_.build.build -eq $worker_type_map[$target_worker_type]['build']['build'] -and
-  $_.version -eq $worker_type_map[$target_worker_type]['version'] -and
-  $_.edition -eq $worker_type_map[$target_worker_type]['edition'] -and
-  $_.language -eq $worker_type_map[$target_worker_type]['language'] -and
-  $_.architecture -eq $worker_type_map[$target_worker_type]['architecture']
+  $_.build.major -eq $worker_type_map.$target_worker_type['build']['major'] -and
+  $_.build.release -eq $worker_type_map.$target_worker_type['build']['release'] -and
+  $_.build.build -eq $worker_type_map.$target_worker_type['build']['build'] -and
+  $_.version -eq $worker_type_map.$target_worker_type['version'] -and
+  $_.edition -eq $worker_type_map.$target_worker_type['edition'] -and
+  $_.language -eq $worker_type_map.$target_worker_type['language'] -and
+  $_.architecture -eq $worker_type_map.$target_worker_type['architecture']
 })[0]
 
 $image_capture_date = ((Get-Date).ToUniversalTime().ToString('yyyyMMddHHmmss'))
@@ -353,8 +353,8 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
   $volume_zero = $volumes[0].VolumeId
 
   # create a new ec2 linux instance instantiated with a pre-existing ami
-  $amazon_linux_ami_id = (Get-EC2Image -Owner 'amazon' -Filter @((New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(($worker_type_map[$target_worker_type]['ami_description']))))))[0].ImageId
-  $instance = (New-EC2Instance -ImageId $amazon_linux_ami_id -AvailabilityZone $aws_availability_zone -MinCount 1 -MaxCount 1 -InstanceType $worker_type_map[$target_worker_type]['instance_type'] -KeyName $ec2_key_pair -SecurityGroup $ec2_security_groups).Instances[0]
+  $amazon_linux_ami_id = (Get-EC2Image -Owner 'amazon' -Filter @((New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(($worker_type_map.$target_worker_type['ami_description']))))))[0].ImageId
+  $instance = (New-EC2Instance -ImageId $amazon_linux_ami_id -AvailabilityZone $aws_availability_zone -MinCount 1 -MaxCount 1 -InstanceType $worker_type_map.$target_worker_type['instance_type'] -KeyName $ec2_key_pair -SecurityGroup $ec2_security_groups).Instances[0]
   $instance_id = $instance.InstanceId
   Write-Host -object ('instance {0} created with ami {1}' -f  $instance_id, $amazon_linux_ami_id) -ForegroundColor White
   while ((Get-EC2Instance -InstanceId $instance_id).Instances[0].State.Name -ne 'running') {
