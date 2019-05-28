@@ -4436,7 +4436,7 @@ format fs=fat32 label="System"
 
                     If ($DisableWinDefend)
                     {
-                        $hivePath = Join-Path -Path $windowsDrive -ChildPath "Windows\System32\Config\System"
+                        $hivePath = Join-Path -Path $drive -ChildPath "Windows\System32\Config\System"
 
                         $hive = Mount-RegistryHive -Hive $hivePath
 
