@@ -2240,7 +2240,7 @@ You can use the fields below to configure the VHD or VHDX that you want to creat
 
                         $hive = Mount-RegistryHive -Hive $hivePath
 
-                        for ($svc in @('wscsvc', 'SecurityHealthService', 'Sense', 'WdBoot', 'WdFilter', 'WdNisDrv', 'WdNisSvc', 'WinDefend')) {
+                        foreach ($svc in @('wscsvc', 'SecurityHealthService', 'Sense', 'WdBoot', 'WdFilter', 'WdNisDrv', 'WdNisSvc', 'WinDefend')) {
                             Write-Verbose -Message "Disabling Windows service $($svc)"
                             Set-ItemProperty -Path "HKLM:\$($hive)\ControlSet001\Services\$($svc)" -Name "Start" -Value 0x4 -Type DWord
                         }
