@@ -4441,7 +4441,7 @@ format fs=fat32 label="System"
                         $hive = Mount-RegistryHive -Hive $hivePath
 
                         foreach ($svc in @('wscsvc', 'SecurityHealthService', 'Sense', 'WdBoot', 'WdFilter', 'WdNisDrv', 'WdNisSvc', 'WinDefend')) {
-                            Write-W2VInfo -Message "Disabling Windows service $($svc)"
+                            Write-W2VInfo -text "Disabling Windows service $($svc)"
                             Set-ItemProperty -Path "HKLM:\$($hive)\ControlSet001\Services\$($svc)" -Name "Start" -Value 0x4 -Type DWord
                         }
 
