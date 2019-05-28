@@ -180,15 +180,15 @@ try {
   . (Join-Path -Path $work_dir -ChildPath 'Convert-WindowsImage.ps1')
   if ($drivers.length) {
     if ($config.architecture.Contains('arm')) {
-      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
+      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -DisableWinDefend:$($config.build.major == 10) -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
     } else {
-      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true
+      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -DisableWinDefend:$($config.build.major == 10)
     }
   } else {
     if ($config.architecture.Contains('arm')) {
-      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
+      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true -DisableWinDefend:$($config.build.major == 10) -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
     } else {
-      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true
+      Convert-WindowsImage -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true -DisableWinDefend:$($config.build.major == 10)
     }
   }
   if (Test-Path -Path $vhd_path -ErrorAction SilentlyContinue) {

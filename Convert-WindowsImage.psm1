@@ -96,6 +96,10 @@
         Enable Remote Desktop to connect to the OS inside the VHD(x) upon provisioning.
         Does not include Windows Firewall rules (firewall exceptions). The default is False.
 
+    .PARAMETER DisableWinDefend
+        Disable Windows Defender and associated services.
+        The default is False.
+
     .PARAMETER Feature
         Enables specified Windows Feature(s). Note that you need to specify the Internal names
         understood by DISM and DISM CMDLets (e.g. NetFx3) instead of the "Friendly" names
@@ -363,6 +367,11 @@ Convert-WindowsImage
         [Parameter(ParameterSetName = "PartitionStyle")]
         [switch]
         $RemoteDesktopEnable = $false,
+
+        [Parameter(ParameterSetName = "DiskLayout")]
+        [Parameter(ParameterSetName = "PartitionStyle")]
+        [switch]
+        $DisableWinDefend = $false,
 
         [Parameter(ParameterSetName = "DiskLayout")]
         [Parameter(ParameterSetName = "PartitionStyle")]
@@ -2220,6 +2229,20 @@ You can use the fields below to configure the VHD or VHDX that you want to creat
                             Write-Verbose -Message "Disabling automatic $VhdFormat expansion for Native Boot"
 
                             Set-ItemProperty -Path "HKLM:\$($hive)\ControlSet001\Services\FsDepends\Parameters" -Name "VirtualDiskExpandOnMount" -Value 4
+                        }
+
+                        Dismount-RegistryHive -HiveMountPoint $hive
+                    }
+
+                    If ($DisableWinDefend)
+                    {
+                        $hivePath = Join-Path -Path $windowsDrive -ChildPath "Windows\System32\Config\System"
+
+                        $hive = Mount-RegistryHive -Hive $hivePath
+
+                        for ($svc in @('wscsvc', 'SecurityHealthService', 'Sense', 'WdBoot', 'WdFilter', 'WdNisDrv', 'WdNisSvc', 'WinDefend')) {
+                            Write-Verbose -Message "Disabling Windows service $($svc)"
+                            Set-ItemProperty -Path "HKLM:\$($hive)\ControlSet001\Services\$($svc)" -Name "Start" -Value 0x4 -Type DWord
                         }
 
                         Dismount-RegistryHive -HiveMountPoint $hive

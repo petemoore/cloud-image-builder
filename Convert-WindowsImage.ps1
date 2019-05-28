@@ -90,6 +90,10 @@ Convert-WindowsImage
         Enable Remote Desktop to connect to the OS inside the VHD(x) upon provisioning.
         Does not include Windows Firewall rules (firewall exceptions). The default is False.
 
+    .PARAMETER DisableWinDefend
+        Disable Windows Defender and associated services.
+        The default is False.
+
     .PARAMETER Feature
         Enables specified Windows Feature(s). Note that you need to specify the Internal names
         understood by DISM and DISM CMDLets (e.g. NetFx3) instead of the "Friendly" names
@@ -259,6 +263,10 @@ Convert-WindowsImage
             [Parameter(ParameterSetName="SRC")]
             [Switch]
             $RemoteDesktopEnable = $False,
+
+            [Parameter(ParameterSetName="SRC")]
+            [switch]
+            $DisableWinDefend = $false,
 
             [Parameter(ParameterSetName="SRC")]
             [Alias("Unattend")]
@@ -4424,6 +4432,20 @@ format fs=fat32 label="System"
 
                         Dismount-RegistryHive -HiveMountPoint $hive
 
+                    }
+
+                    If ($DisableWinDefend)
+                    {
+                        $hivePath = Join-Path -Path $windowsDrive -ChildPath "Windows\System32\Config\System"
+
+                        $hive = Mount-RegistryHive -Hive $hivePath
+
+                        for ($svc in @('wscsvc', 'SecurityHealthService', 'Sense', 'WdBoot', 'WdFilter', 'WdNisDrv', 'WdNisSvc', 'WinDefend')) {
+                            Write-W2VInfo -Message "Disabling Windows service $($svc)"
+                            Set-ItemProperty -Path "HKLM:\$($hive)\ControlSet001\Services\$($svc)" -Name "Start" -Value 0x4 -Type DWord
+                        }
+
+                        Dismount-RegistryHive -HiveMountPoint $hive
                     }
 
                     if ( $Driver ) {
