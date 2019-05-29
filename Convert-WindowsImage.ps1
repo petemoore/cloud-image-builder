@@ -4460,6 +4460,10 @@ format fs=fat32 label="System"
                         $hivePath = Join-Path -Path $drive -ChildPath "Users\Default\NTUSER.DAT"
                         $hive = Mount-RegistryHive -Hive $hivePath
 
+                        foreach ($defaultUserHiveChild in @(Get-ChildItem -Path "HKLM:\$($hive)")) {
+                            Write-W2VInfo -text ('default user hive child: {0}' -f $defaultUserHiveChild.Name)
+                        }
+
                         Write-W2VInfo -text "Disabling Windows Notification Center in default user registry hive"
                         Set-ItemProperty -Path "HKLM:\$($hive)\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "DisableNotificationCenter" -Value 0x1 -Type DWord
 
