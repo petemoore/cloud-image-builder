@@ -94,6 +94,10 @@ Convert-WindowsImage
         Disable Windows Defender and associated services.
         The default is False.
 
+    .PARAMETER DisableNotificationCenter
+        Disable Windows Notification Center in the default user registry hive.
+        The default is False.
+
     .PARAMETER Feature
         Enables specified Windows Feature(s). Note that you need to specify the Internal names
         understood by DISM and DISM CMDLets (e.g. NetFx3) instead of the "Friendly" names
@@ -267,6 +271,10 @@ Convert-WindowsImage
             [Parameter(ParameterSetName="SRC")]
             [switch]
             $DisableWinDefend = $false,
+
+            [Parameter(ParameterSetName="SRC")]
+            [switch]
+            $DisableNotificationCenter = $false,
 
             [Parameter(ParameterSetName="SRC")]
             [Alias("Unattend")]
@@ -4437,13 +4445,23 @@ format fs=fat32 label="System"
                     If ($DisableWinDefend)
                     {
                         $hivePath = Join-Path -Path $drive -ChildPath "Windows\System32\Config\System"
-
                         $hive = Mount-RegistryHive -Hive $hivePath
 
                         foreach ($svc in @('wscsvc', 'SecurityHealthService', 'Sense', 'WdBoot', 'WdFilter', 'WdNisDrv', 'WdNisSvc', 'WinDefend')) {
                             Write-W2VInfo -text "Disabling Windows service $($svc)"
                             Set-ItemProperty -Path "HKLM:\$($hive)\ControlSet001\Services\$($svc)" -Name "Start" -Value 0x4 -Type DWord
                         }
+
+                        Dismount-RegistryHive -HiveMountPoint $hive
+                    }
+
+                    If ($DisableNotificationCenter)
+                    {
+                        $hivePath = Join-Path -Path $drive -ChildPath "Users\Default\NTUSER.DAT"
+                        $hive = Mount-RegistryHive -Hive $hivePath
+
+                        Write-W2VInfo -text "Disabling Windows Notification Center in default user registry hive"
+                        Set-ItemProperty -Path "HKLM:\$($hive)\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "DisableNotificationCenter" -Value 0x1 -Type DWord
 
                         Dismount-RegistryHive -HiveMountPoint $hive
                     }
