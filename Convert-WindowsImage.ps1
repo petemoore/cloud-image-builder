@@ -4460,12 +4460,22 @@ format fs=fat32 label="System"
                         $hivePath = Join-Path -Path $drive -ChildPath "Users\Default\NTUSER.DAT"
                         $hive = Mount-RegistryHive -Hive $hivePath
 
-                        foreach ($defaultUserHiveChild in @(Get-ChildItem -Path "HKLM:\$($hive)")) {
-                            Write-W2VInfo -text ('default user hive child: {0}' -f $defaultUserHiveChild.Name)
-                        }
+                        $hiveKey = "Software\Policies\Microsoft\Windows\Explorer"
+                        $hivePropertyName = "DisableNotificationCenter"
+                        $hivePropertyValue = 0x1
+                        $hivePropertyType = "DWord"
 
-                        Write-W2VInfo -text "Disabling Windows Notification Center in default user registry hive"
-                        Set-ItemProperty -Path "HKLM:\$($hive)\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "DisableNotificationCenter" -Value 0x1 -Type DWord
+                        if (-not (Get-Item -Path "HKLM:\$($hive)\$hiveKey" -ErrorAction 'SilentlyContinue')) {
+                            Write-W2VInfo -text "Creating 'HKCU:\$hiveKey' in default user registry hive"
+                            New-Item -Path "HKLM:\$($hive)\$hiveKey" -Force
+                        }
+                        if (Get-ItemProperty -Path "HKLM:\$($hive)\$hiveKey" -Name $hivePropertyName -ErrorAction 'SilentlyContinue') {
+                            Write-W2VInfo -text "Setting HKCU:\$hiveKey property $hivePropertyName to ($hivePropertyType) $hivePropertyValue in default user registry hive"
+                            Set-ItemProperty -Path "HKLM:\$($hive)\$hiveKey" -Name $hivePropertyName -Value $hivePropertyValue -Type $hivePropertyType
+                        } else {
+                            Write-W2VInfo -text "Creating HKCU:\$hiveKey property $hivePropertyName with value ($hivePropertyType) $hivePropertyValue in default user registry hive"
+                            New-ItemProperty -Path "HKLM:\$($hive)\$hiveKey" -Name $hivePropertyName -Value $hivePropertyValue -PropertyType $hivePropertyType -Force
+                        }
 
                         Dismount-RegistryHive -HiveMountPoint $hive
                     }
