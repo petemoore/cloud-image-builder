@@ -5,11 +5,11 @@
     "build": {
       "major": 10,
       "minor": 0,
-      "release": 18351,
-      "build": 1
+      "release": 18362,
+      "build": 30
     },
-    "update": "May 2019",
-    "changelog": "https://changewindows.org/build/18351/iso",
+    "update": "April 2019",
+    "changelog": "https://changewindows.org/build/18362#30",
     "edition": "Enterprise",
     "language": "en-US",
     "iso": {
@@ -18,7 +18,7 @@
     },
     "vhd": {
       "bucket": "windows-ami-builder",
-      "key": "vhd/Windows_10_Enterprise_1903_18351_1_en-US_x64_MBR.vhd"
+      "key": "vhd/Windows_10_Enterprise_1903_18362_30_en-US_x64_MBR.vhd"
     },
     "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
     "partition": "MBR",
