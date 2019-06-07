@@ -204,7 +204,7 @@ New-Item -Path $mount_path -ItemType directory -force
 Mount-WindowsImage -ImagePath $vhd_path -Path $mount_path -Index 1
 
 # download package files if not on the local filesystem
-foreach ($package in $config.packages) {
+foreach ($package in @($config.packages | ? { ((-not $_.key.Contains('EC2')) -and (-not $_.key.Contains('Ec2')) -and (-not $_.key.Contains('WallpaperSettings'))) })) {
   $local_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($package.key)))
   if (-not (Test-Path -Path $local_path -ErrorAction SilentlyContinue)) {
     try {
