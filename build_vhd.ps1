@@ -201,7 +201,22 @@ try {
 # mount the vhd and create a temp directory
 $mount_path = (Join-Path -Path $pwd -ChildPath ([System.Guid]::NewGuid().Guid))
 New-Item -Path $mount_path -ItemType directory -force
-Mount-WindowsImage -ImagePath $vhd_path -Path $mount_path -Index 1
+if (Test-Path -Path $mount_path -ErrorAction SilentlyContinue) {
+  Write-Host -object ('created mount point: {0}' -f (Resolve-Path -Path $mount_path)) -ForegroundColor White
+} else {
+  Write-Host -object ('failed to creat mount point: {0}' -f $mount_path) -ForegroundColor Red
+}
+try {
+  Mount-WindowsImage -ImagePath $vhd_path -Path $mount_path -Index 1
+  Write-Host -object ('mounted: {0} at mount point: {1}' -f $vhd_path, $mount_path) -ForegroundColor White
+} catch {
+  if ($_.Exception.InnerException) {
+    Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+  }
+  Write-Host -object $_.Exception.Message -ForegroundColor Red
+  throw
+}
+
 
 # download package files if not on the local filesystem
 foreach ($package in @($config.packages | ? { ((-not $_.key.Contains('EC2')) -and (-not $_.key.Contains('Ec2')) -and (-not $_.key.Contains('WallpaperSettings'))) })) {
