@@ -28,7 +28,7 @@ $aws_availability_zone = ('{0}c' -f $aws_region)
 $cwi_url = 'https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/Convert-WindowsImage.ps1'
 $work_dir = (Resolve-Path -Path '.\').Path
 $cwi_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($cwi_url)))
-$ua_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.unattend.Replace('/unattend/', '/unattend/gcp/'))))
+$ua_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.unattend)))
 $iso_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.iso.key)))
 $vhd_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.vhd.key)))
 
@@ -100,8 +100,8 @@ if (Test-Path -Path $ua_path -ErrorAction SilentlyContinue) {
 }
 # download the unattend file
 try {
-  (New-Object Net.WebClient).DownloadFile($config.unattend, $ua_path)
-  Write-Host -object ('downloaded {0} to {1}' -f $config.unattend, $ua_path) -ForegroundColor White
+  (New-Object Net.WebClient).DownloadFile($config.unattend.Replace('/unattend/', '/unattend/gcp/'), $ua_path)
+  Write-Host -object ('downloaded {0} to {1}' -f $config.unattend.Replace('/unattend/', '/unattend/gcp/'), $ua_path) -ForegroundColor White
 } catch {
   if ($_.Exception.InnerException) {
     Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
