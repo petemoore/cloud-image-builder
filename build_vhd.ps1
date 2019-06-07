@@ -273,7 +273,7 @@ try {
 }
 
 # delete the vhd(x) file from the bucket if it exists
-if (Get-GcsObject -Bucket $config.vhd.bucket -ObjectName $config.vhd.key) {
+if (Get-GcsObject -Bucket $config.vhd.bucket -ObjectName $config.vhd.key -ErrorAction SilentlyContinue) {
   try {
     Remove-GcsObject -Bucket $config.vhd.bucket -ObjectName $config.vhd.key
     Write-Host -object ('removed {0} from bucket {1}' -f $config.vhd.key, $config.vhd.bucket) -ForegroundColor White
