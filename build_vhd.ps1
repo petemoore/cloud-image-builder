@@ -199,7 +199,7 @@ try {
 }
 
 # mount the vhd and create a temp directory
-$mount_path = (Join-Path -Path $pwd -ChildPath ([System.Guid]::NewGuid().Guid))
+$mount_path = (Join-Path -Path $pwd -ChildPath ([System.Guid]::NewGuid().Guid.Substring(28)))
 New-Item -Path $mount_path -ItemType directory -force
 if (Test-Path -Path $mount_path -ErrorAction SilentlyContinue) {
   Write-Host -object ('created mount point: {0}' -f (Resolve-Path -Path $mount_path)) -ForegroundColor White
@@ -214,6 +214,7 @@ try {
     Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
   }
   Write-Host -object $_.Exception.Message -ForegroundColor Red
+  Dismount-WindowsImage -Path $mount_path -Save
   throw
 }
 
