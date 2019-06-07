@@ -199,7 +199,7 @@ try {
 }
 
 # mount the vhd and create a temp directory
-$mount_path = (Join-Path -Path $env:SystemDrive -ChildPath ([System.Guid]::NewGuid().Guid))
+$mount_path = (Join-Path -Path $pwd -ChildPath ([System.Guid]::NewGuid().Guid))
 New-Item -Path $mount_path -ItemType directory -force
 Mount-WindowsImage -ImagePath $vhd_path -Path $mount_path -Index 1
 
