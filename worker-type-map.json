@@ -8,7 +8,7 @@
     "build": {
       "major": 10,
       "release": 18362,
-      "build": 30
+      "build": 239
     },
     "architecture": "x64"
   },
@@ -21,7 +21,23 @@
     "build": {
       "major": 10,
       "release": 18362,
-      "build": 30
+      "build": 239
+    },
+    "architecture": "x64"
+  },
+  "gecko-t-win10-64-gamma": {
+    "machine_type": "n1-highcpu-32",
+    "image": {
+      "project": "debian-cloud",
+      "family": "debian-9-stretch"
+    },
+    "language": "en-US",
+    "edition": "Enterprise",
+    "version": 1903,
+    "build": {
+      "major": 10,
+      "release": 18362,
+      "build": 239
     },
     "architecture": "x64"
   },
@@ -37,21 +53,5 @@
       "build": 1000
     },
     "architecture": "arm64"
-  },
-  "gecko-t-win10-64-gamma": {
-    "machine_type": "n1-highcpu-32",
-    "image": {
-      "project": "debian-cloud",
-      "family": "debian-9-stretch"
-    },
-    "language": "en-US",
-    "edition": "Enterprise",
-    "version": 1903,
-    "build": {
-      "major": 10,
-      "release": 18362,
-      "build": 30
-    },
-    "architecture": "x64"
   }
 }
