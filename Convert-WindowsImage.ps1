@@ -90,9 +90,9 @@ Convert-WindowsImage
         Enable Remote Desktop to connect to the OS inside the VHD(x) upon provisioning.
         Does not include Windows Firewall rules (firewall exceptions). The default is False.
 
-    .PARAMETER DisableWinDefend
-        Disable Windows Defender and associated services.
-        The default is False.
+    .PARAMETER DisableWindowsService
+        List of Windows Services to disable.
+        The default is an empty list.
 
     .PARAMETER DisableNotificationCenter
         Disable Windows Notification Center in the default user registry hive.
@@ -269,9 +269,9 @@ Convert-WindowsImage
             $RemoteDesktopEnable = $False,
 
             [Parameter(ParameterSetName="SRC")]
-            [switch]
-            $DisableWinDefend = $false,
-
+            [string[]]
+            $DisableWindowsService = @()
+            ,
             [Parameter(ParameterSetName="SRC")]
             [switch]
             $DisableNotificationCenter = $false,
@@ -4442,12 +4442,12 @@ format fs=fat32 label="System"
 
                     }
 
-                    If ($DisableWinDefend)
+                    If ($DisableWindowsService.Length -gt 0)
                     {
                         $hivePath = Join-Path -Path $drive -ChildPath "Windows\System32\Config\System"
                         $hive = Mount-RegistryHive -Hive $hivePath
 
-                        foreach ($svc in @('wscsvc', 'SecurityHealthService', 'Sense', 'WdBoot', 'WdFilter', 'WdNisDrv', 'WdNisSvc', 'WinDefend')) {
+                        foreach ($svc in $DisableWindowsService) {
                             Write-W2VInfo -text "Disabling Windows service $($svc)"
                             Set-ItemProperty -Path "HKLM:\$($hive)\ControlSet001\Services\$($svc)" -Name "Start" -Value 0x4 -Type DWord
                         }
