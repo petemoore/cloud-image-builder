@@ -118,9 +118,18 @@
     "service": {
       "disable": [
         "AppXSvc",
-        "BFE",
+        "ClipSVC",
+        "DiagTrack",
+        "DusmSvc",
+        "InstallService",
+        "LicenseManager",
+        "PcaSvc",
+        "SEMgrSvc",
+        "ScDeviceEnum",
         "SecurityHealthService",
         "Sense",
+        "TabletInputService",
+        "WbioSrvc",
         "WdBoot",
         "WdFilter",
         "WdNisDrv",
@@ -259,7 +268,7 @@
     ],
     "service": {
       "disable": [
-        "BFE",
+        "AppXSvc",
         "ClipSVC",
         "DiagTrack",
         "DusmSvc",
