@@ -259,7 +259,6 @@
     ],
     "service": {
       "disable": [
-        "AppXSvc",
         "BFE",
         "ClipSVC",
         "DiagTrack",
