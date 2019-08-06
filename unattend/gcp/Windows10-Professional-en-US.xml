@@ -429,6 +429,24 @@
           <CommandLine>cmd /c start /wait C:\Windows\System32\netsh.exe advfirewall firewall set rule group="remote desktop" new enable=yes</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
+          <Order>2</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Install googet</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>3</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Add the googet google-compute-engine-stable repo</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>4</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
           <Order>5</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Install nxlog</Description>
@@ -495,6 +513,24 @@
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Allow RDP traffic through firewall</Description>
           <CommandLine>cmd /c start /wait C:\Windows\System32\netsh.exe advfirewall firewall set rule group="remote desktop" new enable=yes</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>2</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Install googet</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>3</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Add the googet google-compute-engine-stable repo</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>4</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>
@@ -565,6 +601,24 @@
           <CommandLine>cmd /c start /wait C:\Windows\System32\netsh.exe advfirewall firewall set rule group="remote desktop" new enable=yes</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
+          <Order>2</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Install googet</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>3</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Add the googet google-compute-engine-stable repo</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>4</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
           <Order>5</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Install nxlog</Description>
@@ -631,6 +685,24 @@
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Allow RDP traffic through firewall</Description>
           <CommandLine>cmd /c start /wait C:\Windows\System32\netsh.exe advfirewall firewall set rule group="remote desktop" new enable=yes</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>2</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Install googet</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>3</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Add the googet google-compute-engine-stable repo</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>4</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>

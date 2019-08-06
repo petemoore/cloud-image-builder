@@ -431,20 +431,20 @@
         <SynchronousCommand wcm:action="add">
           <Order>2</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install EC2Config</Description>
-          <CommandLine>cmd /c start /wait C:\Windows\Temp\Ec2Install.exe /quiet</CommandLine>
+          <Description>Install googet</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>3</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Overwrite Ec2ConfigService config</Description>
-          <CommandLine>cmd /c move /y C:\Windows\Temp\Ec2ConfigurationSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\config.xml"</CommandLine>
+          <Description>Add the googet google-compute-engine-stable repo</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Overwrite Ec2 WallpaperSettings config</Description>
-          <CommandLine>cmd /c move /y C:\Windows\Temp\WallpaperSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\WallpaperSettings.xml"</CommandLine>
+          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>
@@ -517,20 +517,20 @@
         <SynchronousCommand wcm:action="add">
           <Order>2</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install EC2Config</Description>
-          <CommandLine>cmd /c start /wait C:\Windows\Temp\Ec2Install.exe /quiet</CommandLine>
+          <Description>Install googet</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>3</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Overwrite Ec2ConfigService config</Description>
-          <CommandLine>cmd /c move /y C:\Windows\Temp\Ec2ConfigurationSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\config.xml"</CommandLine>
+          <Description>Add the googet google-compute-engine-stable repo</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Overwrite Ec2 WallpaperSettings config</Description>
-          <CommandLine>cmd /c move /y C:\Windows\Temp\WallpaperSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\WallpaperSettings.xml"</CommandLine>
+          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>
@@ -603,20 +603,20 @@
         <SynchronousCommand wcm:action="add">
           <Order>2</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install EC2Config</Description>
-          <CommandLine>cmd /c start /wait C:\Windows\Temp\Ec2Install.exe /quiet</CommandLine>
+          <Description>Install googet</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>3</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Overwrite Ec2ConfigService config</Description>
-          <CommandLine>cmd /c move /y C:\Windows\Temp\Ec2ConfigurationSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\config.xml"</CommandLine>
+          <Description>Add the googet google-compute-engine-stable repo</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Overwrite Ec2 WallpaperSettings config</Description>
-          <CommandLine>cmd /c move /y C:\Windows\Temp\WallpaperSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\WallpaperSettings.xml"</CommandLine>
+          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>
@@ -689,20 +689,20 @@
         <SynchronousCommand wcm:action="add">
           <Order>2</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install EC2Config</Description>
-          <CommandLine>cmd /c start /wait C:\Windows\Temp\Ec2Install.exe /quiet</CommandLine>
+          <Description>Install googet</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>3</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Overwrite Ec2ConfigService config</Description>
-          <CommandLine>cmd /c move /y C:\Windows\Temp\Ec2ConfigurationSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\config.xml"</CommandLine>
+          <Description>Add the googet google-compute-engine-stable repo</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Overwrite Ec2 WallpaperSettings config</Description>
-          <CommandLine>cmd /c move /y C:\Windows\Temp\WallpaperSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\WallpaperSettings.xml"</CommandLine>
+          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
+          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>
