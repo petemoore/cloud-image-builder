@@ -18,13 +18,21 @@
     },
     "vhd": {
       "bucket": "windows-ami-builder",
-      "key": "vhd/Windows_10_Enterprise_1903_18362_239_en-US_x64_MBR.vhd"
+      "key": "vhd/Windows_10_Enterprise_1903_18362_239_en-US_x64.vhd"
     },
     "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/Windows10-Professional-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
     "packages": [
+      {
+        "platform": [
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/googet.exe",
+        "target": "Windows\\Temp\\googet.exe"
+      },
       {
         "platform": [
           "ec2"
