@@ -32,7 +32,7 @@
       "family": "debian-9-stretch"
     },
     "language": "en-US",
-    "edition": "Enterprise",
+    "edition": "Professional",
     "version": 1903,
     "build": {
       "major": 10,
