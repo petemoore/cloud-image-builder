@@ -3,7 +3,7 @@
     "instance_type": "c5.2xlarge",
     "ami_description": "Amazon Linux 2 AMI * HVM gp2",
     "language": "en-US",
-    "edition": "Enterprise",
+    "edition": "Professional",
     "version": 1903,
     "build": {
       "major": 10,
@@ -16,7 +16,7 @@
     "instance_type": "g3.4xlarge",
     "ami_description": "Amazon Linux 2 AMI * HVM gp2",
     "language": "en-US",
-    "edition": "Enterprise",
+    "edition": "Professional",
     "version": 1903,
     "build": {
       "major": 10,
