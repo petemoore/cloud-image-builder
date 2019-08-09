@@ -73,6 +73,7 @@ if ((-not ($nugetPackageProvider)) -or ($nugetPackageProvider.Version -lt 2.8.5.
 
 # download the iso file if not on the local filesystem
 if (-not (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue')) {
+  Write-Host -object ('downloading {0} from bucket {1} with key {2}' -f $iso_path, $config.iso.bucket, $config.iso.key) -ForegroundColor White
   Read-GcsObject -Bucket $config.iso.bucket -ObjectName $config.iso.key -OutFile $iso_path
   if  (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue') {
     Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f $iso_path, $config.iso.bucket, $config.iso.key) -ForegroundColor White
@@ -122,6 +123,7 @@ foreach ($driver in $config.drivers) {
     Write-Host -object ('deleted: {0}' -f $local_path) -ForegroundColor DarkGray
   }
   try {
+    Write-Host -object ('downloading {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $driver.bucket, $driver.key) -ForegroundColor White
     Read-GcsObject -Bucket $driver.bucket -ObjectName $driver.key -OutFile $local_path
     if (Test-Path -Path $local_path -ErrorAction SilentlyContinue) {
       Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $driver.bucket, $driver.key) -ForegroundColor White
@@ -230,6 +232,7 @@ foreach ($package in @($config.packages | ? { ((-not $_.key.Contains('EC2')) -an
   if (-not (Test-Path -Path $local_path -ErrorAction SilentlyContinue)) {
     try {
       if (Get-Command 'Read-GcsObject' -ErrorAction 'SilentlyContinue') {
+        Write-Host -object ('downloading {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $package.bucket, $package.key) -ForegroundColor White
         Read-GcsObject -Bucket $package.bucket -ObjectName $package.key -OutFile $local_path
       }
       if (Test-Path -Path $local_path -ErrorAction SilentlyContinue) {

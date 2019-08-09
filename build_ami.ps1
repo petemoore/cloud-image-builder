@@ -79,6 +79,7 @@ if (-not (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue')) {
 
 # download the iso file if not on the local filesystem
 if (-not (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue')) {
+  Write-Host -object ('downloading {0} from bucket {1} with key {2}' -f $iso_path, $config.iso.bucket, $config.iso.key) -ForegroundColor White
   Copy-S3Object -BucketName $config.iso.bucket -Key $config.iso.key -LocalFile $iso_path -Region $aws_region
   if  (Test-Path -Path $iso_path -ErrorAction 'SilentlyContinue') {
     Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f $iso_path, $config.iso.bucket, $config.iso.key) -ForegroundColor White
@@ -128,6 +129,7 @@ foreach ($driver in $config.drivers) {
     Write-Host -object ('deleted: {0}' -f $local_path) -ForegroundColor DarkGray
   }
   try {
+    Write-Host -object ('downloading {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $driver.bucket, $driver.key) -ForegroundColor White
     Copy-S3Object -BucketName $driver.bucket -Key $driver.key -LocalFile $local_path -Region $(if ($driver.region) { $driver.region } else { $aws_region })
     if (Test-Path -Path $local_path -ErrorAction SilentlyContinue) {
       Write-Host -object ('downloaded {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $driver.bucket, $driver.key) -ForegroundColor White
@@ -220,6 +222,7 @@ foreach ($package in $config.packages) {
   if (-not (Test-Path -Path $local_path -ErrorAction SilentlyContinue)) {
     try {
       if (Get-Command 'Copy-S3Object' -ErrorAction 'SilentlyContinue') {
+        Write-Host -object ('downloading {0} from bucket {1} with key {2}' -f (Resolve-Path -Path $local_path), $package.bucket, $package.key) -ForegroundColor White
         Copy-S3Object -BucketName $package.bucket -Key $package.key -LocalFile $local_path -Region $(if ($package.region) { $package.region } else { $aws_region })
       }
       if (Test-Path -Path $local_path -ErrorAction SilentlyContinue) {
