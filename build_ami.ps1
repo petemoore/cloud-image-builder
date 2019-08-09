@@ -21,6 +21,10 @@ $config = @($manifest | Where-Object {
   $_.architecture -eq $worker_type_map."$target_worker_type".architecture
 })[0]
 
+if (-not $config) {
+  throw [System.ArgumentOutOfRangeException] ('failed to determine configuration for Windows build: {0}.{1}.{2}, version: {3}, edition: {4}, language: {5}, architecture: {6}' -f $worker_type_map."$target_worker_type".build.major, $worker_type_map."$target_worker_type".build.release, $worker_type_map."$target_worker_type".build.build, $worker_type_map."$target_worker_type".version, $worker_type_map."$target_worker_type".edition, $worker_type_map."$target_worker_type".language, $worker_type_map."$target_worker_type".architecture)
+}
+
 $image_capture_date = ((Get-Date).ToUniversalTime().ToString('yyyyMMddHHmmss'))
 $image_description = ('{0} {1} ({2}) - edition: {3}, language: {4}, partition: {5}, captured: {6}' -f $config.os, $config.build.major, $config.version, $config.edition, $config.language, $config.partition, $image_capture_date)
 
