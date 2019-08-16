@@ -33,11 +33,11 @@
     },
     "language": "en-US",
     "edition": "Professional",
-    "version": 1903,
+    "version": 1803,
     "build": {
       "major": 10,
-      "release": 18362,
-      "build": 239
+      "release": 17134,
+      "build": 285
     },
     "architecture": "x64"
   },
