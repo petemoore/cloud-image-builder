@@ -7,11 +7,18 @@ queue = taskcluster.Queue({'rootUrl': os.getenv('TASKCLUSTER_PROXY_URL', os.gete
 targets = [
   {
     'workerType': 'gecko-t-win10-64-alpha',
-    'provisioner': 'aws-provisioner-v1'
+    'provisioner': 'aws-provisioner-v1',
+    'buildScript': 'build_ami.ps1'
   },
   {
     'workerType': 'gecko-t-win10-64-gpu-a',
-    'provisioner': 'aws-provisioner-v1'
+    'provisioner': 'aws-provisioner-v1',
+    'buildScript': 'build_ami.ps1'
+  },
+  {
+    'workerType': 'gecko-t-win10-64-gamma',
+    'provisioner': 'gcp',
+    'buildScript': 'build_vhd.ps1'
   }
 ]
 for target in targets:
@@ -39,7 +46,7 @@ for target in targets:
         'git clone {} relops-image-builder'.format(os.environ.get('GITHUB_HEAD_REPO_URL')),
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder config advice.detachedHead false',
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder checkout {}'.format(os.environ.get('GITHUB_HEAD_SHA')),
-        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\build_ami.ps1 {}'.format(target['workerType'])
+        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\{} {}'.format(target['buildScript'], target['workerType'])
       ],
       'features': {
         'runAsAdministrator': True,
