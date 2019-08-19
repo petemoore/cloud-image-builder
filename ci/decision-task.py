@@ -35,7 +35,9 @@ for target in targets:
     ],
     'scopes': [
       'generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators',
-      'generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder'
+      'generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder',
+      'generic-worker:os-group:gcp/relops-image-builder/Administrators',
+      'generic-worker:run-as-administrator:gcp/relops-image-builder'
     ],
     'payload': {
       'osGroups': [
