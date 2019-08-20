@@ -4,11 +4,11 @@ tasks:
     scopes:
       - generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators
       - generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder
-      - generic-worker:os-group:gcp/relops-image-builder/Administrators
-      - generic-worker:run-as-administrator:gcp/relops-image-builder
+      - generic-worker:os-group:gcp/relops-image-builder-gamma/Administrators
+      - generic-worker:run-as-administrator:gcp/relops-image-builder-gamma
       - queue:route:index.project.releng.relops-image-builder.v1.revision.{{event.head.sha}}
       - queue:create-task:aws-provisioner-v1/relops-image-builder
-      - queue:create-task:gcp/relops-image-builder
+      - queue:create-task:gcp/relops-image-builder-gamma
     routes:
       - index.project.releng.relops-image-builder.v1.revision.{{event.head.sha}}
     workerType: '{{taskcluster.docker.workerType}}'

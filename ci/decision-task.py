@@ -8,16 +8,19 @@ targets = [
   {
     'workerType': 'gecko-t-win10-64-alpha',
     'provisioner': 'aws-provisioner-v1',
+    'builder': 'relops-image-builder',
     'buildScript': 'build_ami.ps1'
   },
   {
     'workerType': 'gecko-t-win10-64-gpu-a',
     'provisioner': 'aws-provisioner-v1',
+    'builder': 'relops-image-builder',
     'buildScript': 'build_ami.ps1'
   },
   {
     'workerType': 'gecko-t-win10-64-gamma',
     'provisioner': 'gcp',
+    'builder': 'relops-image-builder-gamma',
     'buildScript': 'build_vhd.ps1'
   }
 ]
@@ -27,7 +30,7 @@ for target in targets:
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
     'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
     'provisionerId': target['provisioner'],
-    'workerType': 'relops-image-builder',
+    'workerType': target['builder'],
     'schedulerId': 'taskcluster-github',
     'taskGroupId': os.environ.get('TASK_ID'),
     'routes': [
@@ -36,8 +39,8 @@ for target in targets:
     'scopes': [
       'generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators',
       'generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder',
-      'generic-worker:os-group:gcp/relops-image-builder/Administrators',
-      'generic-worker:run-as-administrator:gcp/relops-image-builder'
+      'generic-worker:os-group:gcp/relops-image-builder-gamma/Administrators',
+      'generic-worker:run-as-administrator:gcp/relops-image-builder-gamma'
     ],
     'payload': {
       'osGroups': [
