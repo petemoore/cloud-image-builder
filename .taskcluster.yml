@@ -7,6 +7,7 @@ tasks:
       - generic-worker:os-group:gcp/relops-image-builder-gamma/Administrators
       - generic-worker:run-as-administrator:gcp/relops-image-builder-gamma
       - queue:route:index.project.releng.relops-image-builder.v1.revision.{{event.head.sha}}
+      - queue:create-task:aws-provisioner-v1/github-worker
       - queue:create-task:aws-provisioner-v1/relops-image-builder
       - queue:create-task:gcp/relops-image-builder-gamma
     routes:
