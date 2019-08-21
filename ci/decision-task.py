@@ -6,32 +6,43 @@ from datetime import datetime, timedelta
 queue = taskcluster.Queue({'rootUrl': os.getenv('TASKCLUSTER_PROXY_URL', os.getenv('TASKCLUSTER_ROOT_URL'))})
 targets = [
   {
+    'taskId': slugid.nice().decode('utf-8'),
     'workerType': 'gecko-t-win10-64-alpha',
     'provisioner': 'aws-provisioner-v1',
     'builder': 'relops-image-builder',
-    'buildScript': 'build_ami.ps1'
+    'buildScript': 'build_ami.ps1',
+    'name': 'iso-to-ami',
+    'decription': 'build ec2 ami from iso'
   },
   {
+    'taskId': slugid.nice().decode('utf-8'),
     'workerType': 'gecko-t-win10-64-gpu-a',
     'provisioner': 'aws-provisioner-v1',
     'builder': 'relops-image-builder',
-    'buildScript': 'build_ami.ps1'
+    'buildScript': 'build_ami.ps1',
+    'name': 'iso-to-ami',
+    'decription': 'build ec2 ami from iso'
   },
   {
+    'taskId': slugid.nice().decode('utf-8'),
     'workerType': 'gecko-t-win10-64-gamma',
     'provisioner': 'gcp',
     'builder': 'relops-image-builder-gamma',
-    'buildScript': 'build_vhd.ps1'
+    'buildScript': 'build_vhd.ps1',
+    'name': 'iso-to-vhd',
+    'decription': 'build gcp vhd from iso'
   },
   {
+    'taskId': slugid.nice().decode('utf-8'),
     'workerType': 'gecko-t-win10-64-gpu-gamma',
     'provisioner': 'gcp',
     'builder': 'relops-image-builder-gamma',
-    'buildScript': 'build_vhd.ps1'
+    'buildScript': 'build_vhd.ps1',
+    'name': 'iso-to-vhd',
+    'decription': 'build gcp vhd from iso'
   }
 ]
 for target in targets:
-  taskId = slugid.nice().decode('utf-8')
   payload = {
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
     'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
@@ -65,8 +76,48 @@ for target in targets:
       }
     },
     'metadata': {
-      'name': 'iso-to-ami {}'.format(target['workerType']),
-      'description': 'build windows ami from iso for {}'.format(target['workerType']),
+      'name': '{} {}'.format(target['name'], target['workerType']),
+      'description': '{} for {}'.format(target['decription'], target['workerType']),
+      'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
+      'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
+    }
+  }
+  print('creating task {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(target['taskId'], os.environ.get('TASK_ID'), target['taskId']))
+  taskStatusResponse = queue.createTask(target['taskId'], payload)
+  print(taskStatusResponse)
+
+for target in [t for t in targets if t['provisioner'] == 'gcp']:
+  taskId = slugid.nice().decode('utf-8')
+  payload = {
+    'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
+    'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
+    'provisionerId': 'aws-provisioner-v1',
+    'workerType': 'github-worker',
+    'schedulerId': 'taskcluster-github',
+    'taskGroupId': os.environ.get('TASK_ID'),
+    'dependencies': [
+      target['taskId']
+    ],
+    'routes': [
+      'index.project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
+    ],
+    'scopes': [],
+    'payload': {
+      'image': 'grenade/opencloudconfig',
+      'maxRunTime': 3600,
+      'command': [
+        '/bin/bash',
+        '--login',
+        '-c',
+        'echo "child task of {}"'.format(target['taskId'])
+      ],
+      'features': {
+        'taskclusterProxy': True
+      }
+    },
+    'metadata': {
+      'name': '{} {} - dependency'.format(target['name'], target['workerType']),
+      'description': '{} for {}'.format(target['decription'], target['workerType']),
       'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
       'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
     }
