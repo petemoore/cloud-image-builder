@@ -22,6 +22,12 @@ targets = [
     'provisioner': 'gcp',
     'builder': 'relops-image-builder-gamma',
     'buildScript': 'build_vhd.ps1'
+  },
+  {
+    'workerType': 'gecko-t-win10-64-gpu-gamma',
+    'provisioner': 'gcp',
+    'builder': 'relops-image-builder-gamma',
+    'buildScript': 'build_vhd.ps1'
   }
 ]
 for target in targets:

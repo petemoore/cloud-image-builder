@@ -41,6 +41,22 @@
     },
     "architecture": "x64"
   },
+  "gecko-t-win10-64-gpu-gamma": {
+    "machine_type": "n1-highcpu-32",
+    "image": {
+      "project": "debian-cloud",
+      "family": "debian-9-stretch"
+    },
+    "language": "en-US",
+    "edition": "Professional",
+    "version": 1803,
+    "build": {
+      "major": 10,
+      "release": 17134,
+      "build": 285
+    },
+    "architecture": "x64"
+  },
   "gecko-t-win10-a64": {
     "instance_type": "a1.4xlarge",
     "ami_description": "Amazon Linux 2 LTS Arm64 AMI 2.0.20181114.1 arm64 HVM gp2",
