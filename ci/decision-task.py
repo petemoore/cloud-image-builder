@@ -80,7 +80,7 @@ for target in targets:
       }
     },
     'metadata': {
-      'name': '{} :: {}'.format(target['provider'], target['workerType'], target['name']),
+      'name': '{} :: {} :: {}'.format(target['provider'], target['workerType'], target['name']),
       'description': '{} for {}'.format(target['decription'], target['workerType']),
       'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
       'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
