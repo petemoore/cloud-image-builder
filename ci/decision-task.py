@@ -7,6 +7,7 @@ queue = taskcluster.Queue({'rootUrl': os.getenv('TASKCLUSTER_PROXY_URL', os.gete
 targets = [
   {
     'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'ec2',
     'workerType': 'gecko-t-win10-64-alpha',
     'provisioner': 'aws-provisioner-v1',
     'builder': 'relops-image-builder',
@@ -16,6 +17,7 @@ targets = [
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'ec2',
     'workerType': 'gecko-t-win10-64-gpu-a',
     'provisioner': 'aws-provisioner-v1',
     'builder': 'relops-image-builder',
@@ -25,6 +27,7 @@ targets = [
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'gcp',
     'workerType': 'gecko-t-win10-64-gamma',
     'provisioner': 'gcp',
     'builder': 'relops-image-builder-gamma',
@@ -34,6 +37,7 @@ targets = [
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'gcp',
     'workerType': 'gecko-t-win10-64-gpu-gamma',
     'provisioner': 'gcp',
     'builder': 'relops-image-builder-gamma',
@@ -76,7 +80,7 @@ for target in targets:
       }
     },
     'metadata': {
-      'name': '{} {}'.format(target['name'], target['workerType']),
+      'name': '{} :: {}'.format(target['provider'], target['workerType'], target['name']),
       'description': '{} for {}'.format(target['decription'], target['workerType']),
       'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
       'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
@@ -116,8 +120,8 @@ for target in [t for t in targets if t['provisioner'] == 'gcp']:
       }
     },
     'metadata': {
-      'name': '{} {} - dependency'.format(target['name'], target['workerType']),
-      'description': '{} for {}'.format(target['decription'], target['workerType']),
+      'name': '{} :: {} :: vhd-to-gcp-image'.format(target['provider'], target['workerType']),
+      'description': 'build gcp image from vhd for {}'.format(target['workerType']),
       'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
       'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
     }
