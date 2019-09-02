@@ -4104,9 +4104,9 @@ namespace WIM2VHD {
                 $Edition | ForEach-Object -Process {
 
                     $Edition = $PSItem
-    
-                    if ([Int32]::TryParse($Edition, [ref]$null)) {
-                        $openImage = $openWim[[Int32]$Edition]    
+                    $EditionIndex = -1
+                    if ([Int32]::TryParse($Edition, [ref]$EditionIndex) -and ($EditionIndex -gt -1)) {
+                        $openImage = $openWim[$EditionIndex]    
                     } else {
                         $openImage = $openWim[$Edition]
                     }    

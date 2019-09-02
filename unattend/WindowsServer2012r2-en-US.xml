@@ -100,7 +100,7 @@
         <FullName>Mozilla Corporation</FullName>
         <Organization>Mozilla Corporation</Organization>
         <ProductKey>
-          <Key>NPPR9-FWDCX-D2C8J-H872K-2YT43</Key>
+          <Key>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</Key>
         </ProductKey>
       </UserData>
     </component>
@@ -163,7 +163,7 @@
         <FullName>Mozilla Corporation</FullName>
         <Organization>Mozilla Corporation</Organization>
         <ProductKey>
-          <Key>NPPR9-FWDCX-D2C8J-H872K-2YT43</Key>
+          <Key>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</Key>
         </ProductKey>
       </UserData>
     </component>
@@ -226,7 +226,7 @@
         <FullName>Mozilla Corporation</FullName>
         <Organization>Mozilla Corporation</Organization>
         <ProductKey>
-          <Key>NPPR9-FWDCX-D2C8J-H872K-2YT43</Key>
+          <Key>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</Key>
         </ProductKey>
       </UserData>
     </component>
@@ -289,7 +289,7 @@
         <FullName>Mozilla Corporation</FullName>
         <Organization>Mozilla Corporation</Organization>
         <ProductKey>
-          <Key>NPPR9-FWDCX-D2C8J-H872K-2YT43</Key>
+          <Key>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</Key>
         </ProductKey>
       </UserData>
     </component>
@@ -376,20 +376,20 @@
       <CEIPEnabled>0</CEIPEnabled>
     </component>
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="x86" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <ComputerName>base-win-10-32</ComputerName>
-      <ProductKey>NPPR9-FWDCX-D2C8J-H872K-2YT43</ProductKey>
+      <ComputerName>base-win2012r2-32</ComputerName>
+      <ProductKey>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</ProductKey>
     </component>
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <ComputerName>base-win-10-64</ComputerName>
-      <ProductKey>NPPR9-FWDCX-D2C8J-H872K-2YT43</ProductKey>
+      <ComputerName>base-win2012r2-64</ComputerName>
+      <ProductKey>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</ProductKey>
     </component>
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="arm" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <ComputerName>base-win-10-a32</ComputerName>
-      <ProductKey>NPPR9-FWDCX-D2C8J-H872K-2YT43</ProductKey>
+      <ComputerName>base-win2012r2-a32</ComputerName>
+      <ProductKey>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</ProductKey>
     </component>
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="arm64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <ComputerName>base-win-10-a64</ComputerName>
-      <ProductKey>NPPR9-FWDCX-D2C8J-H872K-2YT43</ProductKey>
+      <ComputerName>base-win2012r2-a64</ComputerName>
+      <ProductKey>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</ProductKey>
     </component>
   </settings>
   <settings pass="oobeSystem">
@@ -431,20 +431,20 @@
         <SynchronousCommand wcm:action="add">
           <Order>2</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install googet</Description>
-          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
+          <Description>Install EC2Config</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\Ec2Install.exe /quiet</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>3</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Add the googet google-compute-engine-stable repo</Description>
-          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
+          <Description>Overwrite Ec2ConfigService config</Description>
+          <CommandLine>cmd /c move /y C:\Windows\Temp\Ec2ConfigurationSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\config.xml"</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
-          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
+          <Description>Overwrite Ec2 WallpaperSettings config</Description>
+          <CommandLine>cmd /c move /y C:\Windows\Temp\WallpaperSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\WallpaperSettings.xml"</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>
@@ -517,20 +517,20 @@
         <SynchronousCommand wcm:action="add">
           <Order>2</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install googet</Description>
-          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
+          <Description>Install EC2Config</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\Ec2Install.exe /quiet</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>3</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Add the googet google-compute-engine-stable repo</Description>
-          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
+          <Description>Overwrite Ec2ConfigService config</Description>
+          <CommandLine>cmd /c move /y C:\Windows\Temp\Ec2ConfigurationSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\config.xml"</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
-          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
+          <Description>Overwrite Ec2 WallpaperSettings config</Description>
+          <CommandLine>cmd /c move /y C:\Windows\Temp\WallpaperSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\WallpaperSettings.xml"</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>
@@ -603,20 +603,20 @@
         <SynchronousCommand wcm:action="add">
           <Order>2</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install googet</Description>
-          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
+          <Description>Install EC2Config</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\Ec2Install.exe /quiet</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>3</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Add the googet google-compute-engine-stable repo</Description>
-          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
+          <Description>Overwrite Ec2ConfigService config</Description>
+          <CommandLine>cmd /c move /y C:\Windows\Temp\Ec2ConfigurationSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\config.xml"</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
-          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
+          <Description>Overwrite Ec2 WallpaperSettings config</Description>
+          <CommandLine>cmd /c move /y C:\Windows\Temp\WallpaperSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\WallpaperSettings.xml"</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>
@@ -689,20 +689,20 @@
         <SynchronousCommand wcm:action="add">
           <Order>2</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install googet</Description>
-          <CommandLine>cmd /c start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet</CommandLine>
+          <Description>Install EC2Config</Description>
+          <CommandLine>cmd /c start /wait C:\Windows\Temp\Ec2Install.exe /quiet</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>3</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Add the googet google-compute-engine-stable repo</Description>
-          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable</CommandLine>
+          <Description>Overwrite Ec2ConfigService config</Description>
+          <CommandLine>cmd /c move /y C:\Windows\Temp\Ec2ConfigurationSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\config.xml"</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and ggoogle-compute-engine-auto-updater</Description>
-          <CommandLine>cmd /c start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater</CommandLine>
+          <Description>Overwrite Ec2 WallpaperSettings config</Description>
+          <CommandLine>cmd /c move /y C:\Windows\Temp\WallpaperSettings.xml "C:\Program Files\Amazon\Ec2ConfigService\Settings\WallpaperSettings.xml"</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>

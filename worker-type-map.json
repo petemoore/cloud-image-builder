@@ -69,5 +69,92 @@
       "build": 1000
     },
     "architecture": "arm64"
+  },
+  "gecko-1-b-win2012-alpha": {
+    "instance_type": "c5.4xlarge",
+    "ami_description": "Amazon Linux 2 AMI * HVM gp2",
+    "language": "en-US",
+    "edition": "ServerStandard",
+    "version": 2012,
+    "build": {
+      "major": 10,
+      "release": 14393,
+      "build": 17415
+    },
+    "architecture": "x64"
+  },
+  "gecko-1-b-win2016-alpha": {
+    "instance_type": "c5.4xlarge",
+    "ami_description": "Amazon Linux 2 AMI * HVM gp2",
+    "language": "en-US",
+    "edition": "ServerStandard",
+    "version": 2016,
+    "build": {
+      "major": 10,
+      "release": 14393,
+      "build": 1198
+    },
+    "architecture": "x64"
+  },
+  "gecko-1-b-win2019-alpha": {
+    "instance_type": "c5.4xlarge",
+    "ami_description": "Amazon Linux 2 AMI * HVM gp2",
+    "language": "en-US",
+    "edition": "ServerStandardACor",
+    "version": 2019,
+    "build": {
+      "major": 10,
+      "release": 18362,
+      "build": 30
+    },
+    "architecture": "x64"
+  },
+  "gecko-1-b-win2012-gamma": {
+    "machine_type": "n1-highcpu-32",
+    "image": {
+      "project": "debian-cloud",
+      "family": "debian-9-stretch"
+    },
+    "language": "en-US",
+    "edition": "ServerStandard",
+    "version": 2012,
+    "build": {
+      "major": 10,
+      "release": 14393,
+      "build": 17415
+    },
+    "architecture": "x64"
+  },
+  "gecko-1-b-win2016-gamma": {
+    "machine_type": "n1-highcpu-32",
+    "image": {
+      "project": "debian-cloud",
+      "family": "debian-9-stretch"
+    },
+    "language": "en-US",
+    "edition": "ServerStandard",
+    "version": 2016,
+    "build": {
+      "major": 10,
+      "release": 14393,
+      "build": 1198
+    },
+    "architecture": "x64"
+  },
+  "gecko-1-b-win2019-gamma": {
+    "machine_type": "n1-highcpu-32",
+    "image": {
+      "project": "debian-cloud",
+      "family": "debian-9-stretch"
+    },
+    "language": "en-US",
+    "edition": "ServerStandardACor",
+    "version": 2019,
+    "build": {
+      "major": 10,
+      "release": 18362,
+      "build": 30
+    },
+    "architecture": "x64"
   }
 }

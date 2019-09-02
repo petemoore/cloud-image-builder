@@ -27,6 +27,36 @@ targets = [
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'ec2',
+    'workerType': 'gecko-1-b-win2012-alpha',
+    'provisioner': 'aws-provisioner-v1',
+    'builder': 'relops-image-builder',
+    'buildScript': 'build_ami.ps1',
+    'name': 'iso-to-ami',
+    'decription': 'build ec2 ami from iso'
+  },
+  {
+    'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'ec2',
+    'workerType': 'gecko-1-b-win2016-alpha',
+    'provisioner': 'aws-provisioner-v1',
+    'builder': 'relops-image-builder',
+    'buildScript': 'build_ami.ps1',
+    'name': 'iso-to-ami',
+    'decription': 'build ec2 ami from iso'
+  },
+  {
+    'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'ec2',
+    'workerType': 'gecko-1-b-win2019-alpha',
+    'provisioner': 'aws-provisioner-v1',
+    'builder': 'relops-image-builder',
+    'buildScript': 'build_ami.ps1',
+    'name': 'iso-to-ami',
+    'decription': 'build ec2 ami from iso'
+  },
+  {
+    'taskId': slugid.nice().decode('utf-8'),
     'provider': 'gcp',
     'workerType': 'gecko-t-win10-64-gamma',
     'provisioner': 'gcp',
@@ -39,6 +69,36 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'gcp',
     'workerType': 'gecko-t-win10-64-gpu-gamma',
+    'provisioner': 'gcp',
+    'builder': 'relops-image-builder-gamma',
+    'buildScript': 'build_vhd.ps1',
+    'name': 'iso-to-vhd',
+    'decription': 'build gcp vhd from iso'
+  },
+  {
+    'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'gcp',
+    'workerType': 'gecko-1-b-win2012-gamma',
+    'provisioner': 'gcp',
+    'builder': 'relops-image-builder-gamma',
+    'buildScript': 'build_vhd.ps1',
+    'name': 'iso-to-vhd',
+    'decription': 'build gcp vhd from iso'
+  },
+  {
+    'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'gcp',
+    'workerType': 'gecko-1-b-win2016-gamma',
+    'provisioner': 'gcp',
+    'builder': 'relops-image-builder-gamma',
+    'buildScript': 'build_vhd.ps1',
+    'name': 'iso-to-vhd',
+    'decription': 'build gcp vhd from iso'
+  },
+  {
+    'taskId': slugid.nice().decode('utf-8'),
+    'provider': 'gcp',
+    'workerType': 'gecko-1-b-win2019-gamma',
     'provisioner': 'gcp',
     'builder': 'relops-image-builder-gamma',
     'buildScript': 'build_vhd.ps1',

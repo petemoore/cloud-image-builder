@@ -5,7 +5,7 @@
       <SetupUILanguage>
         <UILanguage>en-US</UILanguage>
       </SetupUILanguage>
-      <InputLocale>0409:00000409</InputLocale>
+      <InputLocale>en-US</InputLocale>
       <SystemLocale>en-US</SystemLocale>
       <UILanguage>en-US</UILanguage>
       <UILanguageFallback>en-US</UILanguageFallback>
@@ -15,7 +15,7 @@
       <SetupUILanguage>
         <UILanguage>en-US</UILanguage>
       </SetupUILanguage>
-      <InputLocale>0409:00000409</InputLocale>
+      <InputLocale>en-US</InputLocale>
       <SystemLocale>en-US</SystemLocale>
       <UILanguage>en-US</UILanguage>
       <UILanguageFallback>en-US</UILanguageFallback>
@@ -25,7 +25,7 @@
       <SetupUILanguage>
         <UILanguage>en-US</UILanguage>
       </SetupUILanguage>
-      <InputLocale>0409:00000409</InputLocale>
+      <InputLocale>en-US</InputLocale>
       <SystemLocale>en-US</SystemLocale>
       <UILanguage>en-US</UILanguage>
       <UILanguageFallback>en-US</UILanguageFallback>
@@ -35,7 +35,7 @@
       <SetupUILanguage>
         <UILanguage>en-US</UILanguage>
       </SetupUILanguage>
-      <InputLocale>0409:00000409</InputLocale>
+      <InputLocale>en-US</InputLocale>
       <SystemLocale>en-US</SystemLocale>
       <UILanguage>en-US</UILanguage>
       <UILanguageFallback>en-US</UILanguageFallback>
@@ -100,7 +100,7 @@
         <FullName>Mozilla Corporation</FullName>
         <Organization>Mozilla Corporation</Organization>
         <ProductKey>
-          <Key>W269N-WFGWX-YVC9B-4J6C9-T83GX</Key>
+          <Key>NPPR9-FWDCX-D2C8J-H872K-2YT43</Key>
         </ProductKey>
       </UserData>
     </component>
@@ -163,7 +163,7 @@
         <FullName>Mozilla Corporation</FullName>
         <Organization>Mozilla Corporation</Organization>
         <ProductKey>
-          <Key>W269N-WFGWX-YVC9B-4J6C9-T83GX</Key>
+          <Key>NPPR9-FWDCX-D2C8J-H872K-2YT43</Key>
         </ProductKey>
       </UserData>
     </component>
@@ -226,7 +226,7 @@
         <FullName>Mozilla Corporation</FullName>
         <Organization>Mozilla Corporation</Organization>
         <ProductKey>
-          <Key>W269N-WFGWX-YVC9B-4J6C9-T83GX</Key>
+          <Key>NPPR9-FWDCX-D2C8J-H872K-2YT43</Key>
         </ProductKey>
       </UserData>
     </component>
@@ -289,7 +289,7 @@
         <FullName>Mozilla Corporation</FullName>
         <Organization>Mozilla Corporation</Organization>
         <ProductKey>
-          <Key>W269N-WFGWX-YVC9B-4J6C9-T83GX</Key>
+          <Key>NPPR9-FWDCX-D2C8J-H872K-2YT43</Key>
         </ProductKey>
       </UserData>
     </component>
@@ -324,28 +324,28 @@
   </settings>
   <settings pass="specialize">
     <component name="Microsoft-Windows-International-Core" processorArchitecture="x86" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <InputLocale>0409:00000409</InputLocale>
+      <InputLocale>en-US</InputLocale>
       <SystemLocale>en-US</SystemLocale>
       <UILanguage>en-US</UILanguage>
       <UILanguageFallback>en-US</UILanguageFallback>
       <UserLocale>en-US</UserLocale>
     </component>
     <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <InputLocale>0409:00000409</InputLocale>
+      <InputLocale>en-US</InputLocale>
       <SystemLocale>en-US</SystemLocale>
       <UILanguage>en-US</UILanguage>
       <UILanguageFallback>en-US</UILanguageFallback>
       <UserLocale>en-US</UserLocale>
     </component>
     <component name="Microsoft-Windows-International-Core" processorArchitecture="arm" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <InputLocale>0409:00000409</InputLocale>
+      <InputLocale>en-US</InputLocale>
       <SystemLocale>en-US</SystemLocale>
       <UILanguage>en-US</UILanguage>
       <UILanguageFallback>en-US</UILanguageFallback>
       <UserLocale>en-US</UserLocale>
     </component>
     <component name="Microsoft-Windows-International-Core" processorArchitecture="arm64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <InputLocale>0409:00000409</InputLocale>
+      <InputLocale>en-US</InputLocale>
       <SystemLocale>en-US</SystemLocale>
       <UILanguage>en-US</UILanguage>
       <UILanguageFallback>en-US</UILanguageFallback>
@@ -377,19 +377,19 @@
     </component>
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="x86" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <ComputerName>base-win-10-32</ComputerName>
-      <ProductKey>W269N-WFGWX-YVC9B-4J6C9-T83GX</ProductKey>
+      <ProductKey>NPPR9-FWDCX-D2C8J-H872K-2YT43</ProductKey>
     </component>
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <ComputerName>base-win-10-64</ComputerName>
-      <ProductKey>W269N-WFGWX-YVC9B-4J6C9-T83GX</ProductKey>
+      <ProductKey>NPPR9-FWDCX-D2C8J-H872K-2YT43</ProductKey>
     </component>
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="arm" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <ComputerName>base-win-10-a32</ComputerName>
-      <ProductKey>W269N-WFGWX-YVC9B-4J6C9-T83GX</ProductKey>
+      <ProductKey>NPPR9-FWDCX-D2C8J-H872K-2YT43</ProductKey>
     </component>
     <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="arm64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <ComputerName>base-win-10-a64</ComputerName>
-      <ProductKey>W269N-WFGWX-YVC9B-4J6C9-T83GX</ProductKey>
+      <ProductKey>NPPR9-FWDCX-D2C8J-H872K-2YT43</ProductKey>
     </component>
   </settings>
   <settings pass="oobeSystem">
