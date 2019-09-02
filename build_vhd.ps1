@@ -181,15 +181,15 @@ try {
   $disableWindowsService = $(if ($config.service -and $config.service.disable -and $config.service.disable.Length) { $config.service.disable } else { @() })
   if ($drivers.length) {
     if ($config.architecture.Contains('arm')) {
-      Convert-WindowsImage -verbose:$true -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -DisableWindowsService $disableWindowsService -DisableNotificationCenter:($config.build.major -eq 10) -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
+      Convert-WindowsImage -verbose:$true -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $(if ($config.wimindex) { $config.wimindex } else { $config.edition }) -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -DisableWindowsService $disableWindowsService -DisableNotificationCenter:($config.build.major -eq 10) -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
     } else {
-      Convert-WindowsImage -verbose:$true -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -DisableWindowsService $disableWindowsService -DisableNotificationCenter:($config.build.major -eq 10)
+      Convert-WindowsImage -verbose:$true -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $(if ($config.wimindex) { $config.wimindex } else { $config.edition }) -UnattendPath (Resolve-Path -Path $ua_path).Path -Driver $drivers -RemoteDesktopEnable:$true -DisableWindowsService $disableWindowsService -DisableNotificationCenter:($config.build.major -eq 10)
     }
   } else {
     if ($config.architecture.Contains('arm')) {
-      Convert-WindowsImage -verbose:$true -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true -DisableWindowsService $disableWindowsService -DisableNotificationCenter:($config.build.major -eq 10) -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
+      Convert-WindowsImage -verbose:$true -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $(if ($config.wimindex) { $config.wimindex } else { $config.edition }) -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true -DisableWindowsService $disableWindowsService -DisableNotificationCenter:($config.build.major -eq 10) -BCDBoot ('{0}\System32\bcdboot.exe' -f $env:SystemRoot)
     } else {
-      Convert-WindowsImage -verbose:$true -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $config.edition -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true -DisableWindowsService $disableWindowsService -DisableNotificationCenter:($config.build.major -eq 10)
+      Convert-WindowsImage -verbose:$true -SourcePath $iso_path -VhdPath $vhd_path -VhdFormat $config.format -VhdPartitionStyle $config.partition -Edition $(if ($config.wimindex) { $config.wimindex } else { $config.edition }) -UnattendPath (Resolve-Path -Path $ua_path).Path -RemoteDesktopEnable:$true -DisableWindowsService $disableWindowsService -DisableNotificationCenter:($config.build.major -eq 10)
     }
   }
   if (Test-Path -Path $vhd_path -ErrorAction SilentlyContinue) {
