@@ -128,6 +128,13 @@ for target in targets:
         'Administrators'
       ],
       'maxRunTime': 3600,
+      'artifacts': [
+        {
+          "name": "public/screenshot",
+          "path": "public/screenshot",
+          "type": "directory"
+        }
+      ] if target['provider'] == 'ec2' else [],
       'command': [
         'git clone {} relops-image-builder'.format(os.environ.get('GITHUB_HEAD_REPO_URL')),
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder config advice.detachedHead false',

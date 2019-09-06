@@ -438,7 +438,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
   }
 
   Start-EC2Instance -InstanceId $instance_id
-  $screenshot_folder_path = (Join-Path -Path $work_dir -ChildPath $instance_id)
+  $screenshot_folder_path = (Join-Path -Path $work_dir -ChildPath 'public\screenshot')
   New-Item -ItemType Directory -Force -Path $screenshot_folder_path
   $last_screenshot_time = ((Get-Date).AddSeconds(-60).ToUniversalTime())
   $last_screenshot_size = 0
@@ -453,7 +453,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
     if ($last_screenshot_time -le (Get-Date).ToUniversalTime().AddSeconds(0 - $screenshot_frequency)) {
       try {
         $new_screenshot_time = ((Get-Date).ToUniversalTime())
-        $screenshot_path = ('{0}\{1}.jpg' -f $screenshot_folder_path, $new_screenshot_time.ToString("yyyyMMddHHmmss"))
+        $screenshot_path = ('{0}\{1}-{2}.jpg' -f $screenshot_folder_path, $instance_id, $new_screenshot_time.ToString("yyyyMMddHHmmss"))
         [io.file]::WriteAllBytes($screenshot_path, [convert]::FromBase64String((Get-EC2ConsoleScreenshot -InstanceId $instance_id -ErrorAction Stop).ImageData))
         $last_screenshot_time = $new_screenshot_time
         $last_screenshot_size = (Get-Item -Path $screenshot_path).length
