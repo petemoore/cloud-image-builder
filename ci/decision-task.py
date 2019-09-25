@@ -9,8 +9,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'ec2',
     'workerType': 'gecko-t-win10-64-alpha',
-    'provisioner': 'aws-provisioner-v1',
-    'builder': 'relops-image-builder',
+    'workerPool': 'aws-provisioner-v1',
+    'builder': {
+      'workerType': 'relops-image-builder',
+      'workerPool': 'aws-provisioner-v1'
+    },
     'buildScript': 'build_ami.ps1',
     'name': 'iso-to-ami',
     'decription': 'build ec2 ami from iso'
@@ -19,8 +22,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'ec2',
     'workerType': 'gecko-t-win10-64-gpu-a',
-    'provisioner': 'aws-provisioner-v1',
-    'builder': 'relops-image-builder',
+    'workerPool': 'aws-provisioner-v1',
+    'builder': {
+      'workerType': 'relops-image-builder',
+      'workerPool': 'aws-provisioner-v1'
+    },
     'buildScript': 'build_ami.ps1',
     'name': 'iso-to-ami',
     'decription': 'build ec2 ami from iso'
@@ -29,8 +35,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'ec2',
     'workerType': 'gecko-1-b-win2012-alpha',
-    'provisioner': 'aws-provisioner-v1',
-    'builder': 'relops-image-builder',
+    'workerPool': 'aws-provisioner-v1',
+    'builder': {
+      'workerType': 'relops-image-builder',
+      'workerPool': 'aws-provisioner-v1'
+    },
     'buildScript': 'build_ami.ps1',
     'name': 'iso-to-ami',
     'decription': 'build ec2 ami from iso'
@@ -39,8 +48,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'ec2',
     'workerType': 'gecko-1-b-win2016-alpha',
-    'provisioner': 'aws-provisioner-v1',
-    'builder': 'relops-image-builder',
+    'workerPool': 'aws-provisioner-v1',
+    'builder': {
+      'workerType': 'relops-image-builder',
+      'workerPool': 'aws-provisioner-v1'
+    },
     'buildScript': 'build_ami.ps1',
     'name': 'iso-to-ami',
     'decription': 'build ec2 ami from iso'
@@ -49,8 +61,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'ec2',
     'workerType': 'gecko-1-b-win2019-alpha',
-    'provisioner': 'aws-provisioner-v1',
-    'builder': 'relops-image-builder',
+    'workerPool': 'aws-provisioner-v1',
+    'builder': {
+      'workerType': 'relops-image-builder',
+      'workerPool': 'aws-provisioner-v1'
+    },
     'buildScript': 'build_ami.ps1',
     'name': 'iso-to-ami',
     'decription': 'build ec2 ami from iso'
@@ -59,8 +74,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'gcp',
     'workerType': 'gecko-t-win10-64-gamma',
-    'provisioner': 'gcp',
-    'builder': 'relops-image-builder-gamma',
+    'workerPool': 'gcp',
+    'builder': {
+      'workerType': 'win2016-gamma',
+      'workerPool': 'sandbox-1'
+    },
     'buildScript': 'build_vhd.ps1',
     'name': 'iso-to-vhd',
     'decription': 'build gcp vhd from iso'
@@ -69,8 +87,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'gcp',
     'workerType': 'gecko-t-win10-64-gpu-gamma',
-    'provisioner': 'gcp',
-    'builder': 'relops-image-builder-gamma',
+    'workerPool': 'gcp',
+    'builder': {
+      'workerType': 'win2016-gamma',
+      'workerPool': 'sandbox-1'
+    },
     'buildScript': 'build_vhd.ps1',
     'name': 'iso-to-vhd',
     'decription': 'build gcp vhd from iso'
@@ -79,8 +100,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'gcp',
     'workerType': 'gecko-1-b-win2012-gamma',
-    'provisioner': 'gcp',
-    'builder': 'relops-image-builder-gamma',
+    'workerPool': 'gcp',
+    'builder': {
+      'workerType': 'win2016-gamma',
+      'workerPool': 'sandbox-1'
+    },
     'buildScript': 'build_vhd.ps1',
     'name': 'iso-to-vhd',
     'decription': 'build gcp vhd from iso'
@@ -89,8 +113,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'gcp',
     'workerType': 'gecko-1-b-win2016-gamma',
-    'provisioner': 'gcp',
-    'builder': 'relops-image-builder-gamma',
+    'workerPool': 'gcp',
+    'builder': {
+      'workerType': 'win2016-gamma',
+      'workerPool': 'sandbox-1'
+    },
     'buildScript': 'build_vhd.ps1',
     'name': 'iso-to-vhd',
     'decription': 'build gcp vhd from iso'
@@ -99,8 +126,11 @@ targets = [
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'gcp',
     'workerType': 'gecko-1-b-win2019-gamma',
-    'provisioner': 'gcp',
-    'builder': 'relops-image-builder-gamma',
+    'workerPool': 'gcp',
+    'builder': {
+      'workerType': 'win2016-gamma',
+      'workerPool': 'sandbox-1'
+    },
     'buildScript': 'build_vhd.ps1',
     'name': 'iso-to-vhd',
     'decription': 'build gcp vhd from iso'
@@ -110,18 +140,16 @@ for target in targets:
   payload = {
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
     'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
-    'provisionerId': target['provisioner'],
-    'workerType': target['builder'],
+    'provisionerId': target['builder']['workerPool'],
+    'workerType': target['builder']['workerType'],
     'schedulerId': 'taskcluster-github',
     'taskGroupId': os.environ.get('TASK_ID'),
     'routes': [
       'index.project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
     ],
     'scopes': [
-      'generic-worker:os-group:aws-provisioner-v1/relops-image-builder/Administrators',
-      'generic-worker:run-as-administrator:aws-provisioner-v1/relops-image-builder',
-      'generic-worker:os-group:gcp/relops-image-builder-gamma/Administrators',
-      'generic-worker:run-as-administrator:gcp/relops-image-builder-gamma'
+      'generic-worker:os-group:{}/{}/Administrators'.format(target['builder']['workerPool'], target['builder']['workerType']),
+      'generic-worker:run-as-administrator:{}/{}'.format(target['builder']['workerPool'], target['builder']['workerType'])
     ],
     'payload': {
       'osGroups': [
@@ -157,7 +185,7 @@ for target in targets:
   taskStatusResponse = queue.createTask(target['taskId'], payload)
   print(taskStatusResponse)
 
-for target in [t for t in targets if t['provisioner'] == 'gcp']:
+for target in [t for t in targets if t['provider'] == 'gcp']:
   taskId = slugid.nice().decode('utf-8')
   payload = {
     'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
