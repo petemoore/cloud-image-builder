@@ -1313,7 +1313,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_Server_2012r2_Standard_14393_17415_en-US_x64.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/WindowsServer2012r2-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/WindowsServer2012r2-amd64-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -1484,7 +1484,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_Server_2016_Standard_14393_1198_en-US_x64.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/WindowsServer2016-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/WindowsServer2016-amd64-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -1655,7 +1655,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_Server_2019_Standard_1198_14393_0_en-US_x64.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/WindowsServer2019-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/unattend/WindowsServer2019-amd64-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
