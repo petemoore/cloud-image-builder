@@ -28,8 +28,8 @@ if (-not $config) {
   throw [System.ArgumentOutOfRangeException] ('failed to determine configuration for Windows build: {0}.{1}.{2}, version: {3}, edition: {4}, language: {5}, architecture: {6}' -f $worker_type_map."$target_worker_type".build.major, $worker_type_map."$target_worker_type".build.release, $worker_type_map."$target_worker_type".build.build, $worker_type_map."$target_worker_type".version, $worker_type_map."$target_worker_type".edition, $worker_type_map."$target_worker_type".language, $worker_type_map."$target_worker_type".architecture)
 }
 
-$image_capture_date = ((Get-Date).ToUniversalTime().ToString('yyyyMMddHHmmss'))
-$image_description = ('{0} {1} ({2}) - edition: {3}, language: {4}, partition: {5}, captured: {6}' -f $config.os, $config.build.major, $config.version, $config.edition, $config.language, $config.partition, $image_capture_date)
+$image_capture_date = ((Get-Date).ToUniversalTime().ToString('yyyyMMddHHmmss.fff'))
+$image_description = ('{0} {1} ({2}) - edition: {3}, language: {4}, partition: {5}, captured: {6}, ref {7}' -f $config.os, $config.build.major, $config.version, $config.edition, $config.language, $config.partition, $image_capture_date, $source_ref)
 
 $aws_region = 'us-west-2'
 $aws_availability_zone = ('{0}c' -f $aws_region)
@@ -550,7 +550,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
     }
   } elseif ((Get-EC2Instance -InstanceId $instance_id).Instances[0].State.Name -eq 'stopped') {
     try {
-      $ami_id = (New-EC2Image -InstanceId $instance_id -Name ('{0}-{1}' -f [System.IO.Path]::GetFileNameWithoutExtension($config.vhd.key), $image_capture_date) -Description $image_description)
+      $ami_id = (New-EC2Image -InstanceId $instance_id -Name ('{0}-{1}-{2}' -f [System.IO.Path]::GetFileNameWithoutExtension($config.vhd.key), $(if ($source_ref.Length -eq 40) { $source_ref.SubString(0, 7) } else { $source_ref }), $image_capture_date) -Description $image_description)
       Write-Host -object ('ami {0} created from instance {1}' -f $ami_id, $instance_id) -ForegroundColor Green
     } catch {
       Write-Host -object ('failed to create ami from instance {0}' -f  $instance_id) -ForegroundColor Red
