@@ -315,13 +315,20 @@ try {
 
 # wait for snapshot import completion
 while (($import_task_status.SnapshotTaskDetail.Status -ne 'completed') -and ($import_task_status.SnapshotTaskDetail.Status -ne 'deleted') -and (-not $import_task_status.SnapshotTaskDetail.StatusMessage.StartsWith('ServerError')) -and (-not $import_task_status.SnapshotTaskDetail.StatusMessage.StartsWith('ClientError'))) {
-  $last_status = $import_task_status
-  $import_task_status = @(Get-EC2ImportSnapshotTask -ImportTaskId $last_status.ImportTaskId)[0]
-  if ($import_task_status.SnapshotTaskDetail.Progress) {
-    Write-Progress -Activity 'EC2 Import Snapshot' -Status ('{0}% {1} {2}' -f $import_task_status.SnapshotTaskDetail.Progress, $import_task_status.SnapshotTaskDetail.Status, $import_task_status.SnapshotTaskDetail.StatusMessage) -PercentComplete $import_task_status.SnapshotTaskDetail.Progress
-  }
-  if (($import_task_status.SnapshotTaskDetail.Status -ne $last_status.SnapshotTaskDetail.Status) -or ($import_task_status.SnapshotTaskDetail.StatusMessage -ne $last_status.SnapshotTaskDetail.StatusMessage)) {
-    Write-Host -object ('snapshot import task in progress with id: {0}, progress: {1}%, status: {2}; {3}' -f $import_task_status.ImportTaskId, $import_task_status.SnapshotTaskDetail.Progress,  $import_task_status.SnapshotTaskDetail.Status, $import_task_status.SnapshotTaskDetail.StatusMessage) -ForegroundColor White
+  try {
+    $last_status = $import_task_status
+    $import_task_status = @(Get-EC2ImportSnapshotTask -ImportTaskId $last_status.ImportTaskId)[0]
+    if ($import_task_status.SnapshotTaskDetail.Progress) {
+      Write-Progress -Activity 'EC2 Import Snapshot' -Status ('{0}% {1} {2}' -f $import_task_status.SnapshotTaskDetail.Progress, $import_task_status.SnapshotTaskDetail.Status, $import_task_status.SnapshotTaskDetail.StatusMessage) -PercentComplete $import_task_status.SnapshotTaskDetail.Progress
+    }
+    if (($import_task_status.SnapshotTaskDetail.Status -ne $last_status.SnapshotTaskDetail.Status) -or ($import_task_status.SnapshotTaskDetail.StatusMessage -ne $last_status.SnapshotTaskDetail.StatusMessage)) {
+      Write-Host -object ('snapshot import task in progress with id: {0}, progress: {1}%, status: {2}; {3}' -f $import_task_status.ImportTaskId, $import_task_status.SnapshotTaskDetail.Progress,  $import_task_status.SnapshotTaskDetail.Status, $import_task_status.SnapshotTaskDetail.StatusMessage) -ForegroundColor White
+    }
+  } catch [System.InvalidOperationException] {
+    Write-Host -object ('failed to determine snapshot import task status for import task {0}. {1}' -f $last_status.ImportTaskId, $_.Exception.Message) -ForegroundColor DarkYellow
+    if ($_.Exception.InnerException) {
+      Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+    }
   }
   Start-Sleep -Milliseconds 500
 }
