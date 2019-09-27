@@ -288,11 +288,12 @@ if (Get-S3Object -BucketName $config.vhd.bucket -Key $config.vhd.key -Region $aw
 }
 
 # upload the vhd(x) file
+$vhd_key = $(if ($source_ref.Length -eq 40) { ($config.vhd.key.Replace('vhd/', ('vhd/{0}/' -f $source_ref.SubString(0, 7)))) } else { $config.vhd.key })
 try {
-  Write-S3Object -BucketName $config.vhd.bucket -File $vhd_path -Key $config.vhd.key
-  Write-Host -object ('uploaded {0} to bucket {1} with key {2}' -f $vhd_path, $config.vhd.bucket, $config.vhd.key) -ForegroundColor White
+  Write-S3Object -BucketName $config.vhd.bucket -File $vhd_path -Key $vhd_key
+  Write-Host -object ('uploaded {0} to bucket {1} with key {2}' -f $vhd_path, $config.vhd.bucket, $vhd_key) -ForegroundColor White
 } catch {
-  Write-Host -object ('failed to upload {0} to bucket {1}' -f $config.vhd.bucket, $config.vhd.key) -ForegroundColor Red
+  Write-Host -object ('failed to upload {0} to bucket {1}' -f $config.vhd.bucket, $vhd_key) -ForegroundColor Red
   if ($_.Exception.InnerException) {
     Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
   }
@@ -301,10 +302,10 @@ try {
 
 # import the vhd as an ec2 snapshot
 try {
-  $import_task_status = @(Import-EC2Snapshot -DiskContainer_Format $config.format -DiskContainer_S3Bucket $config.vhd.bucket -DiskContainer_S3Key $config.vhd.key -Description $image_description)[0]
+  $import_task_status = @(Import-EC2Snapshot -DiskContainer_Format $config.format -DiskContainer_S3Bucket $config.vhd.bucket -DiskContainer_S3Key $vhd_key -Description $image_description)[0]
   Write-Host -object ('snapshot import task in progress with id: {0}, progress: {1}%, status: {2}; {3}' -f $import_task_status.ImportTaskId, $import_task_status.SnapshotTaskDetail.Progress,  $import_task_status.SnapshotTaskDetail.Status, $import_task_status.SnapshotTaskDetail.StatusMessage) -ForegroundColor White
 } catch {
-  Write-Host -object ('failed to create snapshot import task for image {0} in bucket {1}' -f $config.vhd.key, $config.vhd.bucket) -ForegroundColor Red
+  Write-Host -object ('failed to create snapshot import task for image {0} in bucket {1}' -f $vhd_key, $config.vhd.bucket) -ForegroundColor Red
   if ($_.Exception.InnerException) {
     Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
   }

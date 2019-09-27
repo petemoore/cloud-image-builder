@@ -298,11 +298,12 @@ if (Get-GcsObject -Bucket $config.vhd.bucket -ObjectName $config.vhd.key -ErrorA
 }
 
 # upload the vhd(x) file
+$vhd_key = $(if ($source_ref.Length -eq 40) { ($config.vhd.key.Replace('vhd/', ('vhd/{0}/' -f $source_ref.SubString(0, 7)))) } else { $config.vhd.key })
 try {
-  New-GcsObject -Bucket $config.vhd.bucket -File $vhd_path -ObjectName $config.vhd.key
-  Write-Host -object ('uploaded {0} to bucket {1} with key {2}' -f $vhd_path, $config.vhd.bucket, $config.vhd.key) -ForegroundColor White
+  New-GcsObject -Bucket $config.vhd.bucket -File $vhd_path -ObjectName $vhd_key
+  Write-Host -object ('uploaded {0} to bucket {1} with key {2}' -f $vhd_path, $config.vhd.bucket, $vhd_key) -ForegroundColor White
 } catch {
-  Write-Host -object ('failed to upload {0} to bucket {1}' -f $config.vhd.bucket, $config.vhd.key) -ForegroundColor Red
+  Write-Host -object ('failed to upload {0} to bucket {1}' -f $config.vhd.bucket, $vhd_key) -ForegroundColor Red
   if ($_.Exception.InnerException) {
     Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
   }
