@@ -167,7 +167,7 @@ for target in targets:
         'git clone {} relops-image-builder'.format(os.environ.get('GITHUB_HEAD_REPO_URL')),
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder config advice.detachedHead false',
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder checkout {}'.format(os.environ.get('GITHUB_HEAD_SHA')),
-        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\{} {}'.format(target['buildScript'], target['workerType'])
+        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\{} {}'.format(target['buildScript'], target['workerType'], os.environ.get('GITHUB_HEAD_REPO_URL', 'https://github.com/mozilla-platform-ops/relops-image-builder.git').split('/')[3], os.environ.get('GITHUB_HEAD_REPO_NAME', 'relops-image-builder'), os.environ.get('GITHUB_HEAD_SHA', 'master'))
       ],
       'features': {
         'runAsAdministrator': True,

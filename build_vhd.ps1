@@ -1,13 +1,16 @@
 param (
-  [string] $target_worker_type
+  [string] $target_worker_type,
+  [string] $source_org = 'mozilla-platform-ops',
+  [string] $source_repo = 'relops-image-builder',
+  [string] $source_ref = 'master'
 )
 
 foreach ($env_var in (Get-ChildItem -Path 'Env:')) {
   Write-Host -object ('{0}: {1}' -f $env_var.Name, $env_var.Value) -ForegroundColor DarkGray
 }
 
-$worker_type_map = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/worker-type-map.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
-$manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/mozilla-platform-ops/relops_image_builder/master/manifest.json?{0}' -f [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
+$worker_type_map = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/{0}/{1}/{2}/worker-type-map.json?{3}' -f $source_org, $source_repo, $source_ref, [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
+$manifest = (Invoke-WebRequest -Uri ('https://raw.githubusercontent.com/{0}/{1}/{2}/manifest.json?{3}' -f $source_org, $source_repo, $source_ref, [Guid]::NewGuid()) -UseBasicParsing | ConvertFrom-Json)
 $config = @($manifest | Where-Object {
   $_.os -eq 'Windows' -and
   $_.build.major -eq $worker_type_map."$target_worker_type".build.major -and
@@ -29,7 +32,7 @@ $image_description = ('{0} {1} ({2}) - edition: {3}, language: {4}, partition: {
 $aws_region = 'us-west-2'
 $aws_availability_zone = ('{0}c' -f $aws_region)
 
-$cwi_url = 'https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/Convert-WindowsImage.ps1'
+$cwi_url = ('https://raw.githubusercontent.com/{0}/{1}/{2}/Convert-WindowsImage.ps1' -f $source_org, $source_repo, $source_ref)
 $work_dir = (Resolve-Path -Path '.\').Path
 $cwi_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($cwi_url)))
 $ua_path = (Join-Path -Path $work_dir -ChildPath ([System.IO.Path]::GetFileName($config.unattend)))
@@ -105,8 +108,8 @@ if (Test-Path -Path $ua_path -ErrorAction SilentlyContinue) {
 }
 # download the unattend file
 try {
-  (New-Object Net.WebClient).DownloadFile($config.unattend.Replace('/unattend/', '/unattend/gcp/'), $ua_path)
-  Write-Host -object ('downloaded {0} to {1}' -f $config.unattend.Replace('/unattend/', '/unattend/gcp/'), $ua_path) -ForegroundColor White
+  (New-Object Net.WebClient).DownloadFile($config.unattend.Replace('/unattend/', '/unattend/gcp/').Replace('mozilla-platform-ops/relops-image-builder/master', ('{0}/{1}/{2}' -f $source_org, $source_repo, $source_ref)), $ua_path)
+  Write-Host -object ('downloaded {0} to {1}' -f $config.unattend.Replace('/unattend/', '/unattend/gcp/').Replace('mozilla-platform-ops/relops-image-builder/master', ('{0}/{1}/{2}' -f $source_org, $source_repo, $source_ref)), $ua_path) -ForegroundColor White
 } catch {
   if ($_.Exception.InnerException) {
     Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
