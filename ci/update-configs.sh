@@ -1,5 +1,6 @@
 #!/bin/bash
 
+script_name=$(basename ${0##*/} .sh)
 temp_dir=$(mktemp -d)
 
 for nxlog_config in nxlog-win10.conf nxlog-win2012.conf nxlog-win2016.conf nxlog-win2019.conf; do
