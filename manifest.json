@@ -1323,6 +1323,14 @@
           "gcp"
         ],
         "bucket": "windows-ami-builder",
+        "key": "package/Win8.1AndW2K12R2-KB3191564-x64.msu",
+        "target": "Windows\\Temp\\Win8.1AndW2K12R2-KB3191564-x64.msu"
+      },
+      {
+        "platform": [
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
         "key": "package/googet.exe",
         "target": "Windows\\Temp\\googet.exe"
       },
