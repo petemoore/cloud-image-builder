@@ -6,19 +6,19 @@
       "major": 10,
       "minor": 0,
       "release": 18362,
-      "build": 239
+      "build": 356
     },
-    "update": "July 2019",
-    "changelog": "https://changewindows.org/build/18362#239",
+    "update": "September 2019",
+    "changelog": "https://docs.microsoft.com/en-us/windows/release-information/status-windows-10-1903",
     "edition": "Professional",
     "language": "en-US",
     "iso": {
       "bucket": "windows-ami-builder",
-      "key": "iso/en_windows_10_business_editions_version_1903_updated_july_2019_x64_dvd_97049592.iso"
+      "key": "iso/en_windows_10_business_editions_version_1903_updated_sept_2019_x64_dvd_a10b235d.iso"
     },
     "vhd": {
       "bucket": "windows-ami-builder",
-      "key": "vhd/Windows_10_Professional_1903_18362_239_en-US_x64.vhd"
+      "key": "vhd/Windows_10_Professional_1903_18362_356_en-US_x64.vhd"
     },
     "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
     "partition": "MBR",
@@ -206,21 +206,21 @@
       "major": 10,
       "minor": 0,
       "release": 18362,
-      "build": 30
+      "build": 356
     },
-    "update": "April 2019",
-    "changelog": "https://changewindows.org/build/18362#30",
+    "update": "September 2019",
+    "changelog": "https://docs.microsoft.com/en-us/windows/release-information/status-windows-10-1903",
     "edition": "Enterprise",
     "language": "en-US",
     "iso": {
       "bucket": "windows-ami-builder",
-      "key": "iso/en_windows_10_business_editions_version_1903_x64_dvd_37200948.iso"
+      "key": "iso/en_windows_10_business_editions_version_1903_updated_sept_2019_x64_dvd_a10b235d.iso"
     },
     "vhd": {
       "bucket": "windows-ami-builder",
-      "key": "vhd/Windows_10_Enterprise_1903_18362_30_en-US_x64_MBR.vhd"
+      "key": "vhd/Windows_10_Enterprise_1903_18362_356_en-US_x64_MBR.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Enterprise-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -1647,21 +1647,21 @@
     "build": {
       "major": 10,
       "minor": 0,
-      "release": 18362,
-      "build": 30
+      "release": 17763,
+      "build": 737
     },
-    "update": "April 2019",
-    "changelog": "https://docs.microsoft.com/en-us/windows/release-information/status-windows-10-1809-and-windows-server-2019",
-    "edition": "ServerStandardACor",
-    "wimindex": 1,
+    "update": "September 2019",
+    "changelog": "https://docs.microsoft.com/en-us/windows/release-information/status-windows-10-1903",
+    "edition": "ServerStandard",
+    "wimindex": 2,
     "language": "en-US",
     "iso": {
       "bucket": "windows-ami-builder",
-      "key": "iso/en_windows_server_version_1903_x64_dvd_58ddff4b.iso"
+      "key": "iso/en_windows_server_2019_updated_sept_2019_x64_dvd_199664ce.iso"
     },
     "vhd": {
       "bucket": "windows-ami-builder",
-      "key": "vhd/Windows_Server_2019_Standard_1198_14393_0_en-US_x64.vhd"
+      "key": "vhd/Windows_Server_2019_Standard_1903_17763_727_en-US_x64.vhd"
     },
     "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/WindowsServer2019-amd64-en-US.xml",
     "partition": "MBR",

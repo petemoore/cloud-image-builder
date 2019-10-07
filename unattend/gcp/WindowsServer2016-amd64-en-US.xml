@@ -145,7 +145,7 @@
           <Order>2</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Allow RDP traffic through firewall</Description>
-          <CommandLine>C:\Windows\System32\netsh.exe advfirewall firewall set rule group="remote desktop" new enable=yes > C:\log\unattend-netsh-firewall-allow-rdp.log</CommandLine>
+          <CommandLine>cmd /c start /wait C:\Windows\System32\netsh.exe advfirewall firewall set rule group="remote desktop" new enable=yes > C:\log\unattend-netsh-firewall-allow-rdp.log</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>3</Order>
