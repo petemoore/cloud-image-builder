@@ -2,7 +2,7 @@
 
 [![Task Status](https://github.taskcluster.net/v1/repository/mozilla-platform-ops/relops-image-builder/master/badge.svg)](https://github.taskcluster.net/v1/repository/mozilla-platform-ops/relops-image-builder/master/latest)
 
-This repository hosts a few scripts and ci configurations that enable the automated creation of Amazon EC2 AMIs from Windows ISO files.
+This repository hosts a few scripts and ci configurations that enable the automated creation of Amazon EC2 AMIs or Google Cloud images from Windows ISO files.
 
 The automation works by running a powershell script ([build_ami.ps1](https://github.com/mozilla-platform-ops/relops-image-builder/blob/master/build_ami.ps1)) in this repository which executes the following steps:
 
