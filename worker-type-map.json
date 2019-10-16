@@ -8,7 +8,7 @@
     "build": {
       "major": 10,
       "release": 18362,
-      "build": 239
+      "build": 356
     },
     "architecture": "x64"
   },
@@ -21,7 +21,7 @@
     "build": {
       "major": 10,
       "release": 18362,
-      "build": 239
+      "build": 356
     },
     "architecture": "x64"
   },
@@ -33,11 +33,11 @@
     },
     "language": "en-US",
     "edition": "Professional",
-    "version": 1803,
+    "version": 1903,
     "build": {
       "major": 10,
-      "release": 17134,
-      "build": 285
+      "release": 18362,
+      "build": 356
     },
     "architecture": "x64"
   },
@@ -49,11 +49,11 @@
     },
     "language": "en-US",
     "edition": "Professional",
-    "version": 1803,
+    "version": 1903,
     "build": {
       "major": 10,
-      "release": 17134,
-      "build": 285
+      "release": 18362,
+      "build": 356
     },
     "architecture": "x64"
   },
@@ -100,12 +100,12 @@
     "instance_type": "c5.4xlarge",
     "ami_description": "Amazon Linux 2 AMI * HVM gp2",
     "language": "en-US",
-    "edition": "ServerStandardACor",
+    "edition": "ServerStandard",
     "version": 2019,
     "build": {
       "major": 10,
-      "release": 18362,
-      "build": 30
+      "release": 17763,
+      "build": 737
     },
     "architecture": "x64"
   },
@@ -148,12 +148,12 @@
       "family": "debian-9-stretch"
     },
     "language": "en-US",
-    "edition": "ServerStandardACor",
+    "edition": "ServerStandard",
     "version": 2019,
     "build": {
       "major": 10,
-      "release": 18362,
-      "build": 30
+      "release": 17763,
+      "build": 737
     },
     "architecture": "x64"
   }
