@@ -150,25 +150,25 @@
           <Order>3</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Install googet</Description>
-          <CommandLine>C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet > C:\log\unattend-googet-install.log</CommandLine>
+          <CommandLine>start /wait C:\Windows\Temp\googet.exe -root C:\ProgramData\GooGet -noconfirm install -sources https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable googet > C:\log\unattend-googet-install.log</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>4</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Add the googet google-compute-engine-stable repo</Description>
-          <CommandLine>C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable > C:\log\unattend-googet-add-stable-repo.log</CommandLine>
+          <CommandLine>start /wait C:\ProgramData\GooGet\googet.exe addrepo google-compute-engine-stable https://packages.cloud.google.com/yuck/repos/google-compute-engine-stable > C:\log\unattend-googet-add-stable-repo.log</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>5</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Install google compute engine packages google-compute-engine-windows, google-compute-engine-metadata-scripts, google-compute-engine-sysprep, google-compute-engine-vss and google-compute-engine-auto-updater</Description>
-          <CommandLine>C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater > C:\log\unattend-googet-install-packages.log</CommandLine>
+          <CommandLine>start /wait C:\ProgramData\GooGet\googet.exe -noconfirm install google-compute-engine-windows google-compute-engine-sysprep google-compute-engine-metadata-scripts google-compute-engine-vss google-compute-engine-auto-updater > C:\log\unattend-googet-install-packages.log</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>6</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Install nxlog</Description>
-          <CommandLine>msiexec /i C:\Windows\Temp\nxlog-ce-2.10.2102.msi /quiet /L*V C:\log\unattend-msiexec-nxlog-install.log</CommandLine>
+          <CommandLine>start /wait msiexec /i C:\Windows\Temp\nxlog-ce-2.10.2102.msi /quiet /L*V C:\log\unattend-msiexec-nxlog-install.log</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>7</Order>
@@ -186,10 +186,16 @@
           <Order>9</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>Install Windows Management Framework</Description>
-          <CommandLine>wusa C:\Windows\Temp\Win8.1AndW2K12R2-KB3191564-x64.msu /quiet /norestart > C:\log\unattend-wusa-wmf-install.log</CommandLine>
+          <CommandLine>start /wait wusa C:\Windows\Temp\Win8.1AndW2K12R2-KB3191564-x64.msu /quiet /norestart > C:\log\unattend-wusa-wmf-install.log</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
           <Order>10</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>Install stackdriver</Description>
+          <CommandLine>start /wait C:\Windows\Temp\StackdriverLogging-v1-9.exe /S > C:\log\unattend-stackdriver-install.log</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>11</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>halt the instance</Description>
           <CommandLine>cmd /c start shutdown -s -t 0 -c "windows install complete" -f -d p:2:4</CommandLine>

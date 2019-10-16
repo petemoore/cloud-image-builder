@@ -27,6 +27,15 @@
     "packages": [
       {
         "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
+      {
+        "platform": [
           "gcp"
         ],
         "bucket": "windows-ami-builder",
@@ -226,6 +235,15 @@
     "architecture": "x64",
     "packages": [
       {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
+      {
         "bucket": "windows-ami-builder",
         "key": "package/EC2Install.zip",
         "target": "Windows\\Temp",
@@ -378,6 +396,15 @@
     "architecture": "x64",
     "packages": [
       {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
+      {
         "bucket": "windows-ami-builder",
         "key": "package/EC2Install.zip",
         "target": "Windows\\Temp",
@@ -505,6 +532,15 @@
     "format": "VHD",
     "architecture": "x64",
     "packages": [
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
       {
         "bucket": "windows-ami-builder",
         "key": "package/EC2Install.zip",
@@ -634,6 +670,15 @@
     "architecture": "x64",
     "packages": [
       {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
+      {
         "bucket": "windows-ami-builder",
         "key": "package/EC2Install.zip",
         "target": "Windows\\Temp",
@@ -761,6 +806,15 @@
     "format": "VHD",
     "architecture": "x64",
     "packages": [
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
       {
         "bucket": "windows-ami-builder",
         "key": "package/EC2Install.zip",
@@ -890,6 +944,15 @@
     "architecture": "x64",
     "packages": [
       {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
+      {
         "bucket": "windows-ami-builder",
         "key": "package/EC2Install.zip",
         "target": "Windows\\Temp",
@@ -1018,6 +1081,15 @@
     "architecture": "arm64",
     "packages": [
       {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
+      {
         "bucket": "windows-ami-builder",
         "key": "package/EC2Install.zip",
         "target": "Windows\\Temp",
@@ -1117,6 +1189,15 @@
     "format": "VHD",
     "architecture": "arm64",
     "packages": [
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
       {
         "bucket": "windows-ami-builder",
         "key": "package/EC2Install.zip",
@@ -1218,6 +1299,15 @@
     "architecture": "arm64",
     "packages": [
       {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
+      {
         "bucket": "windows-ami-builder",
         "key": "package/EC2Install.zip",
         "target": "Windows\\Temp",
@@ -1318,6 +1408,15 @@
     "format": "VHD",
     "architecture": "x64",
     "packages": [
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
       {
         "platform": [
           "gcp"
@@ -1499,6 +1598,15 @@
     "packages": [
       {
         "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
+      {
+        "platform": [
           "gcp"
         ],
         "bucket": "windows-ami-builder",
@@ -1668,6 +1776,15 @@
     "format": "VHD",
     "architecture": "x64",
     "packages": [
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
       {
         "platform": [
           "gcp"

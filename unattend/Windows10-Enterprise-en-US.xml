@@ -473,7 +473,13 @@
         <SynchronousCommand wcm:action="add">
           <Order>9</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Uninstall and disable OneDrive</Description>
+          <Description>Install stackdriver</Description>
+          <CommandLine>start /wait C:\Windows\Temp\StackdriverLogging-v1-9.exe /S > C:\log\unattend-stackdriver-install.log</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>10</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>halt the instance</Description>
           <CommandLine>cmd /c start shutdown -s -t 0 -c "windows install complete" -f -d p:2:4</CommandLine>
         </SynchronousCommand>
       </FirstLogonCommands>
@@ -559,7 +565,13 @@
         <SynchronousCommand wcm:action="add">
           <Order>9</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Uninstall and disable OneDrive</Description>
+          <Description>Install stackdriver</Description>
+          <CommandLine>start /wait C:\Windows\Temp\StackdriverLogging-v1-9.exe /S > C:\log\unattend-stackdriver-install.log</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>10</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>halt the instance</Description>
           <CommandLine>cmd /c start shutdown -s -t 0 -c "windows install complete" -f -d p:2:4</CommandLine>
         </SynchronousCommand>
       </FirstLogonCommands>
@@ -645,7 +657,13 @@
         <SynchronousCommand wcm:action="add">
           <Order>9</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Uninstall and disable OneDrive</Description>
+          <Description>Install stackdriver</Description>
+          <CommandLine>start /wait C:\Windows\Temp\StackdriverLogging-v1-9.exe /S > C:\log\unattend-stackdriver-install.log</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>10</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>halt the instance</Description>
           <CommandLine>cmd /c start shutdown -s -t 0 -c "windows install complete" -f -d p:2:4</CommandLine>
         </SynchronousCommand>
       </FirstLogonCommands>
@@ -731,7 +749,13 @@
         <SynchronousCommand wcm:action="add">
           <Order>9</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Uninstall and disable OneDrive</Description>
+          <Description>Install stackdriver</Description>
+          <CommandLine>start /wait C:\Windows\Temp\StackdriverLogging-v1-9.exe /S > C:\log\unattend-stackdriver-install.log</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand wcm:action="add">
+          <Order>10</Order>
+          <RequiresUserInput>false</RequiresUserInput>
+          <Description>halt the instance</Description>
           <CommandLine>cmd /c start shutdown -s -t 0 -c "windows install complete" -f -d p:2:4</CommandLine>
         </SynchronousCommand>
       </FirstLogonCommands>
