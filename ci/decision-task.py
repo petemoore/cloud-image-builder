@@ -15,8 +15,8 @@ targets = [
       'workerPool': 'aws-provisioner-v1'
     },
     'buildScript': 'build_ami.ps1',
-    'name': 'iso-to-ami',
-    'decription': 'build ec2 ami from iso'
+    'name': 'iso-to-ec2-ami-win-10',
+    'decription': 'build windows 10 amazon ec2 ami from iso'
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
@@ -28,8 +28,8 @@ targets = [
       'workerPool': 'aws-provisioner-v1'
     },
     'buildScript': 'build_ami.ps1',
-    'name': 'iso-to-ami',
-    'decription': 'build ec2 ami from iso'
+    'name': 'iso-to-ec2-ami-win-10-gpu',
+    'decription': 'build windows 10 gpu amazon ec2 ami from iso'
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
@@ -41,8 +41,8 @@ targets = [
       'workerPool': 'aws-provisioner-v1'
     },
     'buildScript': 'build_ami.ps1',
-    'name': 'iso-to-ami',
-    'decription': 'build ec2 ami from iso'
+    'name': 'iso-to-ec2-ami-win-2012',
+    'decription': 'build windows server 2012 amazon ec2 ami from iso'
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
@@ -54,8 +54,8 @@ targets = [
       'workerPool': 'aws-provisioner-v1'
     },
     'buildScript': 'build_ami.ps1',
-    'name': 'iso-to-ami',
-    'decription': 'build ec2 ami from iso'
+    'name': 'iso-to-ec2-ami-win-2016',
+    'decription': 'build windows server 2016 amazon ec2 ami from iso'
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
@@ -67,8 +67,8 @@ targets = [
       'workerPool': 'aws-provisioner-v1'
     },
     'buildScript': 'build_ami.ps1',
-    'name': 'iso-to-ami',
-    'decription': 'build ec2 ami from iso'
+    'name': 'iso-to-ec2-ami-win-2019',
+    'decription': 'build windows server 2019 amazon ec2 ami from iso'
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
@@ -80,8 +80,8 @@ targets = [
       'workerPool': 'sandbox-1'
     },
     'buildScript': 'build_vhd.ps1',
-    'name': 'iso-to-vhd',
-    'decription': 'build gcp vhd from iso'
+    'name': 'iso-to-gcp-img-win-10',
+    'decription': 'build windows 10 google cloud image from iso'
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
@@ -93,8 +93,8 @@ targets = [
       'workerPool': 'sandbox-1'
     },
     'buildScript': 'build_vhd.ps1',
-    'name': 'iso-to-vhd',
-    'decription': 'build gcp vhd from iso'
+    'name': 'iso-to-gcp-img-win-10-gpu',
+    'decription': 'build windows 10 gpu google cloud image from iso'
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
@@ -106,8 +106,8 @@ targets = [
       'workerPool': 'sandbox-1'
     },
     'buildScript': 'build_vhd.ps1',
-    'name': 'iso-to-vhd',
-    'decription': 'build gcp vhd from iso'
+    'name': 'iso-to-gcp-img-win-2012',
+    'decription': 'build windows server 2012 google cloud image from iso'
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
@@ -119,8 +119,8 @@ targets = [
       'workerPool': 'sandbox-1'
     },
     'buildScript': 'build_vhd.ps1',
-    'name': 'iso-to-vhd',
-    'decription': 'build gcp vhd from iso'
+    'name': 'iso-to-gcp-img-win-2016',
+    'decription': 'build windows server 2016 google cloud image from iso'
   },
   {
     'taskId': slugid.nice().decode('utf-8'),
@@ -132,8 +132,8 @@ targets = [
       'workerPool': 'sandbox-1'
     },
     'buildScript': 'build_vhd.ps1',
-    'name': 'iso-to-vhd',
-    'decription': 'build gcp vhd from iso'
+    'name': 'iso-to-gcp-img-win-2019',
+    'decription': 'build windows server 2019 google cloud image from iso'
   }
 ]
 for target in targets:
@@ -185,42 +185,42 @@ for target in targets:
   taskStatusResponse = queue.createTask(target['taskId'], payload)
   print(taskStatusResponse)
 
-for target in [t for t in targets if t['provider'] == 'gcp']:
-  taskId = slugid.nice().decode('utf-8')
-  payload = {
-    'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
-    'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
-    'provisionerId': 'aws-provisioner-v1',
-    'workerType': 'github-worker',
-    'schedulerId': 'taskcluster-github',
-    'taskGroupId': os.environ.get('TASK_ID'),
-    'dependencies': [
-      target['taskId']
-    ],
-    'routes': [
-      'index.project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
-    ],
-    'scopes': [],
-    'payload': {
-      'image': 'grenade/opencloudconfig',
-      'maxRunTime': 3600,
-      'command': [
-        '/bin/bash',
-        '--login',
-        '-c',
-        'echo "child task of {}"'.format(target['taskId'])
-      ],
-      'features': {
-        'taskclusterProxy': True
-      }
-    },
-    'metadata': {
-      'name': '{} :: {} :: vhd-to-gcp-image'.format(target['provider'], target['workerType']),
-      'description': 'build gcp image from vhd for {}'.format(target['workerType']),
-      'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
-      'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
-    }
-  }
-  print('creating task {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(taskId, os.environ.get('TASK_ID'), taskId))
-  taskStatusResponse = queue.createTask(taskId, payload)
-  print(taskStatusResponse)
+#for target in [t for t in targets if t['provider'] == 'gcp']:
+#  taskId = slugid.nice().decode('utf-8')
+#  payload = {
+#    'created': '{}Z'.format(datetime.utcnow().isoformat()[:-3]),
+#    'deadline': '{}Z'.format((datetime.utcnow() + timedelta(days=3)).isoformat()[:-3]),
+#    'provisionerId': 'aws-provisioner-v1',
+#    'workerType': 'github-worker',
+#    'schedulerId': 'taskcluster-github',
+#    'taskGroupId': os.environ.get('TASK_ID'),
+#    'dependencies': [
+#      target['taskId']
+#    ],
+#    'routes': [
+#      'index.project.releng.relops-image-builder.v1.revision.{}'.format(os.environ.get('GITHUB_HEAD_SHA'))
+#    ],
+#    'scopes': [],
+#    'payload': {
+#      'image': 'grenade/opencloudconfig',
+#      'maxRunTime': 3600,
+#      'command': [
+#        '/bin/bash',
+#        '--login',
+#        '-c',
+#        'echo "child task of {}"'.format(target['taskId'])
+#      ],
+#      'features': {
+#        'taskclusterProxy': True
+#      }
+#    },
+#    'metadata': {
+#      'name': '{} :: {} :: vhd-to-gcp-image'.format(target['provider'], target['workerType']),
+#      'description': 'build gcp image from vhd for {}'.format(target['workerType']),
+#      'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
+#      'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
+#    }
+#  }
+#  print('creating task {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(taskId, os.environ.get('TASK_ID'), taskId))
+#  taskStatusResponse = queue.createTask(taskId, payload)
+#  print(taskStatusResponse)

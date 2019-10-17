@@ -309,3 +309,18 @@ try {
   }
   Write-Host -object $_.Exception.Message -ForegroundColor Red
 }
+
+# use cloud build to import the vhd as a gcp image
+& gcloud @('components', 'install', 'beta')
+
+& gcloud @('beta', 'compute', 'images', 'import',
+  ('windows-{0}-{1}' -f $(if ($config.version -eq 2012) { '2012r2' } else { $config.version }), $source_ref.SubString(0, 7)),
+  '--source-file', ('gs://{0}/{1}' -f $config.vhd.bucket, $vhd_key),
+  '--project', 'image-builder-242310',
+  '--family', ('windows-{0}' -f $(if ($config.version -eq 2012) { '2012r2' } else { $config.version })),
+  '--os', ('windows-{0}-byol' -f $(if ($config.version -eq 2012) { '2012r2' } else { $config.version })))
+
+& gcloud @('compute', 'images', 'add-labels',
+  ('windows-{0}-{1}' -f $(if ($config.version -eq 2012) { '2012r2' } else { $config.version }), $source_ref.SubString(0, 7)),
+  '--project', 'image-builder-242310',
+  '--labels', ('os-edition={0},os-architecture={1},occ-version={2}' -f $config.edition.ToLower(), $(if ($config.architecture -eq 'x64') { 'x86-64' } else { 'x86' }), $source_ref.SubString(0, 7)))
