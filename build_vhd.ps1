@@ -311,8 +311,6 @@ try {
 }
 
 # use cloud build to import the vhd as a gcp image
-& gcloud @('components', 'install', 'beta')
-
 & gcloud @('beta', 'compute', 'images', 'import',
   ('windows-{0}-{1}' -f $(if ($config.version -eq 2012) { '2012r2' } else { $config.version }), $source_ref.SubString(0, 7)),
   '--source-file', ('gs://{0}/{1}' -f $config.vhd.bucket, $vhd_key),

@@ -167,6 +167,13 @@ for target in targets:
         'git clone {} relops-image-builder'.format(os.environ.get('GITHUB_HEAD_REPO_URL')),
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder config advice.detachedHead false',
         'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder checkout {}'.format(os.environ.get('GITHUB_HEAD_SHA')),
+        'for /F "delims=" %%i in (\'"C:\\Program Files (x86)\\Google\\Cloud SDK\\google-cloud-sdk\\bin\\gcloud.cmd" components copy-bundled-python\') do (set CLOUDSDK_PYTHON=%%i)',
+        'gcloud components install beta --quiet',
+        'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\{} {} {} {} {}'.format(target['buildScript'], target['workerType'], os.environ.get('GITHUB_HEAD_REPO_URL', 'https://github.com/mozilla-platform-ops/relops-image-builder.git').split('/')[3], os.environ.get('GITHUB_HEAD_REPO_NAME', 'relops-image-builder'), os.environ.get('GITHUB_HEAD_SHA', 'master'))
+      ] if target['provider'] == 'gcp' else [
+        'git clone {} relops-image-builder'.format(os.environ.get('GITHUB_HEAD_REPO_URL')),
+        'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder config advice.detachedHead false',
+        'git --git-dir=.\\relops-image-builder\\.git --work-tree=.\\relops-image-builder checkout {}'.format(os.environ.get('GITHUB_HEAD_SHA')),
         'powershell -NoProfile -InputFormat None -File .\\relops-image-builder\\{} {} {} {} {}'.format(target['buildScript'], target['workerType'], os.environ.get('GITHUB_HEAD_REPO_URL', 'https://github.com/mozilla-platform-ops/relops-image-builder.git').split('/')[3], os.environ.get('GITHUB_HEAD_REPO_NAME', 'relops-image-builder'), os.environ.get('GITHUB_HEAD_SHA', 'master'))
       ],
       'features': {
