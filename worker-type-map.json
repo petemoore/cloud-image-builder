@@ -70,6 +70,64 @@
     },
     "architecture": "arm64"
   },
+  "gecko-t-win7-32-alpha": {
+    "instance_type": "c5.2xlarge",
+    "ami_description": "Amazon Linux 2 AMI * HVM gp2",
+    "language": "en-US",
+    "edition": "Professional",
+    "version": 7,
+    "build": {
+      "major": 6,
+      "release": 0,
+      "build": 0
+    },
+    "architecture": "x86"
+  },
+  "gecko-t-win7-32-gpu-a": {
+    "instance_type": "g2.2xlarge",
+    "ami_description": "Amazon Linux 2 AMI * HVM gp2",
+    "language": "en-US",
+    "edition": "Professional",
+    "version": 7,
+    "build": {
+      "major": 6,
+      "release": 0,
+      "build": 0
+    },
+    "architecture": "x86"
+  },
+  "gecko-t-win7-32-gamma": {
+    "machine_type": "n1-highcpu-32",
+    "image": {
+      "project": "debian-cloud",
+      "family": "debian-9-stretch"
+    },
+    "language": "en-US",
+    "edition": "Professional",
+    "version": 7,
+    "build": {
+      "major": 6,
+      "release": 0,
+      "build": 0
+    },
+    "architecture": "x86"
+  },
+  "gecko-t-win7-32-gpu-gamma": {
+    "machine_type": "n1-highcpu-32",
+    "image": {
+      "project": "debian-cloud",
+      "family": "debian-9-stretch"
+    },
+    "language": "en-US",
+    "edition": "Professional",
+    "version": 7,
+    "build": {
+      "major": 6,
+      "release": 0,
+      "build": 0
+    },
+    "architecture": "x86"
+  },
   "gecko-1-b-win2012-alpha": {
     "instance_type": "c5.4xlarge",
     "ami_description": "Amazon Linux 2 AMI * HVM gp2",

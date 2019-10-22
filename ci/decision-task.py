@@ -31,6 +31,32 @@ targets = [
     'name': 'iso-to-ec2-ami-win-10-gpu',
     'decription': 'build windows 10 gpu amazon ec2 ami from iso'
   },
+#  {
+#    'taskId': slugid.nice().decode('utf-8'),
+#    'provider': 'ec2',
+#    'workerType': 'gecko-t-win7-32-alpha',
+#    'workerPool': 'aws-provisioner-v1',
+#    'builder': {
+#      'workerType': 'relops-image-builder',
+#      'workerPool': 'aws-provisioner-v1'
+#    },
+#    'buildScript': 'build_ami.ps1',
+#    'name': 'iso-to-ec2-ami-win-7',
+#    'decription': 'build windows 7 amazon ec2 ami from iso'
+#  },
+#  {
+#    'taskId': slugid.nice().decode('utf-8'),
+#    'provider': 'ec2',
+#    'workerType': 'gecko-t-win7-32-gpu-a',
+#    'workerPool': 'aws-provisioner-v1',
+#    'builder': {
+#      'workerType': 'relops-image-builder',
+#      'workerPool': 'aws-provisioner-v1'
+#    },
+#    'buildScript': 'build_ami.ps1',
+#    'name': 'iso-to-ec2-ami-win-7-gpu',
+#    'decription': 'build windows 7 gpu amazon ec2 ami from iso'
+#  },
   {
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'ec2',
@@ -96,6 +122,32 @@ targets = [
     'name': 'iso-to-gcp-img-win-10-gpu',
     'decription': 'build windows 10 gpu google cloud image from iso'
   },
+#  {
+#    'taskId': slugid.nice().decode('utf-8'),
+#    'provider': 'gcp',
+#    'workerType': 'gecko-t-win7-32-gamma',
+#    'workerPool': 'gcp',
+#    'builder': {
+#      'workerType': 'win2016-gamma',
+#      'workerPool': 'sandbox-1'
+#    },
+#    'buildScript': 'build_vhd.ps1',
+#    'name': 'iso-to-gcp-img-win-7',
+#    'decription': 'build windows 7 google cloud image from iso'
+#  },
+#  {
+#    'taskId': slugid.nice().decode('utf-8'),
+#    'provider': 'gcp',
+#    'workerType': 'gecko-t-win7-32-gpu-gamma',
+#    'workerPool': 'gcp',
+#    'builder': {
+#      'workerType': 'win2016-gamma',
+#      'workerPool': 'sandbox-1'
+#    },
+#    'buildScript': 'build_vhd.ps1',
+#    'name': 'iso-to-gcp-img-win-7-gpu',
+#    'decription': 'build windows 7 gpu google cloud image from iso'
+#  },
   {
     'taskId': slugid.nice().decode('utf-8'),
     'provider': 'gcp',
@@ -155,7 +207,7 @@ for target in targets:
       'osGroups': [
         'Administrators'
       ],
-      'maxRunTime': 3600,
+      'maxRunTime': 10800,
       'artifacts': [
         {
           "name": "public/screenshot",

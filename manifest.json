@@ -1928,5 +1928,214 @@
         ]
       }
     }
+  },
+  {
+    "os": "Windows",
+    "version": 7,
+    "build": {
+      "major": 6,
+      "minor": 0,
+      "release": 0,
+      "build": 0
+    },
+    "update": "May 2011",
+    "changelog": "",
+    "edition": "Professional",
+    "language": "en-US",
+    "iso": {
+      "bucket": "windows-ami-builder",
+      "key": "iso/en_windows_7_professional_with_sp1_x86_dvd_u_677056.iso"
+    },
+    "vhd": {
+      "bucket": "windows-ami-builder",
+      "key": "vhd/Windows_7_Professional_with_sp1_en-US_x86.vhd"
+    },
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows7-Professional-x86-en-US.xml",
+    "partition": "MBR",
+    "format": "VHD",
+    "architecture": "x86",
+    "packages": [
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/StackdriverLogging-v1-9.exe",
+        "target": "Windows\\Temp\\StackdriverLogging-v1-9.exe"
+      },
+      {
+        "platform": [
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/googet.exe",
+        "target": "Windows\\Temp\\googet.exe"
+      },
+      {
+        "platform": [
+          "ec2"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/EC2Install.zip",
+        "target": "Windows\\Temp",
+        "extract": true
+      },
+      {
+        "platform": [
+          "ec2"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "config/Ec2ConfigurationSettings.xml",
+        "target": "Windows\\Temp\\Ec2ConfigurationSettings.xml"
+      },
+      {
+        "platform": [
+          "ec2"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "config/WallpaperSettings.xml",
+        "target": "Windows\\Temp\\WallpaperSettings.xml"
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/nxlog-ce-2.10.2102.msi",
+        "target": "Windows\\Temp"
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "config/nxlog-win7.conf",
+        "target": "Windows\\Temp\\nxlog.conf"
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "config/papertrail-bundle.pem",
+        "target": "Windows\\Temp\\papertrail-bundle.pem"
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "package/vac413full.zip",
+        "target": "Windows\\Temp",
+        "extract": true
+      }
+    ],
+    "drivers": [
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "driver/aws-pv/xenbus.zip",
+        "target": "xenbus",
+        "inf": "xenbus",
+        "extract": true
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "driver/aws-pv/xeniface.zip",
+        "target": "xeniface",
+        "inf": "xeniface",
+        "extract": true
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "driver/aws-pv/xennet.zip",
+        "target": "xennet",
+        "inf": "xennet",
+        "extract": true
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "driver/aws-pv/xenvbd.zip",
+        "target": "xenvbd",
+        "inf": "xenvbd",
+        "extract": true
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "driver/aws-pv/xenvif.zip",
+        "target": "xenvif",
+        "inf": "xenvif",
+        "extract": true
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "driver/AwsEnaNetworkDriver.zip",
+        "target": "AwsEnaNetworkDriver",
+        "inf": "AwsEnaNetworkDriver\\bin.10.0",
+        "extract": true
+      },
+      {
+        "platform": [
+          "ec2",
+          "gcp"
+        ],
+        "bucket": "windows-ami-builder",
+        "key": "driver/370.39-grid-desktop-notebook-win8-win7-32bit-international-whql.zip",
+        "target": "370.39-grid-desktop-notebook-win8-win7-32bit-international-whql",
+        "inf": "370.39-grid-desktop-notebook-win8-win7-32bit-international-whql",
+        "extract": true
+      }
+    ],
+    "service": {
+      "disable": [
+        "SecurityHealthService",
+        "Sense",
+        "WdBoot",
+        "WdFilter",
+        "WdNisDrv",
+        "WdNisSvc",
+        "WinDefend",
+        "wscsvc"
+      ]
+    },
+    "deployment": {
+      "aws": {
+        "instance_type": "g2.2xlarge",
+        "key_name": "mozilla-taskcluster-worker-gecko-t-win7-32-gpu",
+        "init_ami_filter": "Amazon Linux 2 AMI * HVM gp2",
+        "security_groups": [
+          "ssh-only",
+          "rdp-only"
+        ]
+      }
+    }
   }
 ]
