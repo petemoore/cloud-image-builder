@@ -20,7 +20,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Professional_1903_18362_356_en-US_x64.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-amd64-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -527,7 +527,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Professional_1803_17134_285_en-US_x64_MBR.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-amd64-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -664,7 +664,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Professional_1803_17134_en-US_x64_MBR.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-amd64-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -801,7 +801,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Professional_1703_15063_en-US_x64_MBR.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-amd64-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -938,7 +938,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Enterprise_1703_15063_296_en-US_x64_MBR.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-amd64-en-US.xml",
     "partition": "MBR",
     "format": "VHD",
     "architecture": "x64",
@@ -1075,7 +1075,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhdx/Windows_10_Professional_1903_18290_1000_en-US_arm64_GPT.vhdx"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-arm64-en-US.xml",
     "partition": "GPT",
     "format": "VHDX",
     "architecture": "arm64",
@@ -1184,7 +1184,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Professional_1903_18290_1000_en-US_arm64_GPT.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-arm64-en-US.xml",
     "partition": "GPT",
     "format": "VHD",
     "architecture": "arm64",
@@ -1293,7 +1293,7 @@
       "bucket": "windows-ami-builder",
       "key": "vhd/Windows_10_Professional_1903_18309_1000_en-US_arm64_GPT.vhd"
     },
-    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-en-US.xml",
+    "unattend": "https://raw.githubusercontent.com/mozilla-platform-ops/relops-image-builder/master/unattend/Windows10-Professional-arm64-en-US.xml",
     "partition": "GPT",
     "format": "VHD",
     "architecture": "arm64",
