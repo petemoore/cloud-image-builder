@@ -4,7 +4,8 @@ param (
   [string] $source_repo = 'relops-image-builder',
   [string] $source_ref = 'master',
   [string] $ec2_key_pair = 'mozilla-taskcluster-worker-relops-image-builder',
-  [string[]] $ec2_security_groups = @('ssh-only', 'rdp-only')
+  [string[]] $ec2_security_groups = @('ssh-only', 'rdp-only'),
+  [string[]] $shared_access_accounts = @('461454502437')
 )
 
 foreach ($env_var in (Get-ChildItem -Path 'Env:')) {
@@ -332,7 +333,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
   Write-Host -object ($import_task_status.SnapshotTaskDetail | Format-List | Out-String) -ForegroundColor DarkGray
 
   $snapshots = @(Get-EC2Snapshot -Filter (New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(('Created by AWS-VMImport service for {0}' -f $import_task_status.ImportTaskId)))))
-  Write-Host -object ('{0} snapshot{1} extracted from {2}' -f  $snapshots.length, $(if ($snapshots.length -gt 1) { 's' } else { '' }), $config.format) -ForegroundColor White
+  Write-Host -object ('{0} snapshot{1} extracted from {2}' -f $snapshots.length, $(if ($snapshots.length -gt 1) { 's' } else { '' }), $config.format) -ForegroundColor White
   Write-Host -object ($snapshots | Format-Table | Out-String) -ForegroundColor DarkGray
 
   # create an ec2 volume for each snapshot
@@ -346,7 +347,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
     }
     Write-Host -object ('snapshot id: {0}, state: {1}, progress: {2}, size: {3}gb' -f $snapshot.SnapshotId, $snapshot.State, $snapshot.Progress, $snapshot.VolumeSize) -ForegroundColor White
     $volume = (New-EC2Volume -SnapshotId $snapshot.SnapshotId -Size $snapshot.VolumeSize -AvailabilityZone $aws_availability_zone -VolumeType 'gp2' -Encrypted $false)
-    Write-Host -object ('volume creation in progress. volume id: {0}, state: {1}' -f  $volume.VolumeId, $volume.State) -ForegroundColor White
+    Write-Host -object ('volume creation in progress. volume id: {0}, state: {1}' -f $volume.VolumeId, $volume.State) -ForegroundColor White
 
     # wait for volume creation to complete
     while ($volume.State -ne 'available') {
@@ -366,7 +367,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
   $amazon_linux_ami_id = (Get-EC2Image -Owner 'amazon' -Filter @((New-Object -TypeName Amazon.EC2.Model.Filter -ArgumentList @('description', @(($worker_type_map."$target_worker_type".ami_description))))))[0].ImageId
   $instance = (New-EC2Instance -ImageId $amazon_linux_ami_id -AvailabilityZone $aws_availability_zone -MinCount 1 -MaxCount 1 -InstanceType $worker_type_map."$target_worker_type".instance_type -KeyName $ec2_key_pair -SecurityGroup $ec2_security_groups).Instances[0]
   $instance_id = $instance.InstanceId
-  Write-Host -object ('instance {0} created with ami {1}' -f  $instance_id, $amazon_linux_ami_id) -ForegroundColor White
+  Write-Host -object ('instance {0} created with ami {1}' -f $instance_id, $amazon_linux_ami_id) -ForegroundColor White
   while ((Get-EC2Instance -InstanceId $instance_id).Instances[0].State.Name -ne 'running') {
     Write-Host -object 'waiting for instance to start' -ForegroundColor DarkGray
     Start-Sleep -Seconds 5
@@ -383,9 +384,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
     try {
       $detach_volume = (Dismount-EC2Volume -InstanceId $instance_id -Device $block_device_mapping.DeviceName -VolumeId $block_device_mapping.Ebs.VolumeId -ForceDismount:$true)
       Write-Host -object $detach_volume -ForegroundColor DarkGray
-      Write-Host -object ('detached volume {0} from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor White
+      Write-Host -object ('detached volume {0} from {1}{2}' -f $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor White
     } catch {
-      Write-Host -object ('failed to detach volume {0} from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor Red
+      Write-Host -object ('failed to detach volume {0} from {1}{2}' -f $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor Red
       if ($_.Exception.InnerException) {
         Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
       }
@@ -393,7 +394,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
       exit
     }
     while ((Get-EC2Volume -VolumeId $block_device_mapping.Ebs.VolumeId).State -ne 'available') {
-      Write-Host -object ('waiting for volume {0} to detach from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor DarkGray
+      Write-Host -object ('waiting for volume {0} to detach from {1}{2}' -f $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor DarkGray
       Start-Sleep -Milliseconds 500
     }
     Remove-EC2Volume -VolumeId $block_device_mapping.Ebs.VolumeId -PassThru -Force
@@ -405,7 +406,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
     Write-Host -object $attach_volume -ForegroundColor DarkGray
     Write-Host -object ('attached volume {0} to {1}{2}' -f $volume_zero, $instance_id, $device_zero) -ForegroundColor White
   } catch {
-    Write-Host -object ('failed to attach volume {0} to {1}{2}' -f  $volume_zero, $instance_id, $device_zero) -ForegroundColor Red
+    Write-Host -object ('failed to attach volume {0} to {1}{2}' -f $volume_zero, $instance_id, $device_zero) -ForegroundColor Red
     if ($_.Exception.InnerException) {
       Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
     }
@@ -491,9 +492,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
         try {
           $detach_volume = (Dismount-EC2Volume -InstanceId $local_instance_id -Device $local_block_device_mapping.DeviceName -VolumeId $local_block_device_mapping.Ebs.VolumeId -ForceDismount:$true)
           Write-Host -object $detach_volume -ForegroundColor DarkCyan
-          Write-Host -object ('detached volume {0} from {1}{2}' -f  $local_block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_block_device_mapping.DeviceName) -ForegroundColor Cyan
+          Write-Host -object ('detached volume {0} from {1}{2}' -f $local_block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_block_device_mapping.DeviceName) -ForegroundColor Cyan
         } catch {
-          Write-Host -object ('failed to detach volume {0} from {1}{2}' -f  $local_block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_block_device_mapping.DeviceName) -ForegroundColor Red
+          Write-Host -object ('failed to detach volume {0} from {1}{2}' -f $local_block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_block_device_mapping.DeviceName) -ForegroundColor Red
           if ($_.Exception.InnerException) {
             Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
           }
@@ -501,7 +502,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
           exit
         }
         while ((Get-EC2Volume -VolumeId $local_block_device_mapping.Ebs.VolumeId).State -ne 'available') {
-          Write-Host -object ('waiting for volume {0} to detach from {1}{2}' -f  $local_block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_block_device_mapping.DeviceName) -ForegroundColor DarkCyan
+          Write-Host -object ('waiting for volume {0} to detach from {1}{2}' -f $local_block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_block_device_mapping.DeviceName) -ForegroundColor DarkCyan
           Start-Sleep -Milliseconds 500
         }
       }
@@ -511,9 +512,9 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
       try {
         $detach_volume = (Dismount-EC2Volume -InstanceId $instance_id -Device $block_device_mapping.DeviceName -VolumeId $block_device_mapping.Ebs.VolumeId -ForceDismount:$true)
         Write-Host -object $detach_volume -ForegroundColor DarkCyan
-        Write-Host -object ('detached volume {0} from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor Cyan
+        Write-Host -object ('detached volume {0} from {1}{2}' -f $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor Cyan
       } catch {
-        Write-Host -object ('failed to detach volume {0} from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor Red
+        Write-Host -object ('failed to detach volume {0} from {1}{2}' -f $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor Red
         if ($_.Exception.InnerException) {
           Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
         }
@@ -521,7 +522,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
         exit
       }
       while ((Get-EC2Volume -VolumeId $block_device_mapping.Ebs.VolumeId).State -ne 'available') {
-        Write-Host -object ('waiting for volume {0} to detach from {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor DarkCyan
+        Write-Host -object ('waiting for volume {0} to detach from {1}{2}' -f $block_device_mapping.Ebs.VolumeId, $instance_id, $block_device_mapping.DeviceName) -ForegroundColor DarkCyan
         Start-Sleep -Milliseconds 500
       }
       # attach volume to current instance for access to logs
@@ -530,7 +531,7 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
         Write-Host -object $attach_volume -ForegroundColor DarkCyan
         Write-Host -object ('attached volume {0} to {1}{2}' -f $block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_devices[$i]) -ForegroundColor Cyan
       } catch {
-        Write-Host -object ('failed to attach volume {0} to {1}{2}' -f  $block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_devices[$i]) -ForegroundColor Red
+        Write-Host -object ('failed to attach volume {0} to {1}{2}' -f $block_device_mapping.Ebs.VolumeId, $local_instance_id, $local_devices[$i]) -ForegroundColor Red
         if ($_.Exception.InnerException) {
           Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
         }
@@ -543,8 +544,19 @@ if ($import_task_status.SnapshotTaskDetail.Status -ne 'completed') {
     try {
       $ami_id = (New-EC2Image -InstanceId $instance_id -Name ('{0}-{1}-{2}' -f [System.IO.Path]::GetFileNameWithoutExtension($config.vhd.key), $(if ($source_ref.Length -eq 40) { $source_ref.SubString(0, 7) } else { $source_ref }), $image_capture_date) -Description $image_description)
       Write-Host -object ('ami {0} created from instance {1}' -f $ami_id, $instance_id) -ForegroundColor Green
+      foreach ($shared_access_account in $shared_access_accounts) {
+        try {
+          Edit-EC2ImageAttribute -ImageId $ami_id -Attribute 'launchPermission' -OperationType add -UserId $shared_access_account
+        } catch {
+          Write-Host -object ('failed to share ami {0} with account {1}' -f $ami_id, $shared_access_account) -ForegroundColor Red
+          if ($_.Exception.InnerException) {
+            Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
+          }
+          Write-Host -object $_.Exception.Message -ForegroundColor Red
+        }
+      }
     } catch {
-      Write-Host -object ('failed to create ami from instance {0}' -f  $instance_id) -ForegroundColor Red
+      Write-Host -object ('failed to create ami from instance {0}' -f $instance_id) -ForegroundColor Red
       if ($_.Exception.InnerException) {
         Write-Host -object $_.Exception.InnerException.Message -ForegroundColor DarkYellow
       }
