@@ -237,7 +237,7 @@ for target in targets:
       'name': '{} :: {} :: {}'.format(target['provider'], target['workerType'], target['name']),
       'description': '{} for {}'.format(target['decription'], target['workerType']),
       'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
-      'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
+      'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL')[:-4], os.environ.get('GITHUB_HEAD_SHA')[0:7])
     }
   }
   print('creating task {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(target['taskId'], os.environ.get('TASK_ID'), target['taskId']))
@@ -277,7 +277,7 @@ for target in targets:
 #      'name': '{} :: {} :: vhd-to-gcp-image'.format(target['provider'], target['workerType']),
 #      'description': 'build gcp image from vhd for {}'.format(target['workerType']),
 #      'owner': os.environ.get('GITHUB_HEAD_USER_EMAIL'),
-#      'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL'), os.environ.get('GITHUB_HEAD_SHA'))
+#      'source': '{}/commit/{}'.format(os.environ.get('GITHUB_HEAD_REPO_URL')[:-4], os.environ.get('GITHUB_HEAD_SHA')[0:7])
 #    }
 #  }
 #  print('creating task {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(taskId, os.environ.get('TASK_ID'), taskId))
