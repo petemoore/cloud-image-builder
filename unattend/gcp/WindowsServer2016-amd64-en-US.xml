@@ -186,35 +186,11 @@
         <SynchronousCommand wcm:action="add">
           <Order>9</Order>
           <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install optional feature: Microsoft-Hyper-V</Description>
-          <CommandLine>dism.exe /Online /Enable-Feature /All /LogLevel:4 /LogPath:C:\log\unattend-dism-enable-feature-hyperv.log /FeatureName:Microsoft-Hyper-V</CommandLine>
-        </SynchronousCommand>
-        <SynchronousCommand wcm:action="add">
-          <Order>10</Order>
-          <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install optional feature: Microsoft-Hyper-V-Management-PowerShell</Description>
-          <CommandLine>dism.exe /Online /Enable-Feature /All /LogLevel:4 /LogPath:C:\log\unattend-dism-enable-feature-hypervposh.log /FeatureName:Microsoft-Hyper-V-Management-PowerShell</CommandLine>
-        </SynchronousCommand>
-        <SynchronousCommand wcm:action="add">
-          <Order>11</Order>
-          <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install optional feature: VirtualMachinePlatform</Description>
-          <CommandLine>dism.exe /Online /Enable-Feature /All /LogLevel:4 /LogPath:C:\log\unattend-dism-enable-feature-vmplatform.log /FeatureName:VirtualMachinePlatform</CommandLine>
-        </SynchronousCommand>
-        <SynchronousCommand wcm:action="add">
-          <Order>12</Order>
-          <RequiresUserInput>false</RequiresUserInput>
-          <Description>Install optional feature: Microsoft-Windows-Subsystem-Linux</Description>
-          <CommandLine>dism.exe /Online /Enable-Feature /All /LogLevel:4 /LogPath:C:\log\unattend-dism-enable-feature-wsl.log /FeatureName:Microsoft-Windows-Subsystem-Linux</CommandLine>
-        </SynchronousCommand>
-        <SynchronousCommand wcm:action="add">
-          <Order>11</Order>
-          <RequiresUserInput>false</RequiresUserInput>
           <Description>Install stackdriver</Description>
           <CommandLine>start /wait C:\Windows\Temp\StackdriverLogging-v1-9.exe /S > C:\log\unattend-stackdriver-install.log</CommandLine>
         </SynchronousCommand>
         <SynchronousCommand wcm:action="add">
-          <Order>12</Order>
+          <Order>10</Order>
           <RequiresUserInput>false</RequiresUserInput>
           <Description>halt the instance</Description>
           <CommandLine>cmd /c start shutdown -s -t 0 -c "windows install complete" -f -d p:2:4</CommandLine>
