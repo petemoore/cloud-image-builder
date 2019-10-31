@@ -263,8 +263,10 @@ for target in targets:
       print('creating task: {}, for worker type: {} (https://tools.taskcluster.net/groups/{}/tasks/{})'.format(target['taskId'], target['workerType'], os.environ.get('TASK_ID'), target['taskId']))
       taskStatusResponse = queue.createTask(target['taskId'], payload)
       print(taskStatusResponse)
-    else:
-      print('no change detected in unattend file: {}, for worker type: {}. skipping build task.'.format(target['workerType'], os.path.basename(manifestItem['unattend'])))
+    elif target['provider'] == 'gcp':
+      print('no change detected in unattend file: unattend/gcp/{}, for worker type: {}. skipping build task.'.format(os.path.basename(manifestItem['unattend']), target['workerType']))
+    elif target['provider'] == 'ec2':
+      print('no change detected in unattend file: unattend/{}, for worker type: {}. skipping build task.'.format(os.path.basename(manifestItem['unattend']), target['workerType']))
   else:
     print('no mapping found for worker type: {}. skipping build task.'.format(target['workerType']))
 
