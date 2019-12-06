@@ -5,7 +5,7 @@ param (
   [string] $source_ref = 'master',
   [string] $ec2_key_pair = 'mozilla-taskcluster-worker-relops-image-builder',
   [string[]] $ec2_security_groups = @('ssh-only', 'rdp-only'),
-  [string[]] $shared_access_accounts = @('461454502437')
+  [string[]] $shared_access_accounts = @('461454502437', '885316786408')
 )
 
 foreach ($env_var in (Get-ChildItem -Path 'Env:')) {
